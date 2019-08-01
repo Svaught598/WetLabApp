@@ -13,8 +13,7 @@ from kivy.uix.screenmanager import ScreenManager, Screen
 from kivy.uix.label import Label
 from kivy.properties import StringProperty, NumericProperty
 """importing local modules"""
-import dropdownmenu
-import inputs
+import screen1
 """importing python modules"""
 import os
 
@@ -29,7 +28,7 @@ Builder.load_string("""
     DropTypes:
     DropSolvents:
     DropSolutes:
-
+    
 <Header>:
     Menu:
     BoxLayout:
@@ -38,66 +37,25 @@ Builder.load_string("""
         M_Input:
         D_Input:
 
-<MainLayout>:
-    orientation: 'vertical'
-    id: main
-    Header:
-    BoxLayout: 
-        Button:
-            text: 'Calculate volume needed'
-            on_press: str(root.calculate())
-        Label: 
-            text: str(root.volume)
+<MainScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        id: main
+        Header:
+        BoxLayout: 
+            Button:
+                text: 'Calculate volume needed'
+                on_press: str(root.calculate())
+            Label: 
+                text: str(root.volume)
 
 """)
-class Menu(BoxLayout):
-    pass
-
-class Header(BoxLayout):
-    pass
-
-class MainLayout(BoxLayout):
-    """properties bound to dropdowns"""
-    type_solution = StringProperty('')
-    solvent = StringProperty('')
-    solute = StringProperty('')
-    """properties bound to inputs"""
-    mass = StringProperty('')
-    concentration = StringProperty('')
-    solute_density = StringProperty('')
-    volume = StringProperty('')
-        
-    def __init__(self, **kwargs):
-        super(MainLayout, self).__init__(**kwargs)
-
-        
-    def calculate(self):
-        if (
-                self.concentration != '' and
-                self.mass != '' and
-                self.solute_density != ''
-            ):
-            self.result = (((1 - float(self.concentration)) * float(self.mass))/
-                          (float(self.concentration) * float(self.solute_density)))
-            if self.result < 0:
-                self.volume = str('Solution not viable:')
-            else: 
-                self.volume = str(round(self.result, 3))
-        else: 
-            print('error')
-            print(self.concentration, self.mass, self.solute_density)
-    
-class Inputs(BoxLayout):
-    pass
 
 class SolutionApp(App):
     def build(self):
         self.sm = ScreenManager()
-        self.screen1 = Screen()
-        
-        self.main = MainLayout()
-        self.screen1.add_widget(self.main)
-        
+        self.screen1 = screen1.MainScreen()
+
         self.sm.add_widget(self.screen1)
         
         return self.sm
