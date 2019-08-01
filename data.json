@@ -1,0 +1,26 @@
+{
+	"Types": {
+		"% Wt/Wt": false,
+		"% Wt/V": false
+	},
+	"Solvents": {
+		"Chloroform": 1.49,
+        "Toluene": 0.87,
+        "Water": 1.00,
+        "Methanol": 0.791,
+        "Ethanol": 0.7892,
+        "Acetone": 0.791,
+        "Chlorobenzene": 1.11,
+        "Hexane": 0.659,
+        "Butanol": 0.81
+	},
+    "Solutes": {
+        "MEH-PPV": 1,
+        "MDMO-PPV": 1,
+        "BDMO-PPV": 1,
+        "Salmon DNA": 1,
+        "Microcrystalline Cellulose": 1, 
+        "Nanocrystalline Cellulose": 1, 
+        "PMMA": 1
+	}
+}
