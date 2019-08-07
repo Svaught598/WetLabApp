@@ -12,11 +12,10 @@ Screen 1:
 from kivy.uix.screenmanager import Screen
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
-from kivy.uix.button import Button
-from kivy.uix.dropdown import DropDown
 from kivy.uix.textinput import TextInput
-from kivy.properties import StringProperty, NumericProperty
+from kivy.properties import StringProperty
 """Importing Local Modules"""
+from customwidgets import DropDownMenu
 from bus import loader
 
 ###############################################################################
@@ -25,7 +24,7 @@ from bus import loader
 class MainScreen(Screen):
     
     
-    """properties bound to dropdowns"""
+    """properties bound to dropdown selection"""
     type_solution = StringProperty('')
     solvent = StringProperty('')
     solute = StringProperty('')
@@ -34,7 +33,7 @@ class MainScreen(Screen):
     """properties bound to inputs"""
     mass = StringProperty('')
     concentration = StringProperty('')
-    solute_density = StringProperty('')
+    solvent_density = StringProperty('')
     volume = StringProperty('')
     
     
@@ -49,14 +48,14 @@ class MainScreen(Screen):
         elif self.type_solution == '% Wt/V':
             return self.calculate_wtv()
         else: 
-            return "Type of solution not specified"
+            self.volume = "Type of solution not specified"
 
 
 
     def calculate_wtwt(self):
         if self.verify == '':
             self.volume = str(round(((1 - float(self.concentration)) * float(self.mass))/
-                          (float(self.concentration) * float(self.solute_density)), 3)) + ' ml'
+                          (float(self.concentration) * float(self.solvent_density)), 3)) + ' ml'
         else: 
             self.volume = 'Error:\n' + self.verify
             
@@ -77,7 +76,7 @@ class MainScreen(Screen):
     @property
     def verify(self):
         message = ''
-        if (self.concentration != '' and self.mass != '' and self.solute_density != ''):
+        if (self.concentration != '' and self.mass != '' and self.solvent_density != ''):
             if float(self.concentration) > 1:
                 message += "Concentration is too high\n"
             if float(self.mass) < 0:
@@ -91,129 +90,51 @@ class MainScreen(Screen):
 """Drop-Down Widgets"""########################################################
 ###############################################################################
 
-class DropTypes(Button):
+
+class DropTypes(DropDownMenu):
     
-    """This dropdown menu contans different types of solutions"""
-    
-    types = loader('data.json')['Types']
+    """Dropdown menu for solution type selection"""
     
     def __init__(self, **kwargs):
         super(DropTypes, self).__init__(**kwargs)
-        self.drop_list = None
-        self.drop_list = DropDown()
+        self.types = loader('data.json')['Types']
+        self.default_text = "Type of Solution"
         self.text = "Type of Solution"
+        self.name = "type_solution"
+        
+    def set_parent_screen(self, instance, value):
+        setattr(self.parent.parent.parent.parent, self.name, value)
 
-
-        """generates a button for each type in types"""
-        for type in DropTypes.types:
-            btn = Button(text = type, size_hint_y = None, height = 50)
-            btn.bind(on_release = lambda btn: self.drop_list.select(btn.text))
-            self.drop_list.add_widget(btn)
-
-
-        """Button bindings"""
-        self.bind(on_release = self.drop_list.open)
-        self.bind(on_release = self.default)
-       
-        
-        """Dropdown bindings"""
-        self.drop_list.bind(on_select = self.set_text)
-        
-        
-    def on_parent(self, instance, value):
-        self.drop_list.bind(on_select = self.set_main_screen)
-        
-    def set_text(self, instance, value):
-        self.text = value
-        
-    def set_main_screen(self, instance, value):
-        self.parent.parent.parent.parent.type_solution = value
-        
-    def default(self, instance):
-        self.text = "Type of Solution"
-        
-        
-class DropSolvents(Button):
+class DropSolvents(DropDownMenu):
     
-    """This dropdown menu contains different solvent options"""
+    """Dropdown menu for solvent selection"""
     
-    types = loader('data.json')['Solvents']
-       
     def __init__(self, **kwargs):
         super(DropSolvents, self).__init__(**kwargs)
-        self.drop_list = None
-        self.drop_list = DropDown()
+        self.types = loader('data.json')['Solvents']
+        self.default_text = "Solvent"
         self.text = "Solvent"
+        self.name = "solvent"
         
+    def set_parent_screen(self, instance, value):
+        try:
+            setattr(self.parent.parent.parent.parent, self.name, str(self.types[str(value)]))
+        except:
+            setattr(self.parent.parent.parent.parent, self.name, "No solvent selected")
         
-        """generates a button for each type in types"""
-        for type in DropSolvents.types:
-            btn = Button(text = type, size_hint_y = None, height = 50)
-            btn.bind(on_release = lambda btn: self.drop_list.select(btn.text))
-            self.drop_list.add_widget(btn)
-            
-            
-        """Button bindings"""
-        self.bind(on_release = self.drop_list.open)
-        self.bind(on_release = self.default)
-        
-        
-        """Dropdown bindings"""
-        self.drop_list.bind(on_select = self.set_text)
-        
-        
-    def on_parent(self, instance, parent):
-        self.drop_list.bind(on_select = self.set_main_screen)
-                            
-    def set_text(self, instance, value):
-        self.text = value
-        
-    def set_main_screen(self, instance, value):
-        self.parent.parent.parent.parent.solvent = str(self.types[value])
-        
-    def default(self, instance):
-        self.text = "Solvent"
-        
-        
-class DropSolutes(Button):
+class DropSolutes(DropDownMenu):
     
-    """This dropdown menu contains different solute options"""
+    """Dropdown menu for solute selection"""
     
-    types = loader('data.json')['Solutes']
-       
     def __init__(self, **kwargs):
         super(DropSolutes, self).__init__(**kwargs)
-        self.drop_list = None
-        self.drop_list = DropDown()
+        self.types = loader('data.json')['Solutes']
+        self.default_text = "Solute"
         self.text = "Solute"
-        
-        
-        """generates a button for each type in types"""
-        for type in DropSolutes.types:
-            btn = Button(text = type, size_hint_y = None, height = 50)
-            btn.bind(on_release = lambda btn: self.drop_list.select(btn.text))
-            self.drop_list.add_widget(btn)
-            
-        """Button bindings"""
-        self.bind(on_release = self.drop_list.open)
-        self.bind(on_release = self.default)
-        
-        """Dropdown bindings"""
-        self.drop_list.bind(on_select = self.set_text)
-        
-        
-    def on_parent(self, instance, parent):
-        self.drop_list.bind(on_select = self.set_main_screen)
-                                    
-    def set_text(self, instance, value):
-        self.text = value
-        
-    def set_main_screen(self, instance, value):
-        self.parent.parent.parent.parent.solute = value
-        
-    def default(self, instance):
-        self.text = "Solute"
-        
+        self.name = "solute"
+
+    def set_parent_screen(self, instance, value):
+        setattr(self.parent.parent.parent.parent, self.name, value)
         
 ###############################################################################
 """Input Widgets"""############################################################
@@ -264,13 +185,11 @@ class D_Input(BoxLayout):
     
     """This input is for density. It shows the density of the 
     solvent chosen on the solvents dropwdown menu"""
-    
-    density = NumericProperty(0)
-    
+
     def __init__(self, **kwargs):
         super(D_Input, self).__init__(**kwargs)
         self.label = Label(text = 'Density:\n(in g/ml)')
-        self.dens  = Label(text = '')
+        self.dens  = Label(text = 'No solvent selected')
         
         self.add_widget(self.label)
         self.add_widget(self.dens)
@@ -280,7 +199,7 @@ class D_Input(BoxLayout):
         
     def set_text(self, instance, value):
         self.dens.text = value
-        self.parent.parent.parent.parent.solute_density = value
+        self.parent.parent.parent.parent.solvent_density = value
         
 ###############################################################################
 """Blank Widgets"""############################################################

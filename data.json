@@ -1,7 +1,7 @@
 {
 	"Types": {
-		"% Wt/Wt": false,
-		"% Wt/V": false
+		"% Wt/Wt": "% Wt/Wt",
+		"% Wt/V": "% Wt/V"
 	},
 	"Solvents": {
 		"Chloroform": 1.49,
@@ -15,12 +15,12 @@
         "Butanol": 0.81
 	},
     "Solutes": {
-        "MEH-PPV": 1,
-        "MDMO-PPV": 1,
-        "BDMO-PPV": 1,
-        "Salmon DNA": 1,
-        "Micro. Cellulose": 1, 
-        "Nano. Cellulose": 1, 
-        "PMMA": 1
+        "MEH-PPV": "MEH-PPV",
+        "MDMO-PPV": "MDMO-PPV",
+        "BDMO-PPV": "BDMO-PPV",
+        "Salmon DNA": "Salmon DNA",
+        "Micro. Cellulose": "Micro. Cellulose", 
+        "Nano. Cellulose": "Nano. Cellulose", 
+        "PMMA": "PMMA"
 	}
 }

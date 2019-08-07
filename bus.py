@@ -15,3 +15,5 @@ def loader(filename):
     
     with open(filename) as f:
         return json.load(f)
+
+x = loader('data.json')['Solvents']

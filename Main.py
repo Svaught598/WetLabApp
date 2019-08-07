@@ -7,11 +7,8 @@ Main Script
 """
 """importing kivy modules"""
 from kivy.app import App
-from kivy.uix.boxlayout import BoxLayout
 from kivy.lang.builder import Builder
-from kivy.uix.screenmanager import ScreenManager, Screen
-from kivy.uix.label import Label
-from kivy.properties import StringProperty, NumericProperty
+from kivy.uix.screenmanager import ScreenManager
 """importing local modules"""
 import screen1
 """importing python modules"""
@@ -52,18 +49,19 @@ Builder.load_string("""
 """)
 
 class SolutionApp(App):
+    
     def build(self):
         self.sm = ScreenManager()
         self.screen1 = screen1.MainScreen()
-
-        self.sm.add_widget(self.screen1)
-        
+        self.sm.add_widget(self.screen1)        
         return self.sm
     
     def on_stop(self, **kwargs):
+        
         """I was getting an assertion error for back-to-back runs 
         so this method resets the IPython kernel so I don't need to 
         manually reset it"""
+        
         os._exit(00)
         return True
 
