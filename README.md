@@ -9,3 +9,4 @@ tools that can be easily navigated and understood.
 ### Future Features
 - Thickness approximation of films for different casting techniques
 - approximation of other quantities (parts per ml, solute/solvent part ratios, etc.)
+- ability to update data json files with new material informations
