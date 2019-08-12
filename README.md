@@ -4,6 +4,7 @@ This app is made with the intention of speeding up lab work by creating a set of
 tools that can be easily navigated and understood. 
 
 ### Current Features
+- navigation menu
 - Solution calculator
 
 ### Future Features
