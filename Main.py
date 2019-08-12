@@ -10,51 +10,31 @@ from kivy.app import App
 from kivy.lang.builder import Builder
 from kivy.uix.screenmanager import ScreenManager
 """importing local modules"""
-import screen1
+from screens import *
 """importing python modules"""
 import os
 
-Builder.load_string("""
-
-<DropTypes, DropSolvents, DropSolutes>:
-    size_hint: [0.8, 0.2]
-	pos_hint: {'center_x': 0.5 , 'center_y': 0.5}
+###############################################################################
+"""Screen Manager"""###########################################################
+###############################################################################
+class Manager(ScreenManager):
     
-<Menu>:
-    orientation: 'vertical'
-    DropTypes:
-    DropSolvents:
-    DropSolutes:
-    
-<Header>:
-    Menu:
-    BoxLayout:
-        orientation: 'vertical'
-        C_Input:
-        M_Input:
-        D_Input:
+    def __init__(self, **kwargs):
+        super(Manager, self).__init__(**kwargs)
+        
+        self.menu = MenuScreen(name = 'menu')
+        self.add_widget(self.menu)
+        
+        self.screen1 = VolumeNeededScreen(name = 'volumeneeded')
+        self.add_widget(self.screen1)
 
-<MainScreen>:
-    BoxLayout:
-        orientation: 'vertical'
-        id: main
-        Header:
-        BoxLayout: 
-            Button:
-                text: 'Calculate volume needed'
-                on_press: str(root.calculate())
-            Label: 
-                text: str(root.volume)
-
-""")
-
+###############################################################################
+"""Main Application Loop"""####################################################
+###############################################################################
 class SolutionApp(App):
     
-    def build(self):
-        self.sm = ScreenManager()
-        self.screen1 = screen1.MainScreen()
-        self.sm.add_widget(self.screen1)        
-        return self.sm
+    def build(self):       
+        return Manager()
     
     def on_stop(self, **kwargs):
         
@@ -67,3 +47,5 @@ class SolutionApp(App):
 
 if __name__ == '__main__':
     SolutionApp().run()
+    
+###############################################################################

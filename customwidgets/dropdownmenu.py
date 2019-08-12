@@ -21,7 +21,6 @@ class DropDownMenu(Button):
         self.drop_list = None
         self.drop_list = DropDown()
         self.text = default_text
-        self.bind(types = self.add_buttons)
         self.name = ''
         
         """Button bindings"""
@@ -32,20 +31,17 @@ class DropDownMenu(Button):
         
         
     """generates a button for each type in types"""
-    def add_buttons(self, instance, value):
+    def on_types(self, instance, value):
+        self.clear_widgets()
         for type in self.types:
             btn = Button(text = type, size_hint_y = None, height = 50)
             btn.bind(on_release = lambda btn: self.drop_list.select(btn.text))
             self.drop_list.add_widget(btn)
-        
-    def set_parent_screen(self, instance, value):
-        setattr(self.parent, self.name, value)
+    
         
     def set_text(self, instance, value):
         setattr(self, 'text', value)
         
-    def on_parent(self, instance, parent):
-        self.bind(text = self.set_parent_screen)
 
 
 ###############################################################################       
