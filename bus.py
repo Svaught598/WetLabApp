@@ -9,11 +9,6 @@ the app to transfer data.
 import json
 
 """function loads data from .json files"""#####################################
-def loader(filename):
-    
-    """returns a dictionary"""
-    
-    with open(filename) as f:
+def loader():
+    with open("data.json") as f:
         return json.load(f)
-
-x = loader('data.json')['Solvents']

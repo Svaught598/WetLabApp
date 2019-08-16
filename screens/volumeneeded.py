@@ -94,6 +94,8 @@ Builder.load_string("""
         BoxLayout:
             height: '20sp'
             Button:
+                size_hint_y: None
+                height: dp(56)
                 text: 'Back'
                 on_press: root.manager.current = 'menu'
         Header:
@@ -116,7 +118,7 @@ class DropTypes(DropDownMenu):
     
     def __init__(self, **kwargs):
         super(DropTypes, self).__init__(**kwargs)
-        self.types = loader('data.json')['Types']
+        self.types = loader()['Types']
         self.default_text = "Type of Solution"
         self.text = "Type of Solution"
         self.name = "type_solution"
@@ -133,7 +135,7 @@ class DropSolvents(DropDownMenu):
     
     def __init__(self, **kwargs):
         super(DropSolvents, self).__init__(**kwargs)
-        self.types = loader('data.json')['Solvents']
+        self.types = loader()['Solvents']
         self.default_text = "Solvent"
         self.text = "Solvent"
         self.name = "solvent"
@@ -153,7 +155,7 @@ class DropSolutes(DropDownMenu):
     
     def __init__(self, **kwargs):
         super(DropSolutes, self).__init__(**kwargs)
-        self.types = loader('data.json')['Solutes']
+        self.types = loader()['Solutes']
         self.default_text = "Solute"
         self.text = "Solute"
         self.name = "solute"
@@ -262,6 +264,9 @@ class Header(BoxLayout):
 Builder.load_string("""
                     
 <Header>:
+    size_hint_y: None
+    height: dp(168)
+    
     SelectionMenu:
     BoxLayout:
         orientation: 'vertical'

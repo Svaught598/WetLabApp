@@ -28,7 +28,8 @@ Builder.load_string("""
             text: "Calculate Volume for Solution"
             on_press: root.manager.current = 'volumeneeded'
         Button:
-            text: "coming soon"
+            text: "Update data"
+            on_press: root.manager.current = 'update'
             
 """)
     

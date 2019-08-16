@@ -27,6 +27,9 @@ class Manager(ScreenManager):
         
         self.screen1 = VolumeNeededScreen(name = 'volumeneeded')
         self.add_widget(self.screen1)
+        
+        self.screen2 = UpdateScreen(name = 'update')
+        self.add_widget(self.screen2)
 
 ###############################################################################
 """Main Application Loop"""####################################################
