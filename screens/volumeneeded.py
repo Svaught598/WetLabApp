@@ -44,45 +44,85 @@ class VolumeNeededScreen(Screen):
         appropriate calculation function"""
         
         if self.type_solution == '% Wt/Wt':
-            return self.calculate_wtwt()
+            if self.verify(check_density = True) == True:
+                self.volume = self.calculate_wtwt()
+            else: 
+                _, message = self.verify(check_density = True)
+                self.volume = self.error_message(message)
+                
+                
+                
         elif self.type_solution == '% Wt/V':
-            return self.calculate_wtv()
+            if self.verify() == True:
+                self.volume = self.calculate_wtv()
+            else: 
+                _, message = self.verify()
+                self.volume = self.error_message(message)
+            
         else: 
             self.volume = "Type of solution not specified"
 
 
 
     def calculate_wtwt(self):
-        if self.verify() == '':
-            self.volume = str(round(((1 - float(self.concentration)) * float(self.mass))/
-                          (float(self.concentration) * float(self.solvent_density)), 3)) + ' ml'
-        else: 
-            self.volume = 'Error:\n' + self.verify()
+        conc = float(self.concentration)
+        mass = float(self.mass)
+        sdens= float(self.solvent_density)
+        return str(round(((1 - conc) * mass)/(conc * sdens), 3)) + ' ml'            
             
-            
-            
-    def calculate_wtv(self):
-        if (self.verify() == '' or self.verify == "One or more fields is blank"):
-            try:
-                self.volume = str(round((float(self.mass)/float(self.concentration)), 3))
-            except:
-                self.volume = "Error: \nOne or more fields is blank"
-        else:
-            self.volume = self.verify()
-        
-        
-        
-####"""Verification Method"""##################################################
-    def verify(self):
-        message = ''
-        if (self.concentration != '' and self.mass != '' and self.solvent_density != ''):
-            if float(self.concentration) > 1:
-                message += "Concentration is too high\n"
-            if float(self.mass) < 0:
-                message += "Mass must be positive\n"
-            return message
-        return "One or more fields is blank"
     
+    
+    def calculate_wtv(self):
+        conc = float(self.concentration)
+        mass = float(self.mass)
+        return str(round((mass/conc), 3))
+        
+    
+
+    def verify(self, check_density = False):
+        
+        message = []
+        
+        """checking concentration field"""
+        if self.concentration == '':
+            message.append("Concentration field is empty\n")
+        else: 
+            try: 
+                if float(self.concentration) > 1:
+                    message.append("Concentration must be less than 1\n")
+            except:
+                message.append("Concentration must be greater than 0\n")
+        
+        
+        """checking mass field"""
+        if self.mass == '':
+            message.append("Mass field is empty\n")
+        else: 
+            try:
+                if float(self.mass) < 0:
+                    message.append("Mass must be greater than 0\n")
+            except:
+                pass
+        
+        
+        """checking density field"""
+        if (self.solvent_density == '' and check_density == True):
+            message.append("Density field is empty\n")        
+        
+        
+        """Here we return messages only if False, for use with error_message()"""
+        if message == []:
+            return True
+        else:
+            return False, message
+        
+        
+    def error_message(self, messages):
+        err = 'Error:\n'
+        for message in messages:
+            err += message 
+        return err
+        
 ###############################################################################
 Builder.load_string("""
                     
