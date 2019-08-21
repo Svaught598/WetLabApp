@@ -6,7 +6,6 @@ Volume Needed Screen:
     - This file contains all necessary information for calculating the 
     volume needed to make a solution matching given criteria
     
-    
 """
 """importing kivy modules"""
 from kivy.uix.screenmanager import Screen
@@ -22,18 +21,21 @@ from bus import loader
 ###############################################################################
 """Main Screen Widget"""#######################################################
 ###############################################################################
-class VolumeNeededScreen(Screen):
+class VolumeScreen(Screen):
     
     """properties bound to dropdown selection"""
-    type_solution = StringProperty('')
-    solvent = StringProperty('')
-    solute = StringProperty('')
+    types = StringProperty('')
+    solvs = StringProperty('')
+    solts = StringProperty('')
     
     
     """properties bound to inputs"""
     mass = StringProperty('')
-    concentration = StringProperty('')
-    solvent_density = StringProperty('')
+    conc = StringProperty('')
+    dens = StringProperty('')
+    
+    
+    """properties bound to calculation result"""
     volume = StringProperty('')
     
     
@@ -42,8 +44,8 @@ class VolumeNeededScreen(Screen):
         
         """checks dropdown menu selection to call 
         appropriate calculation function"""
-        
-        if self.type_solution == '% Wt/Wt':
+        print(self.conc)
+        if self.types == '% Wt/Wt':
             if self.verify(check_density = True) == True:
                 self.volume = self.calculate_wtwt()
             else: 
@@ -52,7 +54,7 @@ class VolumeNeededScreen(Screen):
                 
                 
                 
-        elif self.type_solution == '% Wt/V':
+        elif self.types == '% Wt/V':
             if self.verify() == True:
                 self.volume = self.calculate_wtv()
             else: 
@@ -65,15 +67,15 @@ class VolumeNeededScreen(Screen):
 
 
     def calculate_wtwt(self):
-        conc = float(self.concentration)
+        conc = float(self.conc)
         mass = float(self.mass)
-        sdens= float(self.solvent_density)
+        sdens= float(self.dens)
         return str(round(((1 - conc) * mass)/(conc * sdens), 3)) + ' ml'            
             
     
     
     def calculate_wtv(self):
-        conc = float(self.concentration)
+        conc = float(self.conc)
         mass = float(self.mass)
         return str(round((mass/conc), 3))
         
@@ -84,11 +86,11 @@ class VolumeNeededScreen(Screen):
         message = []
         
         """checking concentration field"""
-        if self.concentration == '':
+        if self.conc == '':
             message.append("Concentration field is empty\n")
         else: 
             try: 
-                if float(self.concentration) > 1:
+                if float(self.conc) > 1:
                     message.append("Concentration must be less than 1\n")
             except:
                 message.append("Concentration must be greater than 0\n")
@@ -106,7 +108,7 @@ class VolumeNeededScreen(Screen):
         
         
         """checking density field"""
-        if (self.solvent_density == '' and check_density == True):
+        if (self.dens == '' and check_density == True):
             message.append("Density field is empty\n")        
         
         
@@ -126,25 +128,95 @@ class VolumeNeededScreen(Screen):
 ###############################################################################
 Builder.load_string("""
                     
-<VolumeNeededScreen>:
+<VolumeScreen>:
+    types: types.text
+    solvs: solvs.text
+    solts: solts.text
+    
+    conc: conc.text
+    mass: mass.text
+
+
     BoxLayout:
+        anchor_x: 'center'
+        anchor_y: 'top'
         orientation: 'vertical'
-        id: main
+        canvas.before: 
+            Color: 
+                rgba: 0.3, 0.3, 0.3, 1
+            Rectangle:
+                size: self.size
+                pos: self.pos
+                
+        Button: 
+            background_color: (0.3, 0.3, 0.3, .5)
+            size_hint_y: None
+            height: dp(56)
+            text: "Back to Menu"
+            on_press: root.manager.current = "menu"
         
-        BoxLayout:
-            height: '20sp'
-            Button:
-                size_hint_y: None
-                height: dp(56)
-                text: 'Back'
-                on_press: root.manager.current = 'menu'
-        Header:
         BoxLayout: 
-            Button:
+            canvas:
+                Color:
+                    rgba: 0.3, 0.3, 0.3, 1
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: dp(56)
+            padding: dp(8)
+            spacing: dp(16)
+                
+            DropTypes:
+                id: types
+            DropSolvents:
+                id: solvs
+            DropSolutes:
+                id: solts
+
+        BoxLayout:
+            canvas:
+                Color:
+                    rgba: 0.3, 0.3, 0.3, 1
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: dp(56)
+            padding: dp(8)
+            spacing: dp(16)
+            
+            TextInput:
+                id: conc
+                
+                hint_text: "Concentration"
+                input_type: "number"
+                input_filter: "float"
+                padding: dp(10), dp(10), 0, 0
+                        
+            TextInput:
+                id: mass
+                
+                hint_text: "Mass (in grams)"
+                input_type: "number"
+                input_filter: "float"
+                padding: dp(10), dp(10), 0, 0
+                        
+            Label: 
+                dens: "Density: " + root.dens + " g/ml"
+                text: "No solvent selected" if root.dens == '' else self.dens
+                    
+        BoxLayout: 
+            anchor_x: 'center'
+            anchor_y: 'top'
+            Button: 
                 text: 'Calculate volume needed'
                 on_press: str(root.calculate())
-            Label: 
+            Label:
                 text: str(root.volume)
+            
 """)
     
 ###############################################################################
@@ -178,13 +250,13 @@ class DropSolvents(DropDownMenu):
         self.types = loader()['Solvents']
         self.default_text = "Solvent"
         self.text = "Solvent"
-        self.name = "solvent"
+        self.name = "dens"
         
     def set_parent_screen(self, instance, value):
         try:
-            setattr(self.parent.parent.parent.parent, self.name, str(self.types[str(value)]))
+            setattr(self.parent.parent.parent, self.name, str(self.types[str(value)]))
         except:
-            setattr(self.parent.parent.parent.parent, self.name, "No solvent selected")
+            setattr(self.parent.parent.parent, self.name, "No solvent selected")
         
     def on_parent(self, instance, parent):
         self.bind(text = self.set_parent_screen)
@@ -198,7 +270,7 @@ class DropSolutes(DropDownMenu):
         self.types = loader()['Solutes']
         self.default_text = "Solute"
         self.text = "Solute"
-        self.name = "solute"
+        self.name = "solts"
 
     def set_parent_screen(self, instance, value):
         setattr(self.parent.parent.parent.parent, self.name, value)
@@ -206,114 +278,6 @@ class DropSolutes(DropDownMenu):
     def on_parent(self, instance, parent):
         self.bind(text = self.set_parent_screen)
         
-Builder.load_string("""
-                    
-<DropTypes, DropSolvents, DropSolutes>:
-    size_hint: [0.8, 0.2]
-	pos_hint: {'center_x': 0.5 , 'center_y': 0.5}
-    
-""")
         
 ###############################################################################
-"""Input Widgets"""############################################################
-###############################################################################
 
-class Concentration_Input(BoxLayout):
-    
-    """This input is for concentration. It takes a numeric value 
-    and passes it to the MainScreen.concentration"""
-    
-    concentration = StringProperty('')
-    
-    def __init__(self, **kwargs):
-        super(Concentration_Input, self).__init__(**kwargs)
-        self.label = Label(text = 'Concentration:\n(as fraction)')
-        self.input = TextInput(input_type = 'number', input_filter = 'float')
-        
-        self.add_widget(self.label)
-        self.add_widget(self.input)
-        self.input.bind(text = self.set_concentration)
-        
-    def set_concentration(self, instance, value):
-        self.concentration = value
-        self.parent.parent.parent.parent.concentration = value 
-            
-        
-class Mass_Input(BoxLayout):
-    
-    """This input is for mass. It takes a numeric value and 
-    passes it to the MainScreen.mass"""
-     
-    mass = StringProperty('')
-    
-    def __init__(self, **kwargs):
-        super(Mass_Input, self).__init__(**kwargs)
-        self.label = Label(text = 'Mass:\n(in grams)')
-        self.input = TextInput(input_type = 'number', input_filter = 'float')
-        
-        self.add_widget(self.label)
-        self.add_widget(self.input)
-        self.input.bind(text = self.set_mass)
-        
-    def set_mass(self, instance, value):
-        self.mass = value
-        self.parent.parent.parent.parent.mass = value 
-
-
-class Density_Input(BoxLayout):
-    
-    """This input is for density. It shows the density of the 
-    solvent chosen on the solvents dropwdown menu"""
-
-    def __init__(self, **kwargs):
-        super(Density_Input, self).__init__(**kwargs)
-        self.label = Label(text = 'Density:\n(in g/ml)')
-        self.dens  = Label(text = 'No solvent selected')
-        
-        self.add_widget(self.label)
-        self.add_widget(self.dens)
-
-    def on_parent(self, instance, value):
-        self.parent.parent.parent.parent.bind(solvent = self.set_text)
-        
-    def set_text(self, instance, value):
-        self.dens.text = value
-        self.parent.parent.parent.parent.solvent_density = value
-        
-###############################################################################
-"""Blank Widgets"""############################################################
-###############################################################################
-
-class SelectionMenu(BoxLayout):
-    pass
-
-Builder.load_string("""
-                    
-<SelectionMenu>:
-    orientation: 'vertical'
-    DropTypes:
-    DropSolvents:
-    DropSolutes:
-        
-""")
-
-###############################################################################
-class Header(BoxLayout):
-    pass
-
-Builder.load_string("""
-                    
-<Header>:
-    size_hint_y: None
-    height: dp(168)
-    
-    SelectionMenu:
-    BoxLayout:
-        orientation: 'vertical'
-        Concentration_Input:
-        Mass_Input:
-        Density_Input:
-            
-""")
-
-###############################################################################

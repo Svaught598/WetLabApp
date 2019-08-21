@@ -17,10 +17,15 @@ from kivy.uix.behaviors import FocusBehavior
 from kivy.uix.recycleview.layout import LayoutSelectionBehavior
 from kivy.uix.recycleview.views import RecycleDataViewBehavior
 from kivy.uix.recycleboxlayout import RecycleBoxLayout
-from kivy.properties import BooleanProperty
+from kivy.uix.label import Label
+from kivy.uix.button import Button
+from kivy.properties import BooleanProperty, StringProperty
+from kivy.uix.popup import Popup
+from kivy.factory import Factory
 """importing local modules"""
 from customwidgets import DropDownMenu
-from bus import loader
+from bus import loader, dumper
+from pprint import pprint
 
 ###############################################################################
 """Update Screen Widget"""#####################################################
@@ -31,50 +36,60 @@ class UpdateScreen(Screen):
     """data contains a list of all dicts displayed for a 
     selection in the dropdown"""
     disp_data = []
-  
+    json_data = loader()
+    key       = ''
+    
+    
+    hint_text_1 = StringProperty('')
+    hint_text_2 = StringProperty('')
+    
     
     def save(self):
-        #save stuff here
-        for item in self.rvlayout.children:
-            print('%d is child.index for save method' % item.index)
-        return 
-    
+        Factory.VerifyPopup(data = self.json_data).open()
+        
     
     def clear(self):
         self.rv.data = []
+        self.disp_data = []
 
     
     def add_entry(self):
-        self.disp_data.append({'selection': str(self.input_1.text), 'pair': str(self.input_2.text)})
-        self.rv.data = self.disp_data
-        self.input_1.text = ''
-        self.input_2.text = ''
-        return
-    
-    
-    def pair(self):
-        #find pair to selection
-        return
-    
-    
+        try:
+            self.disp_data.append({'selection': str(self.input_1.text), 'pair': str(self.input_2.text)})
+            self.json_data[self.key].update({self.input_1.text: self.input_2.text})
+            self.rv.data = self.disp_data
+            self.input_1.text = ''
+            self.input_2.text = ''
+        except: 
+            Factory.ErrorPopup().open()
+            
+ 
     def delete(self):
+        temp = self.disp_data
         for index, item in enumerate(reversed(self.rvlayout.children)):
-            if bool(item.selected):
-                self.disp_data.pop(index)
+            if item.selected:
+                self.json_data[self.key].pop(item.selection)
+                i = temp.index({'selection': item.selection, 'pair': item.pair})
+                temp.pop(i)
+                print(temp.pop(index))
         self.clear()
-        self.rv.data = self.disp_data
+        self.disp_data = temp
+        self.rv.data = temp
     
     
     def populate(self, key):
-        data = loader()[key]
+        data = self.json_data[key]
         self.clear()
         for item in data:
             self.disp_data.append({'selection': str(item), 'pair': str(data[item])})        
         self.rv.data = self.disp_data
+        self.key = key
 
+class Content(BoxLayout):
+    pass
 
 Builder.load_string("""
-                         
+                    
 <UpdateScreen>:
     rv: rv
     rvlayout: rvlayout
@@ -86,8 +101,15 @@ Builder.load_string("""
         anchor_x: 'center'
         anchor_y: 'top'
         orientation: 'vertical'
+        canvas.before: 
+            Color: 
+                rgba: 0.3, 0.3, 0.3, 1
+            Rectangle:
+                size: self.size
+                pos: self.pos
         
         Button: 
+            background_color: (0.3, 0.3, 0.3, .5)
             size_hint_y: None
             height: dp(56)
             text: "Back to Menu"
@@ -113,7 +135,7 @@ Builder.load_string("""
                 on_press: root.delete()
             
             Button: 
-                text: "Save Changes"
+                text: "Save"
                 on_press: root.save()
             
         BoxLayout:
@@ -131,27 +153,74 @@ Builder.load_string("""
         
             TextInput:
                 id: input_1
-                hint_text: ''
+                hint_text: root.hint_text_1
                 padding: dp(10), dp(10), 0, 0
                 
             TextInput: 
                 id: input_2
-                hint_text: ''
+                hint_text: root.hint_text_2
                 padding: dp(10), dp(10), 0, 0
         
             Button: 
                 text: "Add Entry"
                 on_press: root.add_entry()
+                
+        BoxLayout:
+            canvas:
+                Color:
+                    rgba: 0, 0, 0, 1
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: dp(56)
+            padding: dp(2)
+            spacing: dp(2)
             
-        RecycleView:
-            id: rv
-            scroll_type: ['bars', 'content']
-            scroll_wheel_distance: dp(114)
-            bar_width: dp(10)
-            viewclass: 'SelectableRow'
-            SelectableRecycleBoxLayout:
-                id: rvlayout
-        
+            
+            BoxLayout:
+                color: [0.8, 0.8, 0.8, .3]
+                canvas.before: 
+                    Color: 
+                        rgba: [0, 0, 0, 1] if root.hint_text_1 == '' else self.color
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos
+                Label: 
+                    id: label_1
+                    text: root.hint_text_1
+                    
+            BoxLayout:
+                color: [0.8, 0.8, 0.8, .3]
+                canvas.before: 
+                    Color: 
+                        rgba: [0, 0, 0, 1] if root.hint_text_2 == '' else self.color
+                    Rectangle:
+                        size: self.size
+                        pos: self.pos        
+                Label:  
+                    id: label_2
+                    text: root.hint_text_2
+            
+        BoxLayout: 
+            canvas.before: 
+                Color: 
+                    rgba: 0, 0, 0, 1
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+                    
+            RecycleView:
+                id: rv
+                scroll_type: ['bars', 'content']
+                scroll_wheel_distance: dp(114)
+                bar_width: dp(10)
+                viewclass: 'SelectableRow'
+            
+                SelectableRecycleBoxLayout:
+                    id: rvlayout
+
 """)
 ###############################################################################
 """Supporting Widgets"""########################################################
@@ -167,10 +236,30 @@ class SelectionDropDown(DropDownMenu):
         self.name = "selection"
         
         
-    def on_text(self, instance, value):
+    def on_parent(self, instance, value):
+        self.bind(text = self.populate_rv)
+        
+    def populate_rv(self, instance, value):
         if self.text == self.default_text:
+            
+            self.parent.parent.parent.hint_text_1 = ''
+            self.parent.parent.parent.hint_text_2 = ''
             return
+        
         else: 
+            
+            if self.text == "Solvents":
+                self.parent.parent.parent.hint_text_1 = "Solvent"
+                self.parent.parent.parent.hint_text_2 = "Density"
+                
+            elif self.text == "Solutes":
+                self.parent.parent.parent.hint_text_1 = "Material"
+                self.parent.parent.parent.hint_text_2 = "Material"
+                
+            elif self.text == "Types":
+                self.parent.parent.parent.hint_text_1 = "Solution Type"
+                self.parent.parent.parent.hint_text_2 = "Solution Type"
+            
             self.parent.parent.parent.clear()
             self.parent.parent.parent.populate(self.text)
             
@@ -225,7 +314,7 @@ Builder.load_string("""
         id: val_1
         canvas.before:
             Color:
-                rgba: (.8, .8, .8, .3) if root.selected else (0.3, 0.3, 0.8, 1)
+                rgba: (.3, .3, .8, 1) if root.selected else (0.3, 0.3, 0.3, .5)
             Rectangle:
                 size: self.size
                 pos: self.pos
@@ -239,7 +328,7 @@ Builder.load_string("""
         id: val_2
         canvas.before:
             Color:
-                rgba: (.8, .8, .8, .3) if root.selected else (0.3, 0.3, 0.8, 1)
+                rgba: (.3, .3, .8, 1) if root.selected else (0.3, 0.3, 0.3, .5)
             Rectangle:
                 size: self.size
                 pos: self.pos
@@ -268,6 +357,78 @@ Builder.load_string("""
     spacing: dp(2)
                 
 """)
+    
+    
+###############################################################################
+"""Popups"""###################################################################
+###############################################################################
+    
+class ErrorPopup(Popup):
+    
+    def __init__(self, **kwargs):
+        super(ErrorPopup, self).__init__(**kwargs)
+        self.title = "No category selected"
+        self.layout = BoxLayout(orientation = 'vertical')
+        self.label = Label(text = "Please select a category\nfrom the dropdown menu\nabove",
+                           size_hint_y = 0.8)
+        self.button = Button(text = "Ok", size_hint_y = 0.2)
+        
+        
+        self.layout.add_widget(self.label)
+        self.layout.add_widget(self.button)
+        
+        
+        self.content = self.layout
+        
+        self.button.bind(on_press = self.dismiss)
+
+Builder.load_string("""
+                    
+<ErrorPopup>:
+    size_hint: None, None
+    size: dp(256), dp(256)
+
+""")
+    
+class VerifyPopup(Popup):
+    
+    def __init__(self, data = None, **kwargs):
+        super(VerifyPopup, self).__init__(**kwargs)
+        self.data = data
+        self.title = "Are you sure?"
+        self.layout = BoxLayout(orientation = 'vertical')
+        
+        self.label = Label(text = "Are you sure you'd like\nto save your changes?",
+                           size_hint_y = 0.8)
+        
+        self.buttons = BoxLayout(size_hint_y = 0.2)
+        self.cancel = Button(text = "Cancel")
+        self.verify = Button(text = "I'm sure")
+        
+        self.buttons.add_widget(self.cancel)
+        self.buttons.add_widget(self.verify)
+        
+        self.layout.add_widget(self.label)
+        self.layout.add_widget(self.buttons)
+        
+        self.content = self.layout
+        
+        self.cancel.bind(on_press = self.dismiss)
+        self.verify.bind(on_press = self.save)
+
+    def save(self, instance):
+        dumper(self.data)
+        self.dismiss()
+        
+    
+Builder.load_string("""
+                    
+<VerifyPopup>:
+    size_hint: None, None
+    size: dp(256), dp(256)
+
+""")
+    
         
 ###############################################################################
 """Input Widgets"""############################################################
