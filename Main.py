@@ -25,7 +25,7 @@ class Manager(ScreenManager):
         self.menu = MenuScreen(name = 'menu')
         self.add_widget(self.menu)
         
-        self.screen1 = VolumeNeededScreen(name = 'volumeneeded')
+        self.screen1 = VolumeScreen(name = 'volumeneeded')
         self.add_widget(self.screen1)
         
         self.screen2 = UpdateScreen(name = 'update')
