@@ -22,14 +22,25 @@ class MenuScreen(Screen):
 Builder.load_string("""
                     
 <MenuScreen>:
-    GridLayout:
-        cols: 3
-        Button:
-            text: "Calculate Volume for Solution"
-            on_press: root.manager.current = 'volumeneeded'
-        Button:
-            text: "Update data"
-            on_press: root.manager.current = 'update'
+    BoxLayout:
+        anchor_x: 'center'
+        anchor_y: 'top'
+        orientation: 'vertical'
+    
+        BoxLayout: 
+            orientation: 'vertical'
+            
+            Button:
+                text: "Calculate Volume for Solution"
+                on_press: root.manager.current = 'volumeneeded'
+                
+            Button:
+                text: "Update data"
+                on_press: root.manager.current = 'update'
+                
+            Button: 
+                text: "Calculate Film Thickness"
+                on_press: root.manager.current = 'thickness'
             
 """)
     

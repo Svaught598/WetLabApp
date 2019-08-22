@@ -30,6 +30,9 @@ class Manager(ScreenManager):
         
         self.screen2 = UpdateScreen(name = 'update')
         self.add_widget(self.screen2)
+        
+        self.screen3 = FilmThicknessScreen(name = 'thickness')
+        self.add_widget(self.screen3)
 
 ###############################################################################
 """Main Application Loop"""####################################################

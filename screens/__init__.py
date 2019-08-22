@@ -3,3 +3,4 @@
 from .mainscreen import MenuScreen
 from .updatedata import UpdateScreen
 from .volumeneeded import VolumeScreen
+from .filmthickness import FilmThicknessScreen
