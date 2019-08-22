@@ -4,8 +4,10 @@ This app is made with the intention of speeding up lab work by creating a set of
 tools that can be easily navigated and understood. 
 
 ### Current Features
-- navigation menu
+- Navigation menu
 - Solution calculator
+- Ability to add/delete/save solvent & material information
+- Thicknsess approximation of films for dropcast
 
 ### Future Features
 - Thickness approximation of films for different casting techniques
