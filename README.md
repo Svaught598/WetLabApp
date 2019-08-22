@@ -7,7 +7,7 @@ tools that can be easily navigated and understood.
 - Navigation menu
 - Solution calculator
 - Ability to add/delete/save solvent & material information
-- Thicknsess approximation of films for dropcast
+- Thickness approximation of films for dropcast
 
 ### Future Features
 - Thickness approximation of films for different casting techniques
