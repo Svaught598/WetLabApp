@@ -1,0 +1,88 @@
+<VolumeScreen>:
+    types: types.text
+    solvs: solvs.text
+    solts: solts.text
+    
+    conc: conc.text
+    mass: mass.text
+
+
+    BoxLayout:
+        anchor_x: 'center'
+        anchor_y: 'top'
+        orientation: 'vertical'
+        canvas.before: 
+            Color: 
+                rgba: 0.3, 0.3, 0.3, 1
+            Rectangle:
+                size: self.size
+                pos: self.pos
+                
+        Button: 
+            background_color: (0.3, 0.3, 0.3, .5)
+            size_hint_y: None
+            height: dp(56)
+            text: "Back to Menu"
+            on_press: root.manager.current = "menu"
+        
+        BoxLayout: 
+            canvas:
+                Color:
+                    rgba: 0.3, 0.3, 0.3, 1
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: dp(56)
+            padding: dp(8)
+            spacing: dp(16)
+                
+            DropTypes:
+                id: types
+            DropSolvents:
+                id: solvs
+            DropSolutes:
+                id: solts
+
+        BoxLayout:
+            canvas:
+                Color:
+                    rgba: 0.3, 0.3, 0.3, 1
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: dp(56)
+            padding: dp(8)
+            spacing: dp(16)
+            
+            TextInput:
+                id: conc
+                
+                hint_text: "Concentration"
+                input_type: "number"
+                input_filter: "float"
+                padding: dp(10), dp(10), 0, 0
+                        
+            TextInput:
+                id: mass
+                
+                hint_text: "Mass (in grams)"
+                input_type: "number"
+                input_filter: "float"
+                padding: dp(10), dp(10), 0, 0
+                        
+            Label: 
+                dens: "Density: " + root.dens + " g/ml"
+                text: "No solvent selected" if root.dens == '' else self.dens
+                    
+        BoxLayout: 
+            anchor_x: 'center'
+            anchor_y: 'top'
+            Button: 
+                text: 'Calculate volume needed'
+                on_press: str(root.calculate())
+            Label:
+                text: str(root.volume)
