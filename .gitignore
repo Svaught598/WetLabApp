@@ -1,2 +1,6 @@
+# ignoring environment
 env
+
+# ignoring cacheing
 *.pyc
+__pycache__
