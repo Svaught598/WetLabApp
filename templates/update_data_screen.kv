@@ -3,26 +3,25 @@
     rvlayout: rvlayout
     input_1: input_1
     input_2: input_2
-    
 
     BoxLayout:
         anchor_x: 'center'
         anchor_y: 'top'
         orientation: 'vertical'
-        canvas.before: 
-            Color: 
+        canvas.before:
+            Color:
                 rgba: 0.3, 0.3, 0.3, 1
             Rectangle:
                 size: self.size
                 pos: self.pos
-        
-        Button: 
+
+        Button:
             background_color: (0.3, 0.3, 0.3, .5)
             size_hint_y: None
             height: dp(56)
             text: "Back to Menu"
             on_press: root.manager.current = "menu"
-    
+
         BoxLayout:
             canvas:
                 Color:
@@ -35,17 +34,17 @@
             height: dp(56)
             padding: dp(8)
             spacing: dp(16)
-            
+
             SelectionDropDown:
 
             Button:
                 text: "Delete"
                 on_press: root.delete()
-            
-            Button: 
+
+            Button:
                 text: "Save"
                 on_press: root.save()
-            
+
         BoxLayout:
             canvas:
                 Color:
@@ -58,21 +57,21 @@
             height: dp(56)
             padding: dp(8)
             spacing: dp(16)
-        
+
             TextInput:
                 id: input_1
                 hint_text: root.hint_text_1
                 padding: dp(10), dp(10), 0, 0
-                
-            TextInput: 
+
+            TextInput:
                 id: input_2
                 hint_text: root.hint_text_2
                 padding: dp(10), dp(10), 0, 0
-        
-            Button: 
+
+            Button:
                 text: "Add Entry"
                 on_press: root.add_entry()
-                
+
         BoxLayout:
             canvas:
                 Color:
@@ -85,47 +84,47 @@
             height: dp(56)
             padding: dp(2)
             spacing: dp(2)
-            
-            
+
+
             BoxLayout:
                 color: [0.8, 0.8, 0.8, .3]
-                canvas.before: 
-                    Color: 
+                canvas.before:
+                    Color:
                         rgba: [0, 0, 0, 1] if root.hint_text_1 == '' else self.color
                     Rectangle:
                         size: self.size
                         pos: self.pos
-                Label: 
+                Label:
                     id: label_1
                     text: root.hint_text_1
-                    
+
             BoxLayout:
                 color: [0.8, 0.8, 0.8, .3]
-                canvas.before: 
-                    Color: 
+                canvas.before:
+                    Color:
                         rgba: [0, 0, 0, 1] if root.hint_text_2 == '' else self.color
                     Rectangle:
                         size: self.size
-                        pos: self.pos        
-                Label:  
+                        pos: self.pos
+                Label:
                     id: label_2
                     text: root.hint_text_2
-            
-        BoxLayout: 
-            canvas.before: 
-                Color: 
+
+        BoxLayout:
+            canvas.before:
+                Color:
                     rgba: 0, 0, 0, 1
                 Rectangle:
                     size: self.size
                     pos: self.pos
-                    
+
             RecycleView:
                 id: rv
                 scroll_type: ['bars', 'content']
                 scroll_wheel_distance: dp(114)
                 bar_width: dp(10)
                 viewclass: 'SelectableRow'
-            
+
                 SelectableRecycleBoxLayout:
                     id: rvlayout
 
@@ -133,8 +132,8 @@
     spacing: dp(2)
     selection: ''
     pair: ''
-    
-    Label: 
+
+    Label:
         id: val_1
         canvas.before:
             Color:
@@ -142,13 +141,13 @@
             Rectangle:
                 size: self.size
                 pos: self.pos
-            
+
         text: root.selection
         size: self.size
         pos_hint: {'center_x': 1}
         padding: dp(2), dp(2)
-        
-    Label: 
+
+    Label:
         id: val_2
         canvas.before:
             Color:
@@ -156,7 +155,7 @@
             Rectangle:
                 size: self.size
                 pos: self.pos
-            
+
         text: root.pair
         size: self.size
         pos_hint: {'center_x': 1}
