@@ -1,6 +1,8 @@
 # ignoring environment
 env
+.vscode
 
 # ignoring cacheing
 *.pyc
+
 __pycache__
