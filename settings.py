@@ -8,5 +8,8 @@ TEMPLATES_DIR =     os.path.join(ROOT_DIR, 'templates')
 
 # List of paths for .kv files
 TEMPLATE_PATHS = [
-    os.path.join(ROOT_DIR, 'templates\main_screen.kv'),
+    os.path.join(ROOT_DIR, 'templates\\main_screen.kv'),
+    os.path.join(ROOT_DIR, 'templates\\film_thickness_screen.kv'),
+    os.path.join(ROOT_DIR, 'templates\\update_data_screen.kv'),
+    os.path.join(ROOT_DIR, 'templates\\volume_needed_screen.kv'),
 ]
