@@ -16,7 +16,7 @@ from kivy.properties import StringProperty
 from kivy.lang.builder import Builder
 """Importing Local Modules"""
 from customwidgets import DropDownMenu
-from bus import loader
+from utils import loader
 
 ###############################################################################
 """Main Screen Widget"""#######################################################

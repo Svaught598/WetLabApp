@@ -24,7 +24,7 @@ from kivy.uix.popup import Popup
 from kivy.factory import Factory
 """importing local modules"""
 from customwidgets import DropDownMenu
-from bus import loader, dumper
+from utils import loader, dumper
 from pprint import pprint
 
 ###############################################################################

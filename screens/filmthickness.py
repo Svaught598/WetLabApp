@@ -14,7 +14,7 @@ from kivy.properties import StringProperty
 from kivy.uix.screenmanager import Screen
 """importing local modules"""
 from customwidgets import DropDownMenu
-from bus import loader
+from utils import loader
 """importing python modules"""
 import os
 

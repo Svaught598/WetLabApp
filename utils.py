@@ -1,4 +1,5 @@
 import sqlite3 as SQL
+import json
 
 
 def querify(method, *args, **kwargs):
@@ -12,3 +13,12 @@ def querify(method, *args, **kwargs):
         db.rollback()
     finally:
         db.close()
+
+
+def loader():
+    with open("data.json") as f:
+        return json.load(f)
+
+
+def dumper(dict):
+    json.dump(dict, open("data.json", "w"))
