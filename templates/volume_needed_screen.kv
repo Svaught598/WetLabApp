@@ -17,12 +17,11 @@
                 size: self.size
                 pos: self.pos
 
-        Button:
-            background_color: (0.3, 0.3, 0.3, .5)
-            size_hint_y: None
-            height: dp(56)
-            text: "Back to Menu"
-            on_press: root.manager.current = "menu"
+        MDToolbar:
+            title: "Volume for Solution"
+            md_bg_color: app.theme_cls.primary_color
+            elevation: 10
+            left_action_items: [['arrow-left', lambda x: app.get_main_screen()]]
 
         BoxLayout:
             canvas:

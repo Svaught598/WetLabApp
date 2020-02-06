@@ -1,0 +1,48 @@
+#:import IconLeftWidget kivymd.uix.list.IconLeftWidget
+#:import images_path kivymd.images_path
+<NavigationItem>
+    theme_text_color: 'Custom'
+    divider: None
+    IconLeftWidget:
+        icon: root.icon
+<ContentNavigationDrawer>
+    BoxLayout:
+        orientation: 'vertical'
+        FloatLayout:
+            size_hint_y: None
+            height: "200dp"
+            canvas:
+                Color:
+                    rgba: app.theme_cls.primary_color
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+            BoxLayout:
+                id: top_box
+                size_hint_y: None
+                height: "200dp"
+                #padding: "10dp"
+                x: root.parent.x
+                pos_hint: {"top": 1}
+                FitImage:
+                    source: f"{images_path}kivymd_alpha.png"
+            MDIconButton:
+                icon: "close"
+                x: root.parent.x + dp(10)
+                pos_hint: {"top": 1}
+                on_release: root.parent.toggle_nav_drawer()
+            MDLabel:
+                markup: True
+                text: "Park Lab Group"
+                #pos_hint: {'center_y': .5}
+                x: root.parent.x + dp(10)
+                y: root.height - top_box.height + dp(10)
+                size_hint_y: None
+                height: self.texture_size[1]
+        ScrollView:
+            pos_hint: {"top": 1}
+            GridLayout:
+                id: box_item
+                cols: 1
+                size_hint_y: None
+                height: self.minimum_height
