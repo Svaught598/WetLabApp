@@ -9,7 +9,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.properties import StringProperty
 from kivy.lang.builder import Builder
 
-from screens import VolumeScreen, UpdateScreen, FilmThicknessScreen
+from views import VolumeScreen, UpdateScreen, FilmThicknessScreen
 from settings import TEMPLATE_PATHS, MAIN_TEMPLATE_PATH
 
 
