@@ -1,33 +1,19 @@
-# -*- coding: utf-8 -*-
-"""
+import os
 
-
-
-
-
-
-"""
-"""importing kivy modules"""
 from kivy.app import App
 from kivy.lang.builder import Builder
 from kivy.properties import StringProperty
 from kivy.uix.screenmanager import Screen
-"""importing local modules"""
+
 from customwidgets import DropDownMenu
 from utils import loader
-"""importing python modules"""
-import os
 
 
-###############################################################################
-"""Screen Manager"""###########################################################
-###############################################################################
 class FilmThicknessScreen(Screen):
     
     """properties bound to dropdown selection"""
     solvs = StringProperty('')
     solts = StringProperty('')
-    
     
     """properties bound to inputs"""
     vol = StringProperty('')
@@ -38,7 +24,6 @@ class FilmThicknessScreen(Screen):
     
     """properties bound to output"""
     thickness = StringProperty('')
-    
     
     def calculate(self):
         if self.verify() == True:
@@ -62,7 +47,6 @@ class FilmThicknessScreen(Screen):
             _, message = self.verify()
             self.thickness = self.error_message(message)
         
-        
     def verify(self, check_density = False):
         
         message = []
@@ -77,7 +61,6 @@ class FilmThicknessScreen(Screen):
             except:
                 message.append("Concentration must be greater than 0\n")
         
-        
         """checking volume field"""
         if self.vol == '':
             message.append("Volume field is empty\n")
@@ -88,20 +71,17 @@ class FilmThicknessScreen(Screen):
             except:
                 pass
         
-        
         """checking density fields"""
         if (self.sden == ''):
             message.append("Solvent density field is empty\n")        
         if (self.mden == ''):
             message.append("Material density field is empty\n")      
         
-        
         """Here we return messages only if False, for use with error_message()"""
         if message == []:
             return True
         else:
             return False, message
-        
         
     def error_message(self, messages):
         err = 'Error:\n'
@@ -110,13 +90,8 @@ class FilmThicknessScreen(Screen):
         return err
     
     
-###############################################################################
-"""Drop-Down Widgets"""########################################################
-###############################################################################
 class DropSolvents(DropDownMenu):
-    
     """Dropdown menu for solvent selection"""
-    
     def __init__(self, **kwargs):
         super(DropSolvents, self).__init__(**kwargs)
         self.types = loader()['Solvents']
@@ -133,10 +108,9 @@ class DropSolvents(DropDownMenu):
     def on_parent(self, instance, parent):
         self.bind(text = self.set_parent_screen)
         
+
 class DropSolutes(DropDownMenu):
-    
     """Dropdown menu for solute selection"""
-    
     def __init__(self, **kwargs):
         super(DropSolutes, self).__init__(**kwargs)
         self.types = loader()['Solutes']
@@ -153,26 +127,19 @@ class DropSolutes(DropDownMenu):
     def on_parent(self, instance, parent):
         self.bind(text = self.set_parent_screen)
         
-###############################################################################
 
-###############################################################################
-"""Main Application Loop"""####################################################
-###############################################################################
 class SolutionApp(App):
     
     def build(self):       
         return FilmThicknessScreen()
     
     def on_stop(self, **kwargs):
-        
         """I was getting an assertion error for back-to-back runs 
         so this method resets the IPython kernel so I don't need to 
         manually reset it"""
-        
         os._exit(00)
         return True
 
 if __name__ == '__main__':
     SolutionApp().run()
     
-###############################################################################

@@ -1,47 +1,24 @@
-# -*- coding: utf-8 -*-
-"""
-
-Volume Needed Screen:
-    
-    - This file contains all necessary information for calculating the 
-    volume needed to make a solution matching given criteria
-    
-"""
-"""importing kivy modules"""
 from kivy.uix.screenmanager import Screen
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
 from kivy.properties import StringProperty
 from kivy.lang.builder import Builder
-"""Importing Local Modules"""
+
 from customwidgets import DropDownMenu
 from utils import loader
 
-###############################################################################
-"""Main Screen Widget"""#######################################################
-###############################################################################
+
 class VolumeScreen(Screen):
-    
-    """properties bound to dropdown selection"""
     types = StringProperty('')
     solvs = StringProperty('')
     solts = StringProperty('')
-    
-    
-    """properties bound to inputs"""
     mass = StringProperty('')
     conc = StringProperty('')
     dens = StringProperty('')
-    
-    
-    """properties bound to calculation result"""
     volume = StringProperty('')
     
-    
-####"""Calculation Methods"""##################################################
     def calculate(self):
-        
         """checks dropdown menu selection to call 
         appropriate calculation function"""
         print(self.conc)
@@ -51,20 +28,14 @@ class VolumeScreen(Screen):
             else: 
                 _, message = self.verify(check_density = True)
                 self.volume = self.error_message(message)
-                
-                
-                
         elif self.types == '% Wt/V':
             if self.verify() == True:
                 self.volume = self.calculate_wtv()
             else: 
                 _, message = self.verify()
                 self.volume = self.error_message(message)
-            
         else: 
             self.volume = "Type of solution not specified"
-
-
 
     def calculate_wtwt(self):
         conc = float(self.conc)
@@ -72,19 +43,13 @@ class VolumeScreen(Screen):
         sdens= float(self.dens)
         return str(round(((1 - conc) * mass)/(conc * sdens), 3)) + ' ml'            
             
-    
-    
     def calculate_wtv(self):
         conc = float(self.conc)
         mass = float(self.mass)
         return str(round((mass/conc), 3))
         
-    
-
     def verify(self, check_density = False):
-        
         message = []
-        
         """checking concentration field"""
         if self.conc == '':
             message.append("Concentration field is empty\n")
@@ -94,8 +59,7 @@ class VolumeScreen(Screen):
                     message.append("Concentration must be less than 1\n")
             except:
                 message.append("Concentration must be greater than 0\n")
-        
-        
+    
         """checking mass field"""
         if self.mass == '':
             message.append("Mass field is empty\n")
@@ -106,11 +70,9 @@ class VolumeScreen(Screen):
             except:
                 pass
         
-        
         """checking density field"""
         if (self.dens == '' and check_density == True):
             message.append("Density field is empty\n")        
-        
         
         """Here we return messages only if False, for use with error_message()"""
         if message == []:
@@ -118,23 +80,15 @@ class VolumeScreen(Screen):
         else:
             return False, message
         
-        
     def error_message(self, messages):
         err = 'Error:\n'
         for message in messages:
             err += message 
         return err
         
-    
-###############################################################################
-"""Drop-Down Widgets"""########################################################
-###############################################################################
-
 
 class DropTypes(DropDownMenu):
-    
     """Dropdown menu for solution type selection"""
-    
     def __init__(self, **kwargs):
         super(DropTypes, self).__init__(**kwargs)
         self.types = loader()['Types']
@@ -148,10 +102,9 @@ class DropTypes(DropDownMenu):
     def on_parent(self, instance, parent):
         self.bind(text = self.set_parent_screen)
 
+
 class DropSolvents(DropDownMenu):
-    
     """Dropdown menu for solvent selection"""
-    
     def __init__(self, **kwargs):
         super(DropSolvents, self).__init__(**kwargs)
         self.types = loader()['Solvents']
@@ -168,10 +121,9 @@ class DropSolvents(DropDownMenu):
     def on_parent(self, instance, parent):
         self.bind(text = self.set_parent_screen)
         
+
 class DropSolutes(DropDownMenu):
-    
     """Dropdown menu for solute selection"""
-    
     def __init__(self, **kwargs):
         super(DropSolutes, self).__init__(**kwargs)
         self.types = loader()['Solutes']
@@ -186,5 +138,4 @@ class DropSolutes(DropDownMenu):
         self.bind(text = self.set_parent_screen)
         
         
-###############################################################################
 
