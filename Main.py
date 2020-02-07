@@ -10,6 +10,7 @@ from kivy.properties import StringProperty
 from kivy.lang.builder import Builder
 
 from views import VolumeScreen, UpdateScreen, FilmThicknessScreen
+from viewmodels import VolumeViewModel, UpdateViewModel, FilmViewModel
 from settings import TEMPLATE_PATHS, MAIN_TEMPLATE_PATH
 
 
@@ -29,7 +30,8 @@ class SolutionApp(MDApp):
         return Builder.load_file(MAIN_TEMPLATE_PATH)
 
     def on_start(self):
-        self.add_screens()
+        self.add_views()
+        self.add_view_models()
         context = {
             'Home': 'home-circle-outline',
             'Settings': 'settings-outline',
@@ -45,13 +47,18 @@ class SolutionApp(MDApp):
                 )
             )
 
-    def add_screens(self):
+    def add_views(self):
         self.screen1 = VolumeScreen(name = 'volumeneeded')
         self.root.ids.screens.add_widget(self.screen1)
         self.screen2 = UpdateScreen(name = 'update')
         self.root.ids.screens.add_widget(self.screen2)
         self.screen3 = FilmThicknessScreen(name = 'thickness')
         self.root.ids.screens.add_widget(self.screen3)
+
+    def add_view_models(self):
+        self.volume_view_model = VolumeViewModel()
+        self.update_view_model = UpdateViewModel()
+        self.film_view_model = FilmViewModel()
 
     def get_main_screen(self):
         self.root.ids.screens.current = 'menu'
