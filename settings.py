@@ -10,9 +10,11 @@ TEMPLATES_DIR = os.path.join(ROOT_DIR, 'templates')
 TEMPLATE_PATHS = [
     os.path.join(ROOT_DIR, 'templates\\film_thickness_screen.kv'),
     os.path.join(ROOT_DIR, 'templates\\update_data_screen.kv'),
-    os.path.join(ROOT_DIR, 'templates\\volume_needed_screen.kv'),
     os.path.join(ROOT_DIR, 'templates\\navigation_drawer.kv'),
+    os.path.join(ROOT_DIR, 'templates\\volume_view.kv')
 ]
 
 # Main template built with by app.build() method
 MAIN_TEMPLATE_PATH = os.path.join(ROOT_DIR, 'templates\\main.kv')
+
+DEVELOPEMENT_KV = os.path.join(ROOT_DIR, 'templates\\test.kv')

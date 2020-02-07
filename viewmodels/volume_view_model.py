@@ -1,6 +1,6 @@
 from kivy.event import EventDispatcher
 from kivy.clock import Clock
-from kivy.properties import StringProperty
+from kivy.properties import StringProperty, ListProperty
 
 from models.solvent import Solvent
 
@@ -17,6 +17,8 @@ class VolumeViewModel(EventDispatcher):
     __events__ = (
         ''
     )
+
+    solvents = ListProperty([])
 
     def calculate(self, context):
         '''calculates volume needed based on view events
@@ -35,6 +37,7 @@ class VolumeViewModel(EventDispatcher):
         
     def on_solution_type(self, solution_type):
         '''watches for changes in solutions dropdown'''
+
         pass
 
     def on_solvent(self, solvent):

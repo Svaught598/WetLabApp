@@ -31,6 +31,7 @@ class SolutionApp(MDApp):
 
     def on_start(self):
         self.add_views()
+        self.load_changes()
         self.add_view_models()
         context = {
             'Home': 'home-circle-outline',
@@ -63,6 +64,29 @@ class SolutionApp(MDApp):
     def get_main_screen(self):
         self.root.ids.screens.current = 'menu'
         return 
+
+    def load_changes(self):
+        self.SOLUTION_TYPES = [
+            {'viewclass': 'MDMenuItem',
+            'text': '% Wt/Wt',
+            'callback': self.screen1.on_solution_types},
+            {'viewclass': 'MDMenuItem',
+            'text': '% Wt/Vol',
+            'callback': self.screen1.on_solution_types}]
+        self.SOLVENTS = [
+            {'viewclass': 'MDMenuItem',
+            'text': 'Chloroform',
+            'callback': self.screen1.on_solvent},
+            {'viewclass': 'MDMenuItem',
+            'text': 'Toluene',
+            'callback': self.screen1.on_solvent}]
+        self.MATERIALS = [
+            {'viewclass': 'MDMenuItem',
+            'text': 'MEH-PPV',
+            'callback': self.screen1.on_material},
+            {'viewclass': 'MDMenuItem',
+            'text': 'BDMO-PPV',
+            'callback': self.screen1.on_material}]
     
 if __name__ == '__main__':
     SolutionApp().run()
