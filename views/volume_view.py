@@ -2,8 +2,10 @@ from kivy.uix.screenmanager import Screen
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.textinput import TextInput
+from kivy.app import App
 from kivy.properties import StringProperty
 from kivy.lang.builder import Builder
+from kivy.clock import Clock
 
 from customwidgets import DropDownMenu
 from utils import loader
@@ -17,7 +19,22 @@ class VolumeScreen(Screen):
     conc = StringProperty('')
     dens = StringProperty('')
     volume = StringProperty('')
-    
+
+    def __init__(self, **kwargs):
+        super(VolumeScreen, self).__init__(**kwargs)
+        Clock.schedule_once(lambda x: self.prepare(), 0)
+
+    def prepare(self):
+        app = App.get_running_app()
+        self.view_model = app.volume_view_model
+        self.view_model.bind(
+            volume = lambda instance, volume: self.display_volume(volume)
+        )
+
+    def display_volume(self, volume):
+        app = App.get_running_app()
+        app.root.ids.volume.text = volume
+        
     def calculate(self):
         """checks dropdown menu selection to call 
         appropriate calculation function"""
