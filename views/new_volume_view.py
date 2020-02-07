@@ -15,13 +15,7 @@ from kivymd import factory_registers
 
 
 class MDMenuItem(MDRectangleFlatButton):
-
-    def on_press(self):
-        app = MDApp.get_running_app()
-        print(self.text)
-        app.root.ids.solution_types.text = self.text
-        print(app.root.ids.solution_types.text)
-        self.parent.close()
+    pass
         
 
 class VolumeScreen(Screen):
@@ -36,9 +30,18 @@ class VolumeScreen(Screen):
         self.ids.material.text = text
 
     def on_mass(self, text):
-        # TODO: write
         pass
 
     def on_concentration(self, text):
         pass
+
+    def calculate_button_pressed(self):
+        app = MDApp.get_running_app()
+        app.volume_view_model.calculate(
+            self.solution_types.text,
+            self.solvent.text,
+            self.material.text,
+            self.mass.text,
+            self.concentration.text
+        )
 
