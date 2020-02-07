@@ -85,6 +85,27 @@ class VolumeScreen(Screen):
             volume = lambda instance, volume: self.display_volume(volume)
         )
 
+"""
+class VolumeScreen(Screen):
+    types = StringProperty('')
+    solvs = StringProperty('')
+    solts = StringProperty('')
+    mass = StringProperty('')
+    conc = StringProperty('')
+    dens = StringProperty('')
+    volume = StringProperty('')
+
+    def __init__(self, **kwargs):
+        super(VolumeScreen, self).__init__(**kwargs)
+        Clock.schedule_once(lambda x: self.prepare(), 0)
+
+    def prepare(self):
+        app = App.get_running_app()
+        self.view_model = app.volume_view_model
+        self.view_model.bind(
+            volume = lambda instance, volume: self.display_volume(volume)
+        )
+
     def display_volume(self, volume):
         app = App.get_running_app()
         app.root.ids.volume.text = volume
