@@ -1,6 +1,6 @@
 from kivy.event import EventDispatcher
 from kivy.clock import Clock
-from kivy.properties import StringProperty, ListProperty
+from kivy.properties import StringProperty, ListProperty, NumericProperty
 
 from models.solvent import Solvent
 
@@ -19,12 +19,15 @@ class VolumeViewModel(EventDispatcher):
     )
 
     solvents = ListProperty([])
+    volume_needed = NumericProperty()
+    error = StringProperty()
 
     def calculate(self, context):
         '''calculates volume needed based on view events
         
         context is a dict of key-value pairs
         '''
+        return
         if self.verify(context):
             if context["type_concentration"] == '%Wt/Wt':
                 # TODO write function to do this
@@ -35,23 +38,4 @@ class VolumeViewModel(EventDispatcher):
         else:
             self.error_check_fields() # TODO write this function
         
-    def on_solution_type(self, solution_type):
-        '''watches for changes in solutions dropdown'''
-
-        pass
-
-    def on_solvent(self, solvent):
-        '''watches for changes in solvents dropdown'''
-        pass
-
-    def on_material(self, material):
-        '''watches for changes in materials dropdown'''
-        pass
-
-    def on_concentration(self, concentration):
-        '''watches for changes in concentration input'''
-        pass
-
-    def on_mass(self, mass):
-        '''watches for changes in mass input'''
-        pass
+    
