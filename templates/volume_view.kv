@@ -1,11 +1,7 @@
+#:import MDDropdownMenu kivymd.uix.menu.MDDropdownMenu
+#:import MDRaisedButton kivymd.uix.button.MDRaisedButton
+
 <VolumeScreen>:
-    types: types.text
-    solvs: solvs.text
-    solts: solts.text
-    conc: conc.text
-    mass: mass.text
-
-
     BoxLayout:
         anchor_x: 'center'
         anchor_y: 'top'
@@ -22,7 +18,7 @@
             md_bg_color: app.theme_cls.primary_color
             elevation: 10
             left_action_items: [['arrow-left', lambda x: app.get_main_screen()]]
-
+        
         BoxLayout:
             canvas:
                 Color:
@@ -36,13 +32,21 @@
             padding: dp(8)
             spacing: dp(16)
 
-            DropTypes:
-                id: types
-            DropSolvents:
-                id: solvs
-            DropSolutes:
-                id: solts
-
+            MDRectangleFlatButton:
+                id: solution_types
+                text: 'Solution Type'
+                size: 3 * dp(48), dp(48)
+                on_release: MDDropdownMenu(items=app.SOLUTION_TYPES, width_mult=4).open(self)
+            MDRectangleFlatButton:
+                id: solvent
+                text: 'Solution Type'
+                size: 3 * dp(48), dp(48)
+                on_release: MDDropdownMenu(items=app.SOLVENTS, width_mult=4).open(self)
+            MDRectangleFlatButton:
+                id: material
+                text: 'Solution Type'
+                size: 3 * dp(48), dp(48)
+                on_release: MDDropdownMenu(items=app.MATERIALS, width_mult=4).open(self)
         BoxLayout:
             canvas:
                 Color:
@@ -57,7 +61,7 @@
             spacing: dp(16)
 
             TextInput:
-                id: conc
+                id: concentration
 
                 hint_text: "Concentration"
                 input_type: "number"
@@ -71,17 +75,4 @@
                 input_type: "number"
                 input_filter: "float"
                 padding: dp(10), dp(10), 0, 0
-
-            Label:
-                dens: "Density: " + root.dens + " g/ml"
-                text: "No solvent selected" if root.dens == '' else self.dens
-
-        BoxLayout:
-            anchor_x: 'center'
-            anchor_y: 'top'
-            Button:
-                text: 'Calculate volume needed'
-                on_press: str(root.calculate())
-            Label:
-                id: volume
-                text: str(root.volume)
+        Widget:
