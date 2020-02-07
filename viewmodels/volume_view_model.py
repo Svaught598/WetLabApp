@@ -23,19 +23,47 @@ class VolumeViewModel(EventDispatcher):
     error = StringProperty()
 
     def calculate(self, context):
-        '''calculates volume needed based on view events
-        
-        context is a dict of key-value pairs
-        '''
-        return
-        if self.verify(context):
-            if context["type_concentration"] == '%Wt/Wt':
-                # TODO write function to do this
-                return volume_needed
-            elif context["type_concentration"] == '%Wt/V':
-                # TODO write function to do this
-                return volume_needed
+        if self.verify_fields(context):
+            if context["solution_types"] == '%Wt/Wt':
+                concentration = float(context['concentration'])
+                mass = float(context['mass'])
+                density = float(context['density'])
+                self.volume_needed = str(round(((1 - concentration) * mass)/(concentration * density), 3)) + ' ml'   
+
+            elif context["solution_types"] == '%Wt/V':
+                concentration = float(context['concentration'])
+                mass = float(context['mass'])
+                self.volume_needed = str(round((mass/concentration), 3))
         else:
-            self.error_check_fields() # TODO write this function
+            return
+
+    def verify_fields(self, context):
+
+        error_message = ''
         
-    
+        # must check for every situation
+        if context["solution_types"] == 'Solution Type':
+            error_message.join("Choose a Solution Type\n")
+        if context["solvent"] == 'Solvent':
+            error_message.join('Choose a Solvent\n')
+        if context["material"] == 'Material':
+            error_message.join('Choose a Material\n')
+
+        # TODO: add checks for empty inputs
+
+        # All other verifications depend on previous selections
+        if float(context["concentration"]) > 1:
+            error_message.join("Concentration must be less than 1\n")
+        if float(context["concentration"]) < 0:
+            error_message.join("Concentration must be greater than 0\n")
+        if float(context["mass"]) < 0:
+            error_message.join("Mass must be greater than 0\n")
+
+        # TODO: Add special verifications for each option
+
+        self.error = error_message
+
+        if error_message == '':
+            return True
+        else:
+            return False

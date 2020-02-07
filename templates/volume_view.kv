@@ -39,12 +39,12 @@
                 on_release: MDDropdownMenu(items=app.SOLUTION_TYPES, width_mult=4).open(self)
             MDRectangleFlatButton:
                 id: solvent
-                text: 'Solution Type'
+                text: 'Solvent'
                 size: 3 * dp(48), dp(48)
                 on_release: MDDropdownMenu(items=app.SOLVENTS, width_mult=4).open(self)
             MDRectangleFlatButton:
                 id: material
-                text: 'Solution Type'
+                text: 'Material'
                 size: 3 * dp(48), dp(48)
                 on_release: MDDropdownMenu(items=app.MATERIALS, width_mult=4).open(self)
         BoxLayout:
@@ -75,4 +75,17 @@
                 input_type: "number"
                 input_filter: "float"
                 padding: dp(10), dp(10), 0, 0
-        Widget:
+            Label:
+                id: density
+
+                test: 'Density goes here'
+
+        BoxLayout:
+            anchor_x: 'center'
+            anchor_y: 'top'
+            Button:
+                text: 'Calculate volume needed'
+                on_press: root.calculate_button_pressed()
+            Label:
+                id: volume_needed
+                text: ''

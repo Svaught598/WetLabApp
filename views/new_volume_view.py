@@ -20,6 +20,17 @@ class MDMenuItem(MDRectangleFlatButton):
 
 class VolumeScreen(Screen):
 
+    def __init__(self, *args, **kwargs):
+        super(VolumeScreen, self).__init__(*args, **kwargs)
+        self.prepare()
+
+    def prepare(self):
+        app = MDApp.get_running_app()
+        app.volume_view_model.bind(
+            volume_needed = lambda x, y: self.show_volume_needed(y),
+            error = lambda x, y: self.show_error_message(y)
+        )
+
     def on_solution_types(self, text):
         self.ids.solution_types.text = text
 
@@ -30,26 +41,28 @@ class VolumeScreen(Screen):
         self.ids.material.text = text
 
     def on_mass(self, text):
+        # text set automatically for input widgets
         pass
 
     def on_concentration(self, text):
+        # text set automatically for input widgets
         pass
 
     def calculate_button_pressed(self):
         app = MDApp.get_running_app()
         app.volume_view_model.calculate({
-            'solution_types': self.solution_types.text,
-            'solvent': self.solvent.text,
-            'material': self.material.text,
-            'mass': self.mass.text,
-            'concentration': self.concentration.text
+            'solution_types': self.ids.solution_types.text,
+            'solvent': self.ids.solvent.text,
+            'material': self.ids.material.text,
+            'mass': self.ids.mass.text,
+            'concentration': self.ids.concentration.text
         })
 
-    def show_error(self):
-        pass
+    def show_error_message(self, error_message):
+        self.ids.volume_needed.text = error_message
 
-    def show_concentration(self):
-        pass
+    def show_volume_needed(self, volume_needed):
+        self.ids.volume_needed.text = error_message
 
 """
 class VolumeScreen(Screen):
