@@ -30,9 +30,9 @@ class SolutionApp(MDApp):
         return Builder.load_file(MAIN_TEMPLATE_PATH)
 
     def on_start(self):
+        self.add_view_models()
         self.add_views()
         self.load_changes()
-        self.add_view_models()
         context = {
             'Home': 'home-circle-outline',
             'Settings': 'settings-outline',
