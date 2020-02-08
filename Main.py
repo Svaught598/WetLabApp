@@ -9,7 +9,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.properties import StringProperty
 from kivy.lang.builder import Builder
 
-from views import VolumeScreen, UpdateScreen, FilmThicknessScreen
+from views import VolumeScreen, UpdateScreen, FilmScreen
 from viewmodels import VolumeViewModel, UpdateViewModel, FilmViewModel
 from settings import TEMPLATE_PATHS, MAIN_TEMPLATE_PATH
 
@@ -53,7 +53,7 @@ class SolutionApp(MDApp):
         self.root.ids.screens.add_widget(self.screen1)
         self.screen2 = UpdateScreen(name = 'update')
         self.root.ids.screens.add_widget(self.screen2)
-        self.screen3 = FilmThicknessScreen(name = 'thickness')
+        self.screen3 = FilmScreen(name = 'thickness')
         self.root.ids.screens.add_widget(self.screen3)
 
     def add_view_models(self):
