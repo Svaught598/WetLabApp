@@ -35,7 +35,16 @@ class VolumeViewModel(EventDispatcher):
                 mass = float(context['mass'])
                 self.volume_needed = str(round((mass/concentration), 3)) + 'ml'
         else:
+            # TODO: rearrange logic so that solution type is called before
+            # verify method. This will ensure that the verify method only 
+            # checks fields needed for that specific formula. Just create 
+            # a new verify method that takes the solution type as an argument
+            # and uses it to direct logic flow accordingly
             return
+            # TODO: This return is goin to hide some errors in the 
+            # calculation blocks above. Fix this somehow.
+            # It may sort itself out with the implementation of 
+            # the above TODO
 
     def verify_fields(self, context):
 

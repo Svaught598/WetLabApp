@@ -33,6 +33,9 @@ class VolumeScreen(Screen):
 
     def on_solution_types(self, text):
         self.ids.solution_types.text = text
+        # TODO: add events that change widgets if solution type
+        # doesn't need them. e.g. hide material dropdown if 
+        # solution type is '% Wt/Vol'
 
     def on_solvent(self, text):
         self.ids.solvent.text = text
