@@ -56,7 +56,7 @@ class VolumeScreen(Screen):
             'material': self.ids.material.text,
             'mass': self.ids.mass.text,
             'concentration': self.ids.concentration.text,
-            'density': self.density.text,
+            'density': self.ids.density.text,
         })
 
     def show_error_message(self, error_message):
