@@ -77,15 +77,14 @@
                 padding: dp(10), dp(10), 0, 0
             Label:
                 id: density
-
-                test: 'Density goes here'
+                text: '1'
 
         BoxLayout:
             anchor_x: 'center'
             anchor_y: 'top'
             Button:
                 text: 'Calculate volume needed'
-                on_press: root.calculate_button_pressed()
+                on_release: root.calculate_button_pressed()
             Label:
                 id: volume_needed
                 text: ''
