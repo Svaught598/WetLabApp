@@ -1,8 +1,6 @@
 from kivy.event import EventDispatcher
 from kivy.clock import Clock
-from kivy.properties import StringProperty, ListProperty, NumericProperty
-
-from models.solvent import Solvent
+from kivy.properties import StringProperty, ListProperty
 
 
 class VolumeViewModel(EventDispatcher):
