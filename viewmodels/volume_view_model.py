@@ -4,13 +4,6 @@ from kivy.properties import StringProperty, ListProperty
 
 
 class VolumeViewModel(EventDispatcher):
-    type_concentration = StringProperty('')
-    solvent = StringProperty('')
-    material = StringProperty('')
-    mass = StringProperty('')
-    concentration = StringProperty('')
-    density = StringProperty('')
-    volume = StringProperty('')
 
     __events__ = (
         ''
