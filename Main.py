@@ -45,6 +45,7 @@ class SolutionApp(MDApp):
                 NavigationItem(
                 text=items[0],
                 icon=items[1],
+                on_press= lambda x: self.get_main_screen()
                 )
             )
 
