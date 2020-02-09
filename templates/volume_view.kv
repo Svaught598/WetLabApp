@@ -32,21 +32,19 @@
             padding: dp(8)
             spacing: dp(16)
 
+            Label: 
+                text: 'Concentration:'
+            TextInput:
+                id: concentration
+                hint_text: "Concentration"
+                input_type: "number"
+                input_filter: "float"
+                padding: dp(10), dp(10), 0, 0
             MDRectangleFlatButton:
                 id: solution_types
                 text: 'Solution Type'
                 size: 3 * dp(48), dp(48)
                 on_release: MDDropdownMenu(items=app.SOLUTION_TYPES, width_mult=4).open(self)
-            MDRectangleFlatButton:
-                id: solvent
-                text: 'Solvent'
-                size: 3 * dp(48), dp(48)
-                on_release: MDDropdownMenu(items=app.SOLVENTS, width_mult=4).open(self)
-            MDRectangleFlatButton:
-                id: material
-                text: 'Material'
-                size: 3 * dp(48), dp(48)
-                on_release: MDDropdownMenu(items=app.MATERIALS, width_mult=4).open(self)
         BoxLayout:
             canvas:
                 Color:
@@ -60,14 +58,8 @@
             padding: dp(8)
             spacing: dp(16)
 
-            TextInput:
-                id: concentration
-
-                hint_text: "Concentration"
-                input_type: "number"
-                input_filter: "float"
-                padding: dp(10), dp(10), 0, 0
-
+            Label:
+                text: 'Mass:'
             TextInput:
                 id: mass
 
@@ -75,10 +67,33 @@
                 input_type: "number"
                 input_filter: "float"
                 padding: dp(10), dp(10), 0, 0
+            Label: 
+                text: 'dropdown goes here for mass units'
+        BoxLayout:
+            canvas:
+                Color:
+                    rgba: 0.3, 0.3, 0.3, 1
+                Rectangle:
+                    size: self.size
+                    pos: self.pos
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: dp(56)
+            padding: dp(8)
+            spacing: dp(16)
+            MDRectangleFlatButton:
+                id: solvent
+                text: 'Solvent'
+                size: 3 * dp(48), dp(48)
+                on_release: MDDropdownMenu(items=app.SOLVENTS, width_mult=4).open(self)
+            MDRectangleFlatButton:
+                id: material
+                text: 'Material'
+                size: 3 * dp(48), dp(48)
+                on_release: MDDropdownMenu(items=app.MATERIALS, width_mult=4).open(self)
             Label:
                 id: density
                 text: '1'
-
         BoxLayout:
             anchor_x: 'center'
             anchor_y: 'top'
