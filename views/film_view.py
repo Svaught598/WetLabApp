@@ -47,7 +47,7 @@ class FilmScreen(Screen):
 
     def calculate_button_pressed(self):
         app = MDApp.get_running_app()
-        app.volume_view_model.calculate({
+        app.film_view_model.calculate({
             'solvent': self.ids.solvent.text,
             'material': self.ids.material.text,
             'mass': self.ids.mass.text,
