@@ -8,7 +8,7 @@ class Solvent(BaseModel):
     name = CharField(unique = True)
     density = CharField()
     formula = CharField()
-    polarity = CharFiel()
+    polarity = CharField()
 
     def __unicode__(self):
         return str(name)
