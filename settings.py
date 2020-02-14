@@ -17,4 +17,7 @@ TEMPLATE_PATHS = [
 # Main template built with by app.build() method
 MAIN_TEMPLATE_PATH = os.path.join(ROOT_DIR, 'templates\\main.kv')
 
+# Database Settings
+DATABASE = 'db.sqlite3'
+
 DEVELOPEMENT_KV = os.path.join(ROOT_DIR, 'templates\\test.kv')
