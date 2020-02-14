@@ -57,7 +57,6 @@ class SolutionApp(MDApp):
             ['Exit', 'exit-to-app', lambda x: self.exit_app()]
         ]
         for items in context:
-            print((lambda x: items[2])(1))
             self.root.ids.content_drawer.ids.box_item.add_widget(
                 NavigationItem(
                 text=items[0],
