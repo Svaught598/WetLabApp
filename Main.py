@@ -23,7 +23,14 @@ class NavigationItem(OneLineAvatarListItem):
 
 
 class SolutionApp(MDApp):
-    
+    '''When app the run() method is called, the following 
+        methods are called in order:
+        
+        1. build()
+        2. add_view_models()
+        3. add_views()
+        4. add_nav_drawer()
+    '''
     def build(self):
         for path in TEMPLATE_PATHS:
             Builder.load_file(path)
