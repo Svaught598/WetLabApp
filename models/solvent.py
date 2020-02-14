@@ -1,29 +1,13 @@
-import sqlite3 as SQL
-#from utils import querify
+from peewee import *
+from kivy.properties import ListProperty
 
-class Solvent(object):
-    '''Model describing solvent
-    
-    kwargs:
-        - name
-        - density
-        - chemical formula
-        - relative polarity
-    '''
-    def __init__(self, *args, **kwargs):
-        for attribute, value in kwargs.items():
-            setattr(self, attribute, value)
+class Solvent(Model):
+    '''Peewee Model describing solvent'''
+    solventID = IntegerField(primary_key = True)
+    name = CharField()
+    density = CharField()
+    formula = CharField()
+    polarity = CharFiel()
 
-    #@querify
-    def save(self):
-        query = "INSERT INTO Solvents (name, density, formula, polarity) VALUES(?,?,?,?);"
-        info = (self.name, self.density, self.formula, self.polarity,)
-        return query, info
-        
-    #@querify
-    def delete(self):
-        query = "DELETE FROM Solvents WHERE name=?;"
-        info = (self.name,)
-        return query, info
-
-    
+    class Meta:
+        database = SqliteDatabase('db.sqlite3')
