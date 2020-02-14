@@ -50,36 +50,36 @@ class SolutionApp(MDApp):
 
     def add_nav_drawer(self):
         context = [
-            ['Home', 'home-circle-outline', self.get_main_screen()],
-            ['Settings', 'settings-outline', self.get_settings_screen()],
-            ['About', 'lambda', self.get_about_screen()],
-            ['Developing', 'keyboard', self.get_developing_screen()],
-            ['Exit', 'exit-to-app', self.exit_app()]
+            ['Home', 'home-circle-outline', lambda x: self.get_main_screen()],
+            ['Settings', 'settings-outline', lambda x:self.get_settings_screen()],
+            ['About', 'lambda', lambda x: self.get_about_screen()],
+            ['Developing', 'keyboard', lambda x: self.get_developing_screen()],
+            ['Exit', 'exit-to-app', lambda x: self.exit_app()]
         ]
         for items in context:
-            print(items[2])
+            print((lambda x: items[2])(1))
             self.root.ids.content_drawer.ids.box_item.add_widget(
                 NavigationItem(
                 text=items[0],
                 icon=items[1],
-                on_press= lambda x: items[2]))
+                on_press= items[2]))
         return 
 
     def get_main_screen(self):
         self.root.ids.screens.current = 'menu'
-        return 
+        return 'menu'
 
     def get_settings_screen(self):
-        pass
+        return 'settings'
 
     def get_about_screen(self):
-        pass
+        return 'about'
 
     def get_developing_screen(self):
-        pass
+        return 'development'
 
     def exit_app(self):
-        pass
+        return 'exit'
 
     def load_changes(self):
         self.SOLUTION_TYPES = [
