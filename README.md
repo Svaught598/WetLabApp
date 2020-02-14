@@ -1,15 +1,5 @@
-# WetLabApp
+## WetLabApp
 
-This app is made with the intention of speeding up lab work by creating a set of simple calculation
-tools that can be easily navigated and understood. 
+Using Kivy & KivyMD, this app is being designed with the intention of speeding up lab work by creating a set of simple calculation
+tools that can be easily navigated and understood. My research in Materials Science require that I perform tedious approximations for solution concentration, film thickness, inter-particle spacing, etc. The purpose of this app is to speed experimental work with quick estimations. At the time of writing, the project is only partially finished.
 
-### Current Features
-- Navigation menu
-- Solution calculator
-- Ability to add/delete/save solvent & material information
-- Thickness approximation of films for dropcast
-
-### Future Features
-- Thickness approximation of films for different casting techniques
-- approximation of other quantities (parts per ml, solute/solvent part ratios, etc.)
-- ability to update data json files with new material informations
