@@ -9,7 +9,6 @@ from kivymd.app import MDApp
 
 from models.solvent import Solvent
 
-from pprint import pprint
 
 class UpdateScreen(Screen):
     
@@ -38,7 +37,7 @@ class UpdateScreen(Screen):
         for tab in self.ids.update_tabs.ids.scrollview.children[0].children:
             if tab.state == 'down':
                 self.manager.current = tab.text
-                
+
 
 class NewSolventScreen(Screen):
 
