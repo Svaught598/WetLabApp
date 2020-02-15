@@ -19,11 +19,13 @@ class UpdateScreen(Screen):
         Clock.schedule_once(lambda x: self.prepare(), 0)
     
     def prepare(self):
+        # Adding tabs to screen
         tab = SolventTab(text = 'Solvents')
         self.ids.update_tabs.add_widget(tab)
         tab = MaterialTab(text = 'Materials')
         self.ids.update_tabs.add_widget(tab)
 
+        # Adding Subscreens to screenmanager
         screen = NewSolventScreen(name = 'Solvents')
         self.manager.add_widget(screen)
         screen = NewMaterialScreen(name = 'Materials')
@@ -37,6 +39,15 @@ class UpdateScreen(Screen):
         for tab in self.ids.update_tabs.ids.scrollview.children[0].children:
             if tab.state == 'down':
                 self.manager.current = tab.text
+
+    def on_exit(self):
+        for screen in self.manager.children:
+            if screen.name == 'Solvents':
+                self.manager.remove_widget(screen)
+            if screen.name == 'Materials':
+                self.manager.remove_widget(screen)
+        app = MDApp.get_running_app()
+        app.get_main_screen()
 
 
 class NewSolventScreen(Screen):
