@@ -38,12 +38,7 @@ class UpdateScreen(Screen):
         for tab in self.ids.update_tabs.ids.scrollview.children[0].children:
             if tab.state == 'down':
                 self.manager.current = tab.text
-            pprint(tab.text)
-            pprint(tab.state)
-        # TODO: Figure out which tab is active and this function 
-        # redirects the screen manager to the appropriate 
-        # 'NewWhateverScreen'
-        pass
+                
 
 class NewSolventScreen(Screen):
 
