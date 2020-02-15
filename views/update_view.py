@@ -9,6 +9,7 @@ from kivymd.app import MDApp
 
 from models.solvent import Solvent
 
+from pprint import pprint
 
 class UpdateScreen(Screen):
     
@@ -23,11 +24,22 @@ class UpdateScreen(Screen):
         self.ids.update_tabs.add_widget(tab)
         tab = MaterialTab(text = 'Materials')
         self.ids.update_tabs.add_widget(tab)
+
+        screen = NewSolventScreen(name = 'Solvents')
+        self.manager.add_widget(screen)
+        screen = NewMaterialScreen(name = 'Materials')
+        self.manager.add_widget(screen)
+
         app = MDApp.get_running_app()
         app.update_view_model.bind() 
         # TODO: bind view_model properties to view events above
 
     def plus_button_pressed(self):
+        for tab in self.ids.update_tabs.ids.scrollview.children[0].children:
+            if tab.state == 'down':
+                self.manager.current = tab.text
+            pprint(tab.text)
+            pprint(tab.state)
         # TODO: Figure out which tab is active and this function 
         # redirects the screen manager to the appropriate 
         # 'NewWhateverScreen'
@@ -51,4 +63,5 @@ class SolventTab(BoxLayout, MDTabsBase):
 
 
 class MaterialTab(BoxLayout, MDTabsBase):
+    name = 'new_Materials'
     pass

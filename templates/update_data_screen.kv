@@ -32,11 +32,12 @@
                 size: dp(48), dp(48)
                 opposite_colors: True
                 elevation_normal: 8
-                on_release: lambda x: root.plus_button_pressed()
+                on_release: root.plus_button_pressed()
 
             Widget:
 
 <SolventTab>
+    id: solvent
     FloatLayout:
         MDLabel:
             text: 'Solvent'
@@ -45,6 +46,7 @@
             font_style: 'H6'
 
 <MaterialTab>
+    id: materi
     FloatLayout:
         MDLabel:
             text: 'Materials'
