@@ -1,26 +1,12 @@
 <FilmScreen>
     BoxLayout:
-        anchor_x: 'center'
-        anchor_y: 'top'
         orientation: 'vertical'
-        canvas.before:
-            Color:
-                rgba: 0.3, 0.3, 0.3, 1
-            Rectangle:
-                size: self.size
-                pos: self.pos
         MDToolbar:
-            title: "Volume for Solution"
+            title: "Film Thickness"
             md_bg_color: app.theme_cls.primary_color
             elevation: 10
             left_action_items: [['arrow-left', lambda x: app.get_main_screen()]]
         BoxLayout:
-            canvas:
-                Color:
-                    rgba: 0.3, 0.3, 0.3, 1
-                Rectangle:
-                    size: self.size
-                    pos: self.pos
             orientation: 'horizontal'
             size_hint_y: None
             height: dp(56)
@@ -37,12 +23,6 @@
                 size: 3 * dp(48), dp(48)
                 on_release: MDDropdownMenu(items=app.MATERIALS, width_mult=4).open(self)
         BoxLayout:
-            canvas:
-                Color:
-                    rgba: 0.3, 0.3, 0.3, 1
-                Rectangle:
-                    size: self.size
-                    pos: self.pos
             orientation: 'horizontal'
             size_hint_y: None
             height: dp(56)
@@ -66,12 +46,6 @@
                 padding: dp(10), dp(10), 0, 0
 
         BoxLayout:
-            canvas:
-                Color:
-                    rgba: 0.3, 0.3, 0.3, 1
-                Rectangle:
-                    size: self.size
-                    pos: self.pos
             orientation: 'horizontal'
             size_hint_y: None
             height: dp(56)
@@ -86,26 +60,20 @@
                 input_filter: "float"
                 padding: dp(10), dp(10), 0, 0
 
-            Label:
+            MDLabel:
                 text: ''
 
         BoxLayout:
-            canvas:
-                Color:
-                    rgba: 0.3, 0.3, 0.3, 1
-                Rectangle:
-                    size: self.size
-                    pos: self.pos
             orientation: 'horizontal'
             size_hint_y: None
             height: dp(56)
             padding: dp(8)
             spacing: dp(16)
 
-            Label:
+            MDLabel:
                 text: ''
 
-            Label:
+            MDLabel:
                 text: ''
 
         BoxLayout:
@@ -113,6 +81,6 @@
             anchor_y: 'top'
             Button:
                 text: 'Calculate Film Thickness'
-            Label:
+            MDLabel:
                 id: result
                 text: ''

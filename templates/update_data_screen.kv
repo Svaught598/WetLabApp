@@ -1,31 +1,19 @@
 <UpdateScreen>:
     BoxLayout:
-        anchor_x: 'center'
-        anchor_y: 'top'
         orientation: 'vertical'
-        canvas.before:
-            Color:
-                rgba: 0.3, 0.3, 0.3, 1
-            Rectangle:
-                size: self.size
-                pos: self.pos
-
         MDToolbar:
             title: "Update Data"
             md_bg_color: app.theme_cls.primary_color
             elevation: 10
             left_action_items: [['arrow-left', lambda x: root.exit()]]
-
         MDTabs:
             id: update_tabs
-        
         AnchorLayout:
             anchor_x: 'right'
             size_hint_y: None
             height: dp(58)
             spacing: dp(5)
             padding: dp(5)
-
             MDFloatingActionButton:
                 icon: 'plus'
                 size_hint: None, None
@@ -33,7 +21,6 @@
                 opposite_colors: True
                 elevation_normal: 8
                 on_release: root.plus_button_pressed()
-
             Widget:
 
 <SolventViewClass@BoxLayout>:
@@ -45,11 +32,10 @@
         text: root.name
     MDLabel:
         text: root.density
-    MDLabel: 
+    MDLabel:
         text: root.formula
-    MDLabel: 
+    MDLabel:
         text: root.polarity
-        
 <SolventTab>
     id: solvent
     RecycleView:
