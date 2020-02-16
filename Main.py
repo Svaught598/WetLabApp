@@ -9,6 +9,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.properties import StringProperty
 from kivy.lang.builder import Builder
 
+from models import init_db
 from views import VolumeScreen, UpdateScreen, FilmScreen
 from viewmodels import VolumeViewModel, UpdateViewModel, FilmViewModel
 from settings import TEMPLATE_PATHS, MAIN_TEMPLATE_PATH
@@ -111,4 +112,5 @@ class SolutionApp(MDApp):
             'callback': self.screen1.on_material}]
     
 if __name__ == '__main__':
+    init_db()
     SolutionApp().run()
