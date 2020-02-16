@@ -1,6 +1,9 @@
 from kivy.event import EventDispatcher
 from kivy.clock import Clock
-from kivy.properties import StringProperty, ListProperty
+from kivy.properties import (
+    StringProperty, 
+    ListProperty,
+    BooleanProperty)
 
 from models.solvent import Solvent
 
@@ -12,6 +15,8 @@ class UpdateViewModel(EventDispatcher):
     error = StringProperty('')
     solvent_list = ListProperty()
 
+    error_added = BooleanProperty()
+
     def add_solvent(self, context):
         print('solvent data added! ... not really though')
         if self.check_solvent(context):
@@ -21,16 +26,17 @@ class UpdateViewModel(EventDispatcher):
                 formula = context['formula'],
                 polarity = float(context['polarity']))
             solvent.save()
-            print('it saved!')
+            self.error_added = False 
+        self.get_solvents()
 
     def get_solvents(self):
         solvent_list = []
         for record in Solvent.select():
             solvent = {
-                'name': record.name,
-                'density': record.density,
-                'formula': record.formula,
-                'polarity': record.polarity}
+                'name': str(record.name),
+                'density': str(record.density),
+                'formula': str(record.formula),
+                'polarity': str(record.polarity)}
             solvent_list.append(solvent)
         self.solvent_list = solvent_list
             

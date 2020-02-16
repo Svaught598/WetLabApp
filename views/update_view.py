@@ -1,7 +1,7 @@
 from kivy.uix.screenmanager import Screen
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
-from kivy.properties import StringProperty
+from kivy.properties import StringProperty, ListProperty
 from kivy.clock import Clock
 from kivy.metrics import dp
 
@@ -12,13 +12,11 @@ from kivymd.app import MDApp
 
 from models.solvent import Solvent
 
-# class SolventViewClass(Label):
-#     pass
-
 
 class UpdateScreen(Screen):
     
     solvents = StringProperty('')
+    solvent_list = ListProperty(['lsit property'])
 
     def __init__(self, *args, **kwargs):
         super(UpdateScreen, self).__init__(*args, **kwargs)
@@ -46,7 +44,7 @@ class UpdateScreen(Screen):
         app.update_view_model.get_solvents()
 
     def refresh_solvent_rv(self, solvent_list):
-        pass
+        self.solvent_list = solvent_list
 
     def error_popup(self, error):
         screen = self.manager.current_screen
@@ -70,6 +68,21 @@ class UpdateScreen(Screen):
 
 
 class NewSolventScreen(Screen):
+
+    def __init__(self, *args, **kwargs):
+        super(NewSolventScreen, self).__init__(*args, **kwargs)
+        Clock.schedule_once(lambda x: self.prepare(), 0)
+
+    def prepare(self):
+        app = MDApp.get_running_app()
+        app.update_view_model.bind(
+            error_added = lambda x, y: self.error_added(y))
+
+    def error_added(self, error_bool):
+        if error_bool == True:
+            return
+        else:
+            self.back()
 
     def back(self):
         app = MDApp.get_running_app()
@@ -100,7 +113,21 @@ class NewMaterialScreen(Screen):
 
 
 class SolventTab(BoxLayout, MDTabsBase):
-    pass
+    def __init__(self, *args, **kwargs):
+        super(SolventTab, self).__init__(*args, **kwargs)
+        Clock.schedule_once(lambda x: self.prepare(), 0)
+
+    def prepare(self):
+        app = MDApp.get_running_app()
+        update_screen = app.root.ids.screens.get_screen(name = 'update')
+        self.refresh_rv(update_screen.solvent_list)
+        update_screen.bind(
+            solvent_list = lambda inst, data: self.refresh_rv(data)
+        )
+        
+    
+    def refresh_rv(self, data):
+        self.ids.solvent_rv.data = data
 
 
 class MaterialTab(BoxLayout, MDTabsBase):
