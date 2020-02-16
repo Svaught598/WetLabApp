@@ -46,9 +46,7 @@ class UpdateScreen(Screen):
         app.update_view_model.get_solvents()
 
     def refresh_solvent_rv(self, solvent_list):
-        # for tab in self.ids.update_tabs.ids.scrollview.children[0].children:
-        #     if tab.state == 'down':
-        #         tab.
+        pass
 
     def error_popup(self, error):
         screen = self.manager.current_screen
