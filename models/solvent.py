@@ -2,13 +2,14 @@ from peewee import *
 from kivy.properties import ListProperty
 from .base import BaseModel
 
+
 class Solvent(BaseModel):
     '''Peewee Model describing solvent'''
     solventID = IntegerField(primary_key = True)
     name = CharField(unique = True)
-    density = CharField()
+    density = FloatField()
     formula = CharField()
-    polarity = CharField()
+    polarity = FloatField()
 
     def __unicode__(self):
         return str(name)
