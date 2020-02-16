@@ -14,7 +14,7 @@
             title: "Update Data"
             md_bg_color: app.theme_cls.primary_color
             elevation: 10
-            left_action_items: [['arrow-left', lambda x: root.on_exit()]]
+            left_action_items: [['arrow-left', lambda x: root.exit()]]
 
         MDTabs:
             id: update_tabs
@@ -36,14 +36,31 @@
 
             Widget:
 
+<SolventViewClass@BoxLayout>:
+    name: ''
+    density: ''
+    formula: ''
+    polarity: ''
+    MDLabel:
+        text: root.name
+    MDLabel:
+        text: root.density
+    MDLabel: 
+        text: root.formula
+    MDLabel: 
+        text: root.polarity
+        
 <SolventTab>
     id: solvent
-    FloatLayout:
-        MDLabel:
-            text: 'Solvent'
-            halign: 'center'
-            theme_text_color: 'Primary'
-            font_style: 'H6'
+    RecycleView:
+        id: solvent_rv
+        viewclass: 'SolventViewClass'
+        RecycleBoxLayout:
+            default_size: None, dp(56)
+            default_size_hint: 1, None
+            size_hint_y: None
+            height: self.minimum_height
+            orientation: 'vertical'
 
 <MaterialTab>
     id: materi
@@ -71,7 +88,54 @@
             md_bg_color: app.theme_cls.primary_color
             elevation: 10
             left_action_items: [['arrow-left', lambda x: root.back()]]
-        Widget:
+        ScrollView:
+            do_scroll_x: False
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint_y: None
+                height: dp(400)
+                BoxLayout:
+                    MDLabel:
+                        font_style: 'H6'
+                        halign: 'center'
+                        text: 'Solvent Name'
+                    MDTextFieldRect:
+                        padding: 10, 10
+                        id: name
+                BoxLayout:
+                    MDLabel:
+                        font_style: 'H6'
+                        halign: 'center'
+                        text: 'Density (g/mL)'
+                    MDTextFieldRect:
+                        input_filter: 'float'
+                        padding: 10, 10
+                        id: density
+                BoxLayout:
+                    MDLabel:
+                        font_style: 'H6'
+                        halign: 'center'
+                        text: 'Chemical Formula'
+                    MDTextFieldRect:
+                        padding: 10, 10
+                        id: formula
+                BoxLayout:
+                    MDLabel:
+                        font_style: 'H6'
+                        halign: 'center'
+                        text: 'Relative Polarity'
+                    MDTextFieldRect:
+                        input_filter: 'float'
+                        padding: 10, 10
+                        id: polarity
+                BoxLayout:
+                    MDRaisedButton:
+                        padding: 10, 10
+                        font_style: 'H3'
+                        halign: 'center'
+                        text: 'Add Solvent'
+                        on_release: root.submit()
+
 
 <NewMaterialScreen>:
     BoxLayout:
@@ -90,4 +154,7 @@
             md_bg_color: app.theme_cls.primary_color
             elevation: 10
             left_action_items: [['arrow-left', lambda x: root.back()]]
-        Widget:
+
+        FloatLayout:
+            MDTextFieldRect:
+
