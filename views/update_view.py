@@ -14,9 +14,8 @@ from models.solvent import Solvent
 
 
 class UpdateScreen(Screen):
-    
-    solvents = StringProperty('')
-    solvent_list = ListProperty(['lsit property'])
+    solvent_list = ListProperty([])
+    material_list = ListProperty([])
 
     def __init__(self, *args, **kwargs):
         super(UpdateScreen, self).__init__(*args, **kwargs)
@@ -39,12 +38,18 @@ class UpdateScreen(Screen):
         app = MDApp.get_running_app()
         app.update_view_model.bind(
             error = lambda x, y: self.error_popup(y),
-            solvent_list = lambda x, y: self.refresh_solvent_rv(y)
+
+            solvent_list = lambda x, y: self.refresh_solvent_rv(y),
+            material_list = lambda x, y: self.refresh_material_rv(y)
         ) 
         app.update_view_model.get_solvents()
+        app.update_view_model.get_materials()
 
     def refresh_solvent_rv(self, solvent_list):
         self.solvent_list = solvent_list
+
+    def refresh_material_rv(self, material_list):
+        self.material_list = material_list
 
     def error_popup(self, error):
         screen = self.manager.current_screen
@@ -106,11 +111,39 @@ class NewSolventScreen(Screen):
 
 
 class NewMaterialScreen(Screen):
-    
+    def __init__(self, *args, **kwargs):
+        super(NewMaterialScreen, self).__init__(*args, **kwargs)
+        Clock.schedule_once(lambda x: self.prepare(), 0)
+
+    def prepare(self):
+        app = MDApp.get_running_app()
+        app.update_view_model.bind(
+            error_added = lambda x, y: self.error_added(y))
+
+    def error_added(self, error_bool):
+        if error_bool == True:
+            return
+        else:
+            self.back()
+
     def back(self):
         app = MDApp.get_running_app()
         app.root.ids.screens.current = 'update'
 
+    def submit(self):
+        app = MDApp.get_running_app()
+        app.update_view_model.add_material({
+            'name': self.ids.name.text,
+            'formula': self.ids.formula.text,
+            'molecular_weight': self.ids.molecular_weight.text,})
+
+    def error_popup(self, error):
+        self.dialog = MDDialog(
+            title = 'Error',
+            text = error,
+            size_hint = (0.8, None),
+            height = dp(200))
+        self.dialog.open()
 
 class SolventTab(BoxLayout, MDTabsBase):
     def __init__(self, *args, **kwargs):
@@ -125,18 +158,22 @@ class SolventTab(BoxLayout, MDTabsBase):
             solvent_list = lambda inst, data: self.refresh_rv(data)
         )
         
-    
     def refresh_rv(self, data):
         self.ids.solvent_rv.data = data
 
 
 class MaterialTab(BoxLayout, MDTabsBase):
-    name = 'new_Materials'
-    pass
+    def __init__(self, *args, **kwargs):
+        super(MaterialTab, self).__init__(*args, **kwargs)
+        Clock.schedule_once(lambda x: self.prepare(), 0)
 
+    def prepare(self, *args, **kwargs):
+        app = MDApp.get_running_app()
+        update_screen = app.root.ids.screens.get_screen(name = 'update')
+        self.refresh_rv(update_screen.material_list)
+        update_screen.bind(
+            material_list = lambda inst, data: self.refresh_rv(data)
+        )
 
-        
-# TODO: find way to push data to RV. trouble is in finding
-# a way to reference the RV from the parent screen.
-# probably need to bind a few properties to transport the data.
-# sucks, but that seems to be the only way.
+    def refresh_rv(self, data):
+        self.ids.solvent_rv.data = data

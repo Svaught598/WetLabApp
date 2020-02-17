@@ -14,7 +14,8 @@ import string
 class UpdateViewModel(EventDispatcher):
     
     error = StringProperty('')
-    solvent_list = ListProperty()
+    solvent_list = ListProperty([])
+    material_list = ListProperty([])
 
     error_added = BooleanProperty()
 

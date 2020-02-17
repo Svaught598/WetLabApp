@@ -16,7 +16,7 @@ class Material(BaseModel):
     def get_all(cls):
         material_list = [{
             'name': str(record.name),
-            'formula': str(record.formla),
+            'formula': str(record.formula),
             'molecular_weight': str(record.molecular_weight)
             } for record in cls.select()]
         return material_list
