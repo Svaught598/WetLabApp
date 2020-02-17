@@ -28,4 +28,4 @@ class Solvent(BaseModel):
 
     @classmethod
     def get_solvent(cls, name):
-        return cls.select().where(name = name)
+        return cls.select().where(Solvent.name == name)

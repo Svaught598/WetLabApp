@@ -87,6 +87,6 @@ class VolumeViewModel(EventDispatcher):
         self.solvent_list = Solvent.get_all()
 
     def get_solvent_density(self):
-        solvent = Solvent.select().where(Solvent.name == solvent)
+        solvent = Solvent.get_solvent(self.context['solvent'])
         density = solvent[0].density
         self.context.update({'density': density})
