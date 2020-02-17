@@ -89,20 +89,6 @@ class SolutionApp(MDApp):
         return 'exit'
 
     def load_changes(self):
-        self.SOLUTION_TYPES = [
-            {'viewclass': 'MDMenuItem',
-            'text': '% Wt/Wt',
-            'callback': self.screen1.on_solution_types},
-            {'viewclass': 'MDMenuItem',
-            'text': '% Wt/Vol',
-            'callback': self.screen1.on_solution_types}]
-        self.SOLVENTS = [
-            {'viewclass': 'MDMenuItem',
-            'text': 'Chloroform',
-            'callback': self.screen1.on_solvent},
-            {'viewclass': 'MDMenuItem',
-            'text': 'Toluene',
-            'callback': self.screen1.on_solvent}]
         self.MATERIALS = [
             {'viewclass': 'MDMenuItem',
             'text': 'MEH-PPV',
