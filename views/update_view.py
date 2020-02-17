@@ -73,7 +73,6 @@ class UpdateScreen(Screen):
 
 
 class NewSolventScreen(Screen):
-
     def __init__(self, *args, **kwargs):
         super(NewSolventScreen, self).__init__(*args, **kwargs)
         Clock.schedule_once(lambda x: self.prepare(), 0)
@@ -145,6 +144,7 @@ class NewMaterialScreen(Screen):
             height = dp(200))
         self.dialog.open()
 
+
 class SolventTab(BoxLayout, MDTabsBase):
     def __init__(self, *args, **kwargs):
         super(SolventTab, self).__init__(*args, **kwargs)
@@ -178,4 +178,3 @@ class MaterialTab(BoxLayout, MDTabsBase):
     def refresh_rv(self, data):
         self.ids.solvent_rv.data = data
 
-# TODO: create classes for inheiritance (DRY)
