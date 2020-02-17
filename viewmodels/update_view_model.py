@@ -30,17 +30,8 @@ class UpdateViewModel(EventDispatcher):
         self.get_solvents()
 
     def get_solvents(self):
-        solvent_list = []
-        for record in Solvent.select():
-            solvent = {
-                'name': str(record.name),
-                'density': str(record.density),
-                'formula': str(record.formula),
-                'polarity': str(record.polarity)}
-            solvent_list.append(solvent)
-        self.solvent_list = solvent_list
+        self.solvent_list = Solvent.get_all()
             
-
     def check_solvent(self, context):
         for key in context:
             if context[key] == '':

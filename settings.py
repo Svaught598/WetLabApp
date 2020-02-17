@@ -21,3 +21,9 @@ MAIN_TEMPLATE_PATH = os.path.join(ROOT_DIR, 'templates\\main.kv')
 DATABASE = 'db.sqlite3'
 
 DEVELOPEMENT_KV = os.path.join(ROOT_DIR, 'templates\\test.kv')
+
+# Types of Solutions
+SOLUTION_TYPES = [
+    '% Wt/Wt',
+    '% Wt/Vol',
+]

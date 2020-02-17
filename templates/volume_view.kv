@@ -29,7 +29,7 @@
                 id: solution_types
                 text: 'Solution Type'
                 size: 3 * dp(48), dp(48)
-                on_release: MDDropdownMenu(items=app.SOLUTION_TYPES, width_mult=4).open(self)
+                on_release: MDDropdownMenu(items=root.SOLUTION_TYPES, width_mult=4).open(self)
         BoxLayout:
             orientation: 'horizontal'
             size_hint_y: None
@@ -38,6 +38,7 @@
             spacing: dp(16)
 
             MDLabel:
+                id: mass_label
                 text: 'Mass:'
             TextInput:
                 id: mass
@@ -58,7 +59,7 @@
                 id: solvent
                 text: 'Solvent'
                 size: 3 * dp(48), dp(48)
-                on_release: MDDropdownMenu(items=app.SOLVENTS, width_mult=4).open(self)
+                on_release: MDDropdownMenu(items=root.SOLVENT_NAMES, width_mult=4).open(self)
             MDRectangleFlatButton:
                 id: material
                 text: 'Material'

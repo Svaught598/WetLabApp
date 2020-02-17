@@ -14,3 +14,18 @@ class Solvent(BaseModel):
     def __unicode__(self):
         return str(name)
 
+    @classmethod
+    def get_all(cls):
+        solvent_list = []
+        for record in cls.select():
+            solvent = {
+                'name': str(record.name),
+                'density': str(record.density),
+                'formula': str(record.formula),
+                'polarity': str(record.polarity)}
+            solvent_list.append(solvent)
+        return solvent_list
+
+    @classmethod
+    def get_solvent(cls, name):
+        return cls.select().where(name = name)

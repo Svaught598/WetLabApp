@@ -2,6 +2,8 @@ from kivy.event import EventDispatcher
 from kivy.clock import Clock
 from kivy.properties import StringProperty, ListProperty
 
+from models.solvent import Solvent
+from settings import SOLUTION_TYPES
 
 class VolumeViewModel(EventDispatcher):
 
@@ -13,62 +15,78 @@ class VolumeViewModel(EventDispatcher):
     volume_needed = StringProperty()
     error = StringProperty()
 
+    solvent_list = ListProperty([])
+
     def calculate(self, context):
-        if self.verify_fields(context):
-            # TODO: check these formulas again 
-            if context["solution_types"] == '% Wt/Wt':
-                concentration = float(context['concentration'])
-                mass = float(context['mass'])
-                density = float(context['density'])
-                self.volume_needed = str(round(((1 - concentration) * mass)/(concentration * density), 3)) + ' ml'   
-            # TODO: check these formulas again
-            elif context["solution_types"] == '% Wt/Vol':
-                print('we/v function')
-                concentration = float(context['concentration'])
-                mass = float(context['mass'])
-                self.volume_needed = str(round((mass/concentration), 3)) + 'ml'
-        else:
-            # TODO: rearrange logic so that solution type is called before
-            # verify method. This will ensure that the verify method only 
-            # checks fields needed for that specific formula. Just create 
-            # a new verify method that takes the solution type as an argument
-            # and uses it to direct logic flow accordingly
+        self.context = context
+        if self.verify_fields() == False:
             return
-            # TODO: This return is goin to hide some errors in the 
-            # calculation blocks above. Fix this somehow.
-            # It may sort itself out with the implementation of 
-            # the above TODO
 
-    def verify_fields(self, context):
+        if self.context["solution_type"] == '% Wt/Wt':
+            concentration = float(self.context['concentration'])
+            mass = float(self.context['mass'])
+            density = float(self.context['density'])
+            self.volume_needed = str(round(((1 - concentration) * mass)/(concentration * density), 3)) + ' ml' 
+            return  
 
+        if self.context["solution_type"] == '% Wt/Vol':
+            concentration = float(self.context['concentration'])
+            mass = float(self.context['mass'])
+            self.volume_needed = str(round((mass/concentration), 3)) + 'ml'
+            return
+
+    def verify_fields(self):
         error_message = ''
+        solution_type = self.context["solution_type"]
+        solvent = self.context["solvent"]
+        material = self.context["material"]
+        mass = self.context["mass"]
+        concentration = self.context["concentration"]
         
         # must check for every situation
-        if context["solution_types"] == 'Solution Type':
+        if concentration == '':
+            error_message += 'Concentration field is blank!\n'
+        if mass == '':
+            error_message += 'Mass field is blank\n'
+        if solution_type == 'Solution Type':
             error_message += 'Choose a Solution Type\n'
-        if context["solvent"] == 'Solvent':
-            error_message += 'Choose a Solvent\n'
-        if context["material"] == 'Material':
-            error_message += 'Choose a Material\n'
+            return self.verify_error(error_message)
 
-        # All other verifications depend on previous selections
-        try:
-            if float(context["concentration"]) > 1:
-                error_message += "Concentration must be less than 1\n"
-            elif float(context["concentration"]) < 0:
-                error_message += "Concentration must be greater than 0\n"
-        except ValueError:
-            error_message+="Concentration field empty\n"
-        try:
-            if float(context["mass"]) < 0:
-                error_message += "Mass must be greater than 0\n"
-        except ValueError:
-            error_message += "Mass field empty\n"
-
-        # Return True if no errors, False and errors if any
-        finally:
-            if error_message == '':
-                return True
+        # this is '% wt/wt' solution
+        if solution_type == SOLUTION_TYPES[0]:
+            if solvent == 'Solvent':
+                error_message += 'Choose a Solvent!\n'
             else:
-                self.error = error_message
-                return False
+                self.get_solvent_density()
+            if float(concentration) > 1:
+                error_message += 'Concentration must be less than 1\n'
+            if float(concentration) < 0:
+                error_message += 'Concentration must be greater than 0\n'
+            if float(mass) < 0:
+                error_message += 'Mass must be greater than 0\n'
+            return self.verify_error(error_message)
+        
+        # this is '% wt/vol' solution
+        elif solution_type == SOLUTION_TYPES[1]:
+            if float(concentration) > 1:
+                error_message += 'Concentration must be less than 1\n'
+            if float(concentration) < 0:
+                error_message += 'Concentration must be greater than 0\n'
+            if float(mass) < 0:
+                error_message += 'Mass must be greater than 0\n'
+            return self.verify_error(error_message)
+        
+    def verify_error(self, message):
+        if message == '':
+            return True
+        else:
+            self.error = message
+            return False
+
+    def get_solvents(self):
+        self.solvent_list = Solvent.get_all()
+
+    def get_solvent_density(self):
+        solvent = Solvent.select().where(Solvent.name == solvent)
+        density = solvent[0].density
+        self.context.update({'density': density})
