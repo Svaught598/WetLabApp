@@ -41,7 +41,6 @@ class SolutionApp(MDApp):
         self.add_view_models()
         self.add_views()
         self.add_nav_drawer()
-        self.load_changes()
 
     def add_views(self):
         self.screen1 = VolumeScreen(name = 'volumeneeded')
@@ -88,14 +87,6 @@ class SolutionApp(MDApp):
     def exit_app(self):
         return 'exit'
 
-    def load_changes(self):
-        self.MATERIALS = [
-            {'viewclass': 'MDMenuItem',
-            'text': 'MEH-PPV',
-            'callback': self.screen1.on_material},
-            {'viewclass': 'MDMenuItem',
-            'text': 'BDMO-PPV',
-            'callback': self.screen1.on_material}]
     
 if __name__ == '__main__':
     init_db()

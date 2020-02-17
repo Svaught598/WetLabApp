@@ -3,6 +3,7 @@ from kivy.clock import Clock
 from kivy.properties import StringProperty, ListProperty
 
 from models.solvent import Solvent
+from models.material import Material
 from settings import SOLUTION_TYPES
 
 class VolumeViewModel(EventDispatcher):
@@ -16,6 +17,7 @@ class VolumeViewModel(EventDispatcher):
     error = StringProperty()
 
     solvent_list = ListProperty([])
+    material_list = ListProperty([])
 
     def calculate(self, context):
         self.context = context
@@ -85,6 +87,9 @@ class VolumeViewModel(EventDispatcher):
 
     def get_solvents(self):
         self.solvent_list = Solvent.get_all()
+
+    def get_materials(self):
+        self.material_list = Material.get_all()
 
     def get_solvent_density(self):
         solvent = Solvent.get_solvent(self.context['solvent'])

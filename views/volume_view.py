@@ -24,6 +24,7 @@ class MDMenuItem(MDRectangleFlatButton):
 class VolumeScreen(Screen):
     SOLVENT_NAMES = ListProperty([])
     SOLUTION_TYPES = ListProperty([])
+    MATERIAL_NAMES = ListProperty([])
 
     def __init__(self, *args, **kwargs):
         super(VolumeScreen, self).__init__(*args, **kwargs)
@@ -35,9 +36,11 @@ class VolumeScreen(Screen):
         app.volume_view_model.bind(
             volume_needed = lambda x, y: self.show_volume_needed(y),
             error = lambda x, y: self.show_error_message(y),
-            solvent_list = lambda x, y: self.add_solvents(y)
+            solvent_list = lambda x, y: self.add_solvents(y),
+            material_list = lambda x, y: self.add_materials(y)
         )
         app.volume_view_model.get_solvents()
+        app.volume_view_model.get_materials()
 
     def on_solution_types(self, text):
         self.ids.solution_types.text = text
@@ -77,10 +80,15 @@ class VolumeScreen(Screen):
             'callback': self.on_solution_types
             } for type in types]
 
+    def add_materials(self, materials):
+        self.MATERIAL_NAMES = [{
+            'viewclass': 'MDMenuItem',
+            'text': material['name'],
+            'callback': self.on_material
+        } for material in materials]
+
     def show_error_message(self, error_message):
         self.ids.volume_needed.text = error_message
 
     def show_volume_needed(self, volume_needed):
         self.ids.volume_needed.text = volume_needed
-
-# TODO: fix method to hide not-used widgets in the UI. see above.
