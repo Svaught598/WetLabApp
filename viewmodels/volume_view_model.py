@@ -90,3 +90,6 @@ class VolumeViewModel(EventDispatcher):
         solvent = Solvent.get_solvent(self.context['solvent'])
         density = solvent[0].density
         self.context.update({'density': density})
+
+# TODO: add more solution_types and logic.
+# add conversion method for different solution types

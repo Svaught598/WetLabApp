@@ -83,3 +83,4 @@ class VolumeScreen(Screen):
     def show_volume_needed(self, volume_needed):
         self.ids.volume_needed.text = volume_needed
 
+# TODO: fix method to hide not-used widgets in the UI. see above.

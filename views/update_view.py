@@ -177,3 +177,5 @@ class MaterialTab(BoxLayout, MDTabsBase):
 
     def refresh_rv(self, data):
         self.ids.solvent_rv.data = data
+
+# TODO: create classes for inheiritance (DRY)
