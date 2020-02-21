@@ -127,7 +127,8 @@ class VolumeScreen(Screen):
         self.ids.volume_needed.text = error_message
 
     def show_volume_needed(self, volume_needed):
-        self.ids.volume_needed.text = volume_needed
+        self.ids.volume.text = (
+        f"You'll need [b][color=#ff3300]{volume_needed}[/color][/b] of the solvent to make a solution at this concentration")
     
     def error_popup(self, is_error):
         print(is_error)
