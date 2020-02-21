@@ -10,7 +10,7 @@ from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
 from kivy.uix.button import Button
 from kivy.uix.textinput import TextInput
-from kivy.properties import StringProperty, ListProperty
+from kivy.properties import StringProperty, ListProperty, BooleanProperty
 from kivy.lang.builder import Builder
 from kivy.clock import Clock
 from kivy.metrics import dp
@@ -31,6 +31,9 @@ class VolumeScreen(Screen):
     _SOLUTION_TYPES = ListProperty([])
     _MASS_UNIT_DEFAULT = MASS_UNITS[0]
     _SOLUTION_TYPE_DEFAULT = SOLUTION_TYPES[0]
+
+    _MOL_WEIGHT_FIELDS = BooleanProperty(True)
+    _SOLVENT_DENSITY_FIELDS = BooleanProperty(True)
 
     def __init__(self, *args, **kwargs):
         super(VolumeScreen, self).__init__(*args, **kwargs)
@@ -56,11 +59,12 @@ class VolumeScreen(Screen):
 
     def on_solution_types(self, text):
         self.ids.solution_types.text = text
-        # if text == SOLUTION_TYPES[0]:
-        #     self.ids.mass.size_hint_y = 0
-        #     self.ids.mass_label.size_hint_y = 0
-        # if text == SOLUTION_TYPES[1]:
-        #     pass
+        if text == SOLUTION_TYPES[0]:
+            self._MOL_WEIGHT_FIELDS = True
+            self._SOLVENT_DENSITY_FIELDS = True
+        elif text == SOLUTION_TYPES[1]:
+            self._MOL_WEIGHT_FIELDS = False
+            self._SOLVENT_DENSITY_FIELDS = False
 
     def on_solvent(self, text):
         self.ids.solvent.text = text

@@ -24,14 +24,14 @@ class VolumeViewModel(EventDispatcher):
         if self.verify_fields() == False:
             return
 
-        if self.context["solution_type"] == '% Wt/Wt':
+        if self.context["solution_type"] == SOLUTION_TYPES[0]:
             concentration = float(self.context['concentration'])
             mass = float(self.context['mass'])
             density = float(self.context['density'])
             self.volume_needed = str(round(((1 - concentration) * mass)/(concentration * density), 3)) + ' ml' 
             return  
 
-        if self.context["solution_type"] == '% Wt/Vol':
+        if self.context["solution_type"] == SOLUTION_TYPES[1]:
             concentration = float(self.context['concentration'])
             mass = float(self.context['mass'])
             self.volume_needed = str(round((mass/concentration), 3)) + 'ml'

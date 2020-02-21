@@ -81,16 +81,66 @@
 
             MDLabel:
                 text: 'Molecular Weight:'
+                id: mol_weight_label
+
+                visible: root._MOL_WEIGHT_FIELDS
+                size_hint_x: 1 if self.visible else 0
+                opacity: 1 if self.visible else 0
+                disabled: not self.visible
             MDTextFieldRect:
-                id: molecular_weight
+                id: mol_weight_input
                 input_type: "number"
                 input_filter: "float"
                 padding: dp(10), dp(10), 0, 0
+
+                visible: root._MOL_WEIGHT_FIELDS
+                size_hint_x: 1 if self.visible else 0
+                opacity: 1 if self.visible else 0
+                disabled: not self.visible
             MDLabel:
-                size_hint_x: None
+                id: mol_weight_unit
                 width: dp(100)
                 halign: 'center'
                 text: 'g/mol'
+
+                visible: root._MOL_WEIGHT_FIELDS
+                size_hint_x: None if self.visible else 0
+                opacity: 1 if self.visible else 0
+                disabled: not self.visible
+        BoxLayout:
+            id: solvent_density
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: dp(56)
+            padding: dp(8)
+            spacing: dp(16)
+
+            MDLabel:
+                text: 'Solvent Density:'
+
+                visible: root._SOLVENT_DENSITY_FIELDS
+                size_hint_x: 1 if self.visible else 0
+                opacity: 1 if self.visible else 0
+                disabled: not self.visible
+            MDTextFieldRect:
+                id: solvent_density
+                input_type: "number"
+                input_filter: "float"
+                padding: dp(10), dp(10), 0, 0
+
+                visible: root._SOLVENT_DENSITY_FIELDS
+                size_hint_x: 1 if self.visible else 0
+                opacity: 1 if self.visible else 0
+                disabled: not self.visible
+            MDLabel:
+                width: dp(100)
+                halign: 'center'
+                text: 'g/mL'
+
+                visible: root._SOLVENT_DENSITY_FIELDS
+                size_hint_x: None if self.visible else 0
+                opacity: 1 if self.visible else 0
+                disabled: not self.visible
         BoxLayout:
             orientation: 'horizontal'
             size_hint_y: None
