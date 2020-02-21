@@ -39,7 +39,7 @@ class VolumeViewModel(EventDispatcher):
             concentration = float(self.context['concentration'])
             mass = float(self.context['mass'])
             mass = convert_mass(mass, mass_units, 'mg')
-            self.VOLUME = str(round((mass/concentration), 3)) + 'ml'
+            self.VOLUME = str(round((mass/concentration), 3)) + ' mL'
             return
 
         # Calculate for solution type 'g/ml'
@@ -48,7 +48,7 @@ class VolumeViewModel(EventDispatcher):
             concentration = float(self.context['concentration'])
             mass = float(self.context['mass'])
             mass = convert_mass(mass, mass_units, 'g')
-            self.VOLUME = str(round((mass/concentration), 3)) + 'ml'
+            self.VOLUME = str(round((mass/concentration), 3)) + ' mL'
             return
 
     def verify_fields(self):
