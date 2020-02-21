@@ -43,10 +43,11 @@ class VolumeScreen(Screen):
         self.add_solution_types(SOLUTION_TYPES)
         app = MDApp.get_running_app()
         app.volume_view_model.bind(
-            volume_needed = lambda x, y: self.show_volume_needed(y),
-            error = lambda x, y: self.error_popup(y),
-            solvent_list = lambda x, y: self.add_solvents(y),
-            material_list = lambda x, y: self.add_materials(y)
+            VOLUME = lambda x, y: self.show_volume_needed(y),
+            ERROR = lambda x, y: self.error_popup(y),
+
+            SOLVENT_LIST = lambda x, y: self.add_solvents(y),
+            MATERIAL_LIST = lambda x, y: self.add_materials(y)
         )
         
         # populate dropdowns from consts
@@ -63,6 +64,9 @@ class VolumeScreen(Screen):
             self._MOL_WEIGHT_FIELDS = True
             self._SOLVENT_DENSITY_FIELDS = True
         elif text == SOLUTION_TYPES[1]:
+            self._MOL_WEIGHT_FIELDS = False
+            self._SOLVENT_DENSITY_FIELDS = False
+        elif text == SOLUTION_TYPES[2]:
             self._MOL_WEIGHT_FIELDS = False
             self._SOLVENT_DENSITY_FIELDS = False
 
@@ -125,10 +129,17 @@ class VolumeScreen(Screen):
     def show_volume_needed(self, volume_needed):
         self.ids.volume_needed.text = volume_needed
     
-    def error_popup(self, error):
-        self.dialog = MDDialog(
-            title = 'Oops! Something went wrong!',
-            text = "Please check that input fields are valid",
-            size_hint = (0.8, None),
-            height = dp(200))
-        self.dialog.open()
+    def error_popup(self, is_error):
+        print(is_error)
+        if is_error:
+            self.dialog = MDDialog(
+                title = 'Oops! Something went wrong!',
+                text = "Please check that input fields are valid",
+                size_hint = (0.8, None),
+                height = dp(200), 
+                on_dismiss = lambda x: self.close_error())
+            self.dialog.open()
+
+    def close_error(self):
+        app = MDApp.get_running_app()
+        app.volume_view_model.close_error()

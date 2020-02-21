@@ -81,14 +81,13 @@
 
             MDLabel:
                 text: 'Molecular Weight:'
-                id: mol_weight_label
 
                 visible: root._MOL_WEIGHT_FIELDS
                 size_hint_x: 1 if self.visible else 0
                 opacity: 1 if self.visible else 0
                 disabled: not self.visible
             MDTextFieldRect:
-                id: mol_weight_input
+                id: molecular_weight
                 input_type: "number"
                 input_filter: "float"
                 padding: dp(10), dp(10), 0, 0
@@ -98,7 +97,6 @@
                 opacity: 1 if self.visible else 0
                 disabled: not self.visible
             MDLabel:
-                id: mol_weight_unit
                 width: dp(100)
                 halign: 'center'
                 text: 'g/mol'
