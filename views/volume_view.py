@@ -1,7 +1,9 @@
 from kivymd.uix.menu import MDDropdownMenu
 from kivymd.uix.menu import MDMenuItem
 from kivymd.uix.button import MDRectangleFlatButton
+from kivymd.uix.dialog import MDDialog
 from kivymd.app import MDApp
+from kivymd import factory_registers
 
 from kivy.uix.screenmanager import Screen
 from kivy.uix.boxlayout import BoxLayout
@@ -11,7 +13,7 @@ from kivy.uix.textinput import TextInput
 from kivy.properties import StringProperty, ListProperty
 from kivy.lang.builder import Builder
 from kivy.clock import Clock
-from kivymd import factory_registers
+from kivy.metrics import dp
 
 from models.solvent import Solvent
 from settings import SOLUTION_TYPES, MASS_UNITS
@@ -39,7 +41,7 @@ class VolumeScreen(Screen):
         app = MDApp.get_running_app()
         app.volume_view_model.bind(
             volume_needed = lambda x, y: self.show_volume_needed(y),
-            error = lambda x, y: self.show_error_message(y),
+            error = lambda x, y: self.error_popup(y),
             solvent_list = lambda x, y: self.add_solvents(y),
             material_list = lambda x, y: self.add_materials(y)
         )
@@ -68,6 +70,11 @@ class VolumeScreen(Screen):
 
     def on_mass_unit(self, text):
         self.ids.mass_units.text = text
+
+    def clear(self):
+        self.ids.mass.text = ''
+        self.ids.concentration.text = ''
+        self.ids.molecular_weight.text = ''
 
     def calculate_button_pressed(self):
         app = MDApp.get_running_app()
@@ -113,3 +120,11 @@ class VolumeScreen(Screen):
 
     def show_volume_needed(self, volume_needed):
         self.ids.volume_needed.text = volume_needed
+    
+    def error_popup(self, error):
+        self.dialog = MDDialog(
+            title = 'Oops! Something went wrong!',
+            text = "Please check that input fields are valid",
+            size_hint = (0.8, None),
+            height = dp(200))
+        self.dialog.open()
