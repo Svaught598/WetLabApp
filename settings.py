@@ -24,6 +24,9 @@ DEVELOPEMENT_KV = os.path.join(ROOT_DIR, 'templates\\test.kv')
 
 # Types of Solutions
 SOLUTION_TYPES = [
-    '% Wt/Wt',
-    '% Wt/Vol',
+    '% Wt/Wt', '% Wt/Vol',
+]
+
+MASS_UNITS = [
+    'kg', 'g', 'mg', '\u03BCg', 'ng'
 ]
