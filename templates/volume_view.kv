@@ -27,9 +27,8 @@
                 padding: dp(10), dp(10), 0, 0
             MDRectangleFlatButton:
                 id: solution_types
-                text: 'Solution Type'
-                size: 3 * dp(48), dp(48)
-                on_release: MDDropdownMenu(items=root.SOLUTION_TYPES, width_mult=4).open(self)
+                text: root._SOLUTION_TYPE_DEFAULT
+                on_release: MDDropdownMenu(items=root._SOLUTION_TYPES, width_mult=4).open(self)
         BoxLayout:
             orientation: 'horizontal'
             size_hint_y: None
@@ -47,8 +46,10 @@
                 input_type: "number"
                 input_filter: "float"
                 padding: dp(10), dp(10), 0, 0
-            MDLabel: 
-                text: 'dropdown goes here for mass units'
+            MDRectangleFlatButton:
+                id: mass_units
+                text: root._MASS_UNIT_DEFAULT
+                on_release: MDDropdownMenu(items=root._MASS_UNITS, width_mult=4).open(self)
         BoxLayout:
             orientation: 'horizontal'
             size_hint_y: None
