@@ -105,7 +105,7 @@ class VolumeScreen(Screen):
         self.SOLVENT_NAMES = [{
             'viewclass': 'MDMenuItem',
             'text': solvent['name'],
-            'callback': self.on_material
+            'callback': self.on_solvent
         } for solvent in solvents]
 
     def show_error_message(self, error_message):
