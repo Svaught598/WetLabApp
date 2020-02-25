@@ -1,5 +1,21 @@
 ## WetLabApp
-
+---
 Using Kivy & KivyMD, this app is being designed with the intention of speeding up lab work by creating a set of simple calculation
-tools that can be easily navigated and understood. My research in Materials Science require that I perform tedious approximations for solution concentration, film thickness, inter-particle spacing, etc. The purpose of this app is to speed experimental work with quick estimations. At the time of writing, the project is only partially finished.
+tools that can be easily navigated and understood. My research in Materials Science require that I perform tedious approximations for solution concentration, film thickness, inter-particle spacing, etc. The purpose of this app is to speed experimental work with quick estimations. Other applications offer similar functionality, but differ in some key ways:
+1. Applications to assist with creating new solutions calculate the amount of compound needed for a solution. With nothing more than digital scales, it is VERY difficult to obtain a precise amount of material. Instead, this application uses an arbitrary amount of compound and calculates the amount of solvent needed for a given concentration.
+2. In materials science, it is often necesary to make simple order of magnitude estimations based on physical models. These can be error-prone and usually take a decent amount of time to calculate. No other application makes these estimates.
+3. Some types of solutions require knowledge of certain properties held by the solvent/material being used. Other applications use a text entry to incorporate these parameters. Using text-entry can sometimes lead to an incorrect assumption of units being used, and requires that the user have knowledge of these properties (knowledge they might not have). Since most solutions use common solvents/materials within a department, this application offers CRUD of materials and solvents - along with their properties - to a local SQLite database. This ensures that research groups can make quick and effective calculations while preserving any confidential data related to materials used.
+At the time of writing (02/25/20), the project is a work in progress.
 
+## Project Goal
+---
+The 'Completed' version of this project should include several features (Bold = complete):
+- **tool to calculate volume needed for making new solutions**
+- tool to calculate film thickness with at least one theoretical model
+- tool to calculate intermolecular distance of particles in a thin film
+- tool to calculate dilutions
+- **CR**UD with solvents/materials/compounds
+
+Some features that may be useful/interesting to complete:
+- automatic calculation of molecular weight based on chemical formula in CRUD display
+- incorporating PubChem API
