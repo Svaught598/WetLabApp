@@ -32,7 +32,7 @@ class VolumeScreen(Screen):
     _MASS_UNIT_DEFAULT = MASS_UNITS[0]
     _SOLUTION_TYPE_DEFAULT = SOLUTION_TYPES[0]
 
-    _MOL_WEIGHT_FIELDS = BooleanProperty(True)
+    _MOL_WEIGHT_FIELDS = BooleanProperty(False)
     _SOLVENT_DENSITY_FIELDS = BooleanProperty(True)
 
     def __init__(self, *args, **kwargs):
@@ -45,6 +45,8 @@ class VolumeScreen(Screen):
         app.volume_view_model.bind(
             VOLUME = lambda x, y: self.show_volume_needed(y),
             ERROR = lambda x, y: self.error_popup(y),
+            MOLECULAR_WEIGHT = lambda x, y: self.change_mol_weight(y),
+            SOLVENT_DENSITY = lambda x, y: self.change_density(y),
 
             SOLVENT_LIST = lambda x, y: self.add_solvents(y),
             MATERIAL_LIST = lambda x, y: self.add_materials(y)
@@ -61,23 +63,42 @@ class VolumeScreen(Screen):
     def on_solution_types(self, text):
         self.ids.solution_types.text = text
         if text == SOLUTION_TYPES[0]:
+            self._MOL_WEIGHT_FIELDS = False
+            self._SOLVENT_DENSITY_FIELDS = True
+        if any([
+                text == SOLUTION_TYPES[3],
+                text == SOLUTION_TYPES[4],
+                text == SOLUTION_TYPES[5],
+                text == SOLUTION_TYPES[6],
+              ]):
             self._MOL_WEIGHT_FIELDS = True
             self._SOLVENT_DENSITY_FIELDS = True
-        elif text == SOLUTION_TYPES[1]:
-            self._MOL_WEIGHT_FIELDS = False
-            self._SOLVENT_DENSITY_FIELDS = False
-        elif text == SOLUTION_TYPES[2]:
+            
+        elif any([
+                text == SOLUTION_TYPES[1],
+                text == SOLUTION_TYPES[2],
+                ]):
             self._MOL_WEIGHT_FIELDS = False
             self._SOLVENT_DENSITY_FIELDS = False
 
     def on_solvent(self, text):
         self.ids.solvent.text = text
+        app = MDApp.get_running_app()
+        app.volume_view_model.get_solvent_density(text)
 
     def on_material(self, text):
         self.ids.material.text = text
+        app = MDApp.get_running_app()
+        app.volume_view_model.get_mol_weight(text)
 
     def on_mass_unit(self, text):
         self.ids.mass_units.text = text
+
+    def change_density(self, density):
+        self.ids.solvent_density.text = f'{density}'
+
+    def change_mol_weight(self, mol_weight):
+        self.ids.molecular_weight.text = f'{mol_weight}'
 
     def clear(self):
         self.ids.mass.text = ''
@@ -93,7 +114,8 @@ class VolumeScreen(Screen):
             'mass': self.ids.mass.text,
             'concentration': self.ids.concentration.text,
             'mass_unit': self.ids.mass_units.text,
-        })
+            'mol_weight': self.ids.molecular_weight.text,
+            'solvent_density': self.ids.solvent_density.text,})
 
     def add_mass_units(self, units):
         self._MASS_UNITS = [{
@@ -131,7 +153,6 @@ class VolumeScreen(Screen):
         f"You'll need [b][color=#ff3300]{volume_needed}[/color][/b] of the solvent to make a solution at this concentration")
     
     def error_popup(self, is_error):
-        print(is_error)
         if is_error:
             self.dialog = MDDialog(
                 title = 'Oops! Something went wrong!',
