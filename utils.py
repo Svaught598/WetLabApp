@@ -2,15 +2,6 @@ import json
 from settings import MASS_UNITS
 
 
-def loader():
-    with open("data.json") as f:
-        return json.load(f)
-
-
-def dumper(dict):
-    json.dump(dict, open("data.json", "w"))
-
-
 def convert_mass(mass, from_unit, to_unit):
     if from_unit == to_unit:
         return mass
