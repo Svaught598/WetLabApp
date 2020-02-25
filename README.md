@@ -1,5 +1,5 @@
 ## MaterialSolution
---
+
 Open source cross-platform application to assist in research & lab work!
 Created with Python using the Kivy framework with Peewee ORM.
 
@@ -21,8 +21,8 @@ Some applications exist that offer similar functionality, but differ in key ways
 At the time of writing (02/25/20), the project is a work in progress.
 
 ## Project Goal
---
-The 'Completed' version of this project should include several features (Bold = complete):
+
+The 'Completed' version of this project should include several features (bold means complete):
 - **tool to calculate volume needed for making new solutions**
 - tool to calculate film thickness with at least one theoretical model
 - tool to calculate intermolecular distance of particles in a thin film
