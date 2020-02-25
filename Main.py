@@ -15,7 +15,8 @@ from views import (
     UpdateScreen,
     FilmScreen,
     AboutScreen,
-    SettingsScreen
+    SettingsScreen,
+    DevelopingScreen,
 )
 from viewmodels import (
     VolumeViewModel,
@@ -94,7 +95,8 @@ class SolutionApp(MDApp):
         self.root.ids.screens.current = 'about'
 
     def get_developing_screen(self):
-        return 'development'
+        self.root.ids.screens.add_widget(DevelopingScreen(name = 'developing'))
+        self.root.ids.screens.current = 'developing'
 
     def exit_app(self):
         return 'exit'
