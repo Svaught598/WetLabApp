@@ -1,0 +1,14 @@
+<AboutScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        MDToolbar:
+            title: "About"
+            md_bg_color: app.theme_cls.primary_color
+            elevation: 10
+            left_action_items: [['arrow-left', lambda x: app.get_main_screen()]]
+        BoxLayout:
+            MDLabel:
+                text: 'About this app here...'
+                halign: 'center'
+                valign: 'center'
+        Widget:

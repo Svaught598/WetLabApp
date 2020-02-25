@@ -10,7 +10,7 @@ from kivy.properties import StringProperty
 from kivy.lang.builder import Builder
 
 from models import init_db
-from views import VolumeScreen, UpdateScreen, FilmScreen
+from views import VolumeScreen, UpdateScreen, FilmScreen, AboutScreen
 from viewmodels import VolumeViewModel, UpdateViewModel, FilmViewModel
 from settings import TEMPLATE_PATHS, MAIN_TEMPLATE_PATH
 
@@ -79,7 +79,8 @@ class SolutionApp(MDApp):
         return 'settings'
 
     def get_about_screen(self):
-        return 'about'
+        self.root.ids.screens.add_widget(AboutScreen(name = 'about'))
+        self.root.ids.screens.current = 'about'
 
     def get_developing_screen(self):
         return 'development'
