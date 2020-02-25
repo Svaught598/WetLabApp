@@ -10,8 +10,18 @@ from kivy.properties import StringProperty
 from kivy.lang.builder import Builder
 
 from models import init_db
-from views import VolumeScreen, UpdateScreen, FilmScreen, AboutScreen
-from viewmodels import VolumeViewModel, UpdateViewModel, FilmViewModel
+from views import (
+    VolumeScreen,
+    UpdateScreen,
+    FilmScreen,
+    AboutScreen,
+    SettingsScreen
+)
+from viewmodels import (
+    VolumeViewModel,
+    UpdateViewModel,
+    FilmViewModel
+)
 from settings import TEMPLATE_PATHS, MAIN_TEMPLATE_PATH
 
 
@@ -76,7 +86,8 @@ class SolutionApp(MDApp):
         return 'menu'
 
     def get_settings_screen(self):
-        return 'settings'
+        self.root.ids.screens.add_widget(SettingsScreen(name = 'settings'))
+        self.root.ids.screens.current = 'settings'
 
     def get_about_screen(self):
         self.root.ids.screens.add_widget(AboutScreen(name = 'about'))
