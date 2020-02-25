@@ -75,9 +75,9 @@
         BoxLayout:
             orientation: 'horizontal'
             size_hint_y: None
-            height: dp(56)
-            padding: dp(8)
-            spacing: dp(16)
+            height: dp(56) if root._MOL_WEIGHT_FIELDS else 0
+            padding: dp(8) if root._MOL_WEIGHT_FIELDS else 0
+            spacing: dp(16) if root._MOL_WEIGHT_FIELDS else 0
 
             MDLabel:
                 text: 'Molecular Weight:'
@@ -109,9 +109,9 @@
             id: solvent_density
             orientation: 'horizontal'
             size_hint_y: None
-            height: dp(56)
-            padding: dp(8)
-            spacing: dp(16)
+            height: dp(56) if root._SOLVENT_DENSITY_FIELDS else 0
+            padding: dp(8) if root._SOLVENT_DENSITY_FIELDS else 0
+            spacing: dp(16) if root._SOLVENT_DENSITY_FIELDS else 0
 
             MDLabel:
                 text: 'Solvent Density:'
