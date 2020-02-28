@@ -1,3 +1,4 @@
+from peewee import IntegrityError
 from kivy.event import EventDispatcher
 from kivy.clock import Clock
 from kivy.properties import (
@@ -22,25 +23,33 @@ class UpdateViewModel(EventDispatcher):
     def add_solvent(self, context):
         if self.check_solvent(context) == False:
             return
-        solvent = Solvent.create(
-            name = context['name'],
-            density = float(context['density']),
-            formula = context['formula'],
-            polarity = float(context['polarity']))
-        solvent.save()
-        self.error_added = False 
-        self.get_solvents()
+        try:
+            solvent = Solvent.create(
+                name = context['name'],
+                density = float(context['density']),
+                formula = context['formula'],
+                polarity = float(context['polarity']))
+            solvent.save()
+            self.error_added = False 
+            self.get_solvents()
+        except IntegrityError:
+            self.error = 'This Solvent is already in the system!'
+            self.error_added = True
 
     def add_material(self, context):
         if self.check_material(context) == False:
             return
-        material = Material.create(
-            name = context['name'],
-            formula = context['formula'],
-            molecular_weight = context['molecular_weight'])
-        material.save()
-        self.error_added = False
-        self.get_materials()
+        try:
+            material = Material.create(
+                name = context['name'],
+                formula = context['formula'],
+                molecular_weight = context['molecular_weight'])
+            material.save()
+            self.error_added = False
+            self.get_materials()
+        except IntegrityError:
+            self.error = 'This Material is already in the system!'
+            self.error_added = True
 
     def get_solvents(self):
         self.solvent_list = Solvent.get_all()
