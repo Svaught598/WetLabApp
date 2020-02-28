@@ -31,6 +31,7 @@ The 'Completed' version of this project should include several features (bold me
 
 Some features that may be useful/interesting to complete:
 - automatic calculation of molecular weight based on chemical formula in CRUD display
+- history of last 5 - 10 calculations for each screen
 - incorporating PubChem API
 
 ## Old Project
