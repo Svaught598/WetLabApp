@@ -95,6 +95,12 @@ class NewSolventScreen(Screen):
         app = MDApp.get_running_app()
         app.root.ids.screens.current = 'update'
 
+    def on_leave(self):
+        self.ids.name.text = ''
+        self.ids.density.text = ''
+        self.ids.formula.text = ''
+        self.ids.polarity.text = ''
+
     def submit(self):
         app = MDApp.get_running_app()
         app.update_view_model.add_solvent({
@@ -131,6 +137,11 @@ class NewMaterialScreen(Screen):
     def back(self):
         app = MDApp.get_running_app()
         app.root.ids.screens.current = 'update'
+
+    def on_leave(self):
+        self.ids.name.text = ''
+        self.ids.formula.text = ''
+        self.ids.molecular_weight.text = ''
 
     def submit(self):
         app = MDApp.get_running_app()
