@@ -22,7 +22,6 @@ class UpdateScreen(Screen):
         Clock.schedule_once(lambda x: self.prepare(), 0)
     
     def prepare(self):
-        print(self.manager.children)
         # Adding tabs to screen
         tab = SolventTab(text = 'Solvents')
         self.ids.update_tabs.add_widget(tab)
@@ -64,13 +63,11 @@ class UpdateScreen(Screen):
 
     def exit(self):
         # remove screens when leaving
-        print(len(self.manager.children))
         for screen in self.manager.children:
             if screen.name == 'Solvents':
                 self.manager.remove_widget(screen)
             if screen.name == 'Materials':
                 self.manager.remove_widget(screen)
-        print(len(self.manager.children))
         app = MDApp.get_running_app()
         app.get_main_screen()
 
