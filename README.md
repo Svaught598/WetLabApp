@@ -32,3 +32,15 @@ The 'Completed' version of this project should include several features (bold me
 Some features that may be useful/interesting to complete:
 - automatic calculation of molecular weight based on chemical formula in CRUD display
 - incorporating PubChem API
+
+## Old Project
+
+I included this to serve as a reminder of what this project almost remained. Some points:
+
+1. The project had a lot of unnecesary customized widgets, leading to overcomplication.
+
+2. The logic was deeply tied to UI code, so technical changes were difficult to implement.
+
+3. CRUD for solvent data was utterly broken. Deleting a selected entry would actually delete two.
+
+All code is bad, but that means it can be better.
