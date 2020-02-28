@@ -24,3 +24,8 @@ class Material(BaseModel):
     @classmethod
     def get_material(cls, name):
         return cls.select().where(Material.name == name)
+
+    @classmethod
+    def delete_material(cls, name):
+        material = cls.get(Material.name == name)
+        return material.delete_instance()

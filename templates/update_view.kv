@@ -23,24 +23,11 @@
                 on_release: root.plus_button_pressed()
             Widget:
 
-<SolventViewClass@BoxLayout>:
-    name: ''
-    density: ''
-    formula: ''
-    polarity: ''
-    MDLabel:
-        text: root.name
-    MDLabel:
-        text: root.density
-    MDLabel:
-        text: root.formula
-    MDLabel:
-        text: root.polarity
 <SolventTab>
     id: solvent
     RecycleView:
         id: solvent_rv
-        viewclass: 'SolventViewClass'
+        viewclass: 'ButtonViewClass'
         RecycleBoxLayout:
             default_size: None, dp(56)
             default_size_hint: 1, None
@@ -48,22 +35,11 @@
             height: self.minimum_height
             orientation: 'vertical'
 
-<MaterialViewClass@BoxLayout>:
-    name: ''
-    formula: ''
-    molecular_weight: ''
-    MDLabel:
-        text: root.name
-    MDLabel:
-        text: root.formula
-    MDLabel:
-        text: root.molecular_weight
-
 <MaterialTab>
     id: material
     RecycleView:
         id: solvent_rv
-        viewclass: 'MaterialViewClass'
+        viewclass: 'ButtonViewClass'
         RecycleBoxLayout:
             default_size: None, dp(56)
             default_size_hint: 1, None
@@ -175,7 +151,6 @@
                         halign: 'center'
                         text: 'Chemical Formula'
                     MDTextFieldRect:
-                        input_filter: 'float'
                         padding: 10, 10
                         id: formula
                 BoxLayout:
@@ -194,3 +169,16 @@
                         text: 'Add Material'
                         on_release: root.submit()
 
+
+<ButtonViewClass>:
+    padding: dp(8)
+    MDLabel:
+        text: root.name
+        halign: 'left'
+    MDRectangleFlatButton:
+        text: 'Edit'
+        width: dp(200)
+    MDRectangleFlatButton:
+        text: 'Delete'
+        width: dp(200)
+        on_release: root.delete_solvent() if root.polarity else root.delete_material()

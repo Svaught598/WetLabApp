@@ -29,3 +29,8 @@ class Solvent(BaseModel):
     @classmethod
     def get_solvent(cls, name):
         return cls.select().where(Solvent.name == name)
+
+    @classmethod
+    def delete_solvent(cls, name):
+        solvent = cls.get(Solvent.name == name)
+        return solvent.delete_instance()

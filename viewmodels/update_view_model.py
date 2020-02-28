@@ -77,3 +77,11 @@ class UpdateViewModel(EventDispatcher):
         if float(context['molecular_weight']) < 0:
             self.error = "Molecular weight must be positive!"
             return False
+
+    def delete_solvent(self, name):
+        Solvent.delete_solvent(name)
+        self.get_solvents()
+    
+    def delete_material(self, name):
+        Material.delete_material(name)
+        self.get_materials()

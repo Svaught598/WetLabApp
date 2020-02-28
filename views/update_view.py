@@ -1,11 +1,11 @@
 from kivy.uix.screenmanager import Screen
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
-from kivy.properties import StringProperty, ListProperty
+from kivy.properties import StringProperty, ListProperty, BooleanProperty
 from kivy.clock import Clock
 from kivy.metrics import dp
 
-from kivymd.uix.button import MDTextButton
+from kivymd.uix.button import MDTextButton, MDRectangleFlatButton
 from kivymd.uix.tab import MDTabs, MDTabsBase
 from kivymd.uix.dialog import MDDialog
 from kivymd.app import MDApp
@@ -22,6 +22,7 @@ class UpdateScreen(Screen):
         Clock.schedule_once(lambda x: self.prepare(), 0)
     
     def prepare(self):
+        print(self.manager.children)
         # Adding tabs to screen
         tab = SolventTab(text = 'Solvents')
         self.ids.update_tabs.add_widget(tab)
@@ -63,11 +64,13 @@ class UpdateScreen(Screen):
 
     def exit(self):
         # remove screens when leaving
+        print(len(self.manager.children))
         for screen in self.manager.children:
             if screen.name == 'Solvents':
                 self.manager.remove_widget(screen)
             if screen.name == 'Materials':
                 self.manager.remove_widget(screen)
+        print(len(self.manager.children))
         app = MDApp.get_running_app()
         app.get_main_screen()
 
@@ -178,3 +181,15 @@ class MaterialTab(BoxLayout, MDTabsBase):
     def refresh_rv(self, data):
         self.ids.solvent_rv.data = data
 
+
+class ButtonViewClass(BoxLayout):
+    name = StringProperty('')
+    polarity = None
+
+    def delete_solvent(self):
+        app = MDApp.get_running_app()
+        app.update_view_model.delete_solvent(self.name)
+
+    def delete_material(self):
+        app = MDApp.get_running_app()
+        app.update_view_model.delete_material(self.name)
