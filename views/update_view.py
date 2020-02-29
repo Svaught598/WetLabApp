@@ -209,7 +209,7 @@ class ButtonViewClass(BoxLayout):
             title = 'Are you sure?',
             text = 'You are about to permanently delete this item. Continue?',
             text_button_ok = str(self.confirm),
-            text_button_cancel = self.cancel,
+            text_button_cancel = str(self.cancel),
             size_hint = (0.8, None),
             height = dp(200))
         self.dialog.events_callback = lambda x, y: self.handle_dialog(x, y)
