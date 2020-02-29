@@ -181,4 +181,4 @@
     MDRectangleFlatButton:
         text: 'Delete'
         width: dp(200)
-        on_release: root.delete_solvent() if root.polarity else root.delete_material()
+        on_release: root.confirm_popup()

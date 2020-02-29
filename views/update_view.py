@@ -192,6 +192,8 @@ class MaterialTab(BoxLayout, MDTabsBase):
 
 class ButtonViewClass(BoxLayout):
     name = StringProperty('')
+    confirm = StringProperty('Yes')
+    cancel = StringProperty('Maybe not...')
     polarity = None
 
     def delete_solvent(self):
@@ -201,3 +203,20 @@ class ButtonViewClass(BoxLayout):
     def delete_material(self):
         app = MDApp.get_running_app()
         app.update_view_model.delete_material(self.name)
+
+    def confirm_popup(self):
+        self.dialog = MDDialog(
+            title = 'Are you sure?',
+            text = 'You are about to permanently delete this item. Continue?',
+            text_button_ok = str(self.confirm),
+            text_button_cancel = self.cancel,
+            size_hint = (0.8, None),
+            height = dp(200))
+        self.dialog.events_callback = lambda x, y: self.handle_dialog(x, y)
+        self.dialog.open()
+
+    def handle_dialog(self, choice, inst):
+        if choice == self.confirm:
+            self.delete_solvent() if self.polarity else self.delete_material()
+        elif choice == self.cancel:
+            return 
