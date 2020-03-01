@@ -18,23 +18,26 @@ Screen:
 
                     Widget:
                 
-                MDRaisedButton:
+                MDFillRoundFlatButton:
                     text: "Make New Solution"
                     elevation_normal: 2
                     opposite_colors: True
                     pos_hint: {'center_x': 0.5, 'center_y': 0.75}
+                    size_hint_x: 0.8
                     on_press: root.ids.screens.current = 'volumeneeded'
-                MDRaisedButton:
+                MDFillRoundFlatButton:
                     text: "Update data"
                     elevation_normal: 2
                     opposite_colors: True
                     pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                    size_hint_x: 0.8
                     on_press: root.ids.screens.current = 'update'
-                MDRaisedButton:
+                MDFillRoundFlatButton:
                     text: "Calculate Film Thickness"
                     elevation_normal: 2
                     opposite_colors: True
                     pos_hint: {'center_x': 0.5, 'center_y': 0.25}
+                    size_hint_x: 0.8
                     on_press: root.ids.screens.current = 'thickness'
 
         MDNavigationDrawer:
