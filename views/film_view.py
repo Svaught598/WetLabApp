@@ -1,7 +1,9 @@
 from kivymd.uix.menu import MDDropdownMenu
 from kivymd.uix.menu import MDMenuItem
 from kivymd.uix.button import MDRectangleFlatButton
+from kivymd.uix.dialog import MDDialog
 from kivymd.app import MDApp
+from kivymd import factory_registers
 
 from kivy.uix.screenmanager import Screen
 from kivy.uix.boxlayout import BoxLayout
@@ -11,7 +13,7 @@ from kivy.uix.textinput import TextInput
 from kivy.properties import StringProperty, ListProperty
 from kivy.lang.builder import Builder
 from kivy.clock import Clock
-from kivymd import factory_registers
+from kivy.metrics import dp
 
 from settings import SOLUTION_TYPES
 
@@ -34,8 +36,8 @@ class FilmScreen(Screen):
     def prepare(self):
         app = MDApp.get_running_app()
         app.film_view_model.bind(
-            film_thickness = lambda x, y: self.show_film_thickness(y),
-            error = lambda x, y: self.show_error_message(y),
+            THICKNESS = lambda x, y: self.show_film_thickness(y),
+            ERROR = lambda x, y: self.error_popup(y),
 
             SOLVENT_LIST = lambda x, y: self.add_solvents(y),
             MATERIAL_LIST = lambda x, y: self.add_materials(y)
@@ -93,14 +95,29 @@ class FilmScreen(Screen):
     def calculate_button_pressed(self):
         app = MDApp.get_running_app()
         app.film_view_model.calculate({
+            'solution_type': self.ids.solution_types.text,
             'solvent': self.ids.solvent.text,
             'material': self.ids.material.text,
             'concentration': self.ids.concentration.text,
+            'volume': self.ids.volume.text,
             'area': self.ids.area.text,
         })
 
-    def show_error_message(self, error_message):
-        self.ids.result.text = error_message
+    def error_popup(self, is_error):
+        if is_error:
+            self.dialog = MDDialog(
+                title = 'Oops! Something went wrong!',
+                text = "Please check that input fields are valid",
+                size_hint = (0.8, None),
+                height = dp(200), 
+                on_dismiss = lambda x: self.close_error())
+            self.dialog.open()
+    
+    def close_error(self):
+        app = MDApp.get_running_app()
+        app.film_view_model.close_error()
 
     def show_film_thickness(self, film_thickness):
-        self.ids.result.text = film_thickness
+        self.ids.result.text = (
+        f'Film Thickness is approximately [b][color=#ff3300]{film_thickness}[/color][/b]'
+        )

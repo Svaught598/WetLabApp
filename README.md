@@ -24,10 +24,10 @@ At the time of writing (02/25/20), the project is a work in progress.
 
 The 'Completed' version of this project should include several features (bold means complete):
 - **tool to calculate volume needed for making new solutions**
-- tool to calculate film thickness with at least one theoretical model
+- **tool to calculate film thickness with at least one theoretical model**
 - tool to calculate intermolecular distance of particles in a thin film
 - tool to calculate dilutions
-- **CR**UD with solvents/materials/compounds
+- **CR**U**D** with solvents/materials/compounds
 
 Some features that may be useful/interesting to complete:
 - automatic calculation of molecular weight based on chemical formula in CRUD display
