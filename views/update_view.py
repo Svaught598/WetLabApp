@@ -145,7 +145,8 @@ class NewMaterialScreen(Screen):
         app.update_view_model.add_material({
             'name': self.ids.name.text,
             'formula': self.ids.formula.text,
-            'molecular_weight': self.ids.molecular_weight.text,})
+            'molecular_weight': self.ids.molecular_weight.text,
+            'density': self.ids.density.text})
 
     def error_popup(self, error):
         self.dialog = MDDialog(

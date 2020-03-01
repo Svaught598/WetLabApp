@@ -43,7 +43,8 @@ class UpdateViewModel(EventDispatcher):
             material = Material.create(
                 name = context['name'],
                 formula = context['formula'],
-                molecular_weight = context['molecular_weight'])
+                molecular_weight = context['molecular_weight'],
+                density = context['density'])
             material.save()
             self.error_added = False
             self.get_materials()
@@ -85,6 +86,9 @@ class UpdateViewModel(EventDispatcher):
                 return False
         if float(context['molecular_weight']) < 0:
             self.error = "Molecular weight must be positive!"
+            return False
+        if float(context['density']) < 0:
+            self.error =  "Density must be positive!"
             return False
         return True
 

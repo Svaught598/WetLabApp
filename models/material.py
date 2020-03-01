@@ -8,6 +8,7 @@ class Material(BaseModel):
     name = CharField(unique=True)
     formula = CharField()
     molecular_weight = FloatField()
+    density = FloatField()
 
     def __unicode__(self):
         return str(name)
@@ -17,7 +18,8 @@ class Material(BaseModel):
         material_list = [{
             'name': str(record.name),
             'formula': str(record.formula),
-            'molecular_weight': str(record.molecular_weight)
+            'molecular_weight': str(record.molecular_weight),
+            'density': str(record.density),
             } for record in cls.select()]
         return material_list
 
