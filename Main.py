@@ -17,6 +17,7 @@ from views import (
     AboutScreen,
     SettingsScreen,
     DevelopingScreen,
+    DilutionScreen,
 )
 from viewmodels import (
     VolumeViewModel,
@@ -60,6 +61,8 @@ class SolutionApp(MDApp):
         self.root.ids.screens.add_widget(self.screen2)
         self.screen3 = FilmScreen(name = 'thickness')
         self.root.ids.screens.add_widget(self.screen3)
+        self.screen4 = DilutionScreen(name = 'dilution')
+        self.root.ids.screens.add_widget(self.screen4)
 
     def add_view_models(self):
         self.volume_view_model = VolumeViewModel()
@@ -84,19 +87,22 @@ class SolutionApp(MDApp):
 
     def get_main_screen(self):
         self.root.ids.screens.current = 'menu'
-        return 'menu'
+        self.root.ids.nav_drawer.toggle_nav_drawer()
 
     def get_settings_screen(self):
         self.root.ids.screens.add_widget(SettingsScreen(name = 'settings'))
         self.root.ids.screens.current = 'settings'
+        self.root.ids.nav_drawer.toggle_nav_drawer()
 
     def get_about_screen(self):
         self.root.ids.screens.add_widget(AboutScreen(name = 'about'))
         self.root.ids.screens.current = 'about'
+        self.root.ids.nav_drawer.toggle_nav_drawer()
 
     def get_developing_screen(self):
         self.root.ids.screens.add_widget(DevelopingScreen(name = 'developing'))
         self.root.ids.screens.current = 'developing'
+        self.root.ids.nav_drawer.toggle_nav_drawer()
 
     def exit_app(self):
         return 'exit'

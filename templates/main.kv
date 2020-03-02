@@ -22,21 +22,28 @@ Screen:
                     text: "Make New Solution"
                     elevation_normal: 2
                     opposite_colors: True
-                    pos_hint: {'center_x': 0.5, 'center_y': 0.75}
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.8}
                     size_hint_x: 0.8
                     on_press: root.ids.screens.current = 'volumeneeded'
+                MDFillRoundFlatButton:
+                    text: "Dilution"
+                    elevation_normal: 2
+                    opposite_colors: True
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.6}
+                    size_hint_x: 0.8
+                    on_press: root.ids.screens.current = 'dilution'
                 MDFillRoundFlatButton:
                     text: "Update data"
                     elevation_normal: 2
                     opposite_colors: True
-                    pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.4}
                     size_hint_x: 0.8
                     on_press: root.ids.screens.current = 'update'
                 MDFillRoundFlatButton:
                     text: "Calculate Film Thickness"
                     elevation_normal: 2
                     opposite_colors: True
-                    pos_hint: {'center_x': 0.5, 'center_y': 0.25}
+                    pos_hint: {'center_x': 0.5, 'center_y': 0.2}
                     size_hint_x: 0.8
                     on_press: root.ids.screens.current = 'thickness'
 
