@@ -86,8 +86,8 @@ class SolutionApp(MDApp):
         return 
 
     def get_main_screen(self):
+        self.root.ids.screens.transition.direction = 'right'
         self.root.ids.screens.current = 'menu'
-        self.root.ids.nav_drawer.toggle_nav_drawer()
 
     def get_settings_screen(self):
         self.root.ids.screens.add_widget(SettingsScreen(name = 'settings'))

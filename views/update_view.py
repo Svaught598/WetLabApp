@@ -90,6 +90,7 @@ class NewSolventScreen(Screen):
 
     def back(self):
         app = MDApp.get_running_app()
+        app.root.ids.screens.transition.direction = 'right'
         app.root.ids.screens.current = 'update'
 
     def on_leave(self):
@@ -133,6 +134,7 @@ class NewMaterialScreen(Screen):
 
     def back(self):
         app = MDApp.get_running_app()
+        app.root.ids.screens.transition.direction = 'right'
         app.root.ids.screens.current = 'update'
 
     def on_leave(self):
