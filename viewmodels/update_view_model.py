@@ -1,4 +1,7 @@
-from peewee import IntegrityError
+# STandard Lib imports
+import string
+
+# kivy imports
 from kivy.event import EventDispatcher
 from kivy.clock import Clock
 from kivy.properties import (
@@ -6,10 +9,12 @@ from kivy.properties import (
     ListProperty,
     BooleanProperty)
 
+# peewee imports
+from peewee import IntegrityError
+
+# local imports
 from models.solvent import Solvent
 from models.material import Material
-
-import string
 
 
 class UpdateViewModel(EventDispatcher):
