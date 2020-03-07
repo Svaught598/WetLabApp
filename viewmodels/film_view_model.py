@@ -1,21 +1,31 @@
+# Kivy imports
 from kivy.event import EventDispatcher
 from kivy.clock import Clock
 from kivy.properties import StringProperty, ListProperty, BooleanProperty
 
+# local imports
 from models import Solvent, Material
 from settings import SOLUTION_TYPES
 
 class FilmViewModel(EventDispatcher):
     
+    # These Properties are set by the calculate method
     THICKNESS = StringProperty('')
+    ERROR = BooleanProperty('')
+
+    # Properties that are bound to changes in 
+    # solvent or material dropdown menu selection
     MOLECULAR_WEIGHT = StringProperty('')
     MATERIAL_DENSITY = StringProperty('')
     SOLVENT_DENSITY = StringProperty('')
-    ERROR = BooleanProperty('')
-
+    
+    
+    # Properties that are set by querying the database for 
+    # all items in each table
     SOLVENT_LIST = ListProperty([])
     MATERIAL_LIST = ListProperty([])
 
+    # context for calculate method. Usually reflects user inputs
     context = {}
 
     def calculate(self, context):
@@ -180,6 +190,17 @@ class FilmViewModel(EventDispatcher):
                 self.context.update({'mol_weight': self.MOLECULAR_WEIGHT})
                 self.context.update({'material_density': self.MATERIAL_DENSITY})
 
+    def close_error(self):
+        """
+        need this so that future ERRORs invoke a change in the state of
+        the ERROR property. i.e, setting ERROR to True when its already True
+        won't trigger an event on the UI side (no error popup)
+        """
+        self.ERROR = False 
+
+    # The rest of these methods are just helper functions 
+    # use the peewee model to query the database for specific
+    # pieces of information
     def get_mol_weight(self, material):
         material = Material.get_material(material)
         mol_weight = material[0].molecular_weight
@@ -200,9 +221,6 @@ class FilmViewModel(EventDispatcher):
 
     def get_materials(self):
         self.MATERIAL_LIST = Material.get_all()
-
-    def close_error(self):
-        self.ERROR = False 
 
 
 # TODO: add methods to calculate thickness from WT/wt solution
