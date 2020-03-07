@@ -1,7 +1,9 @@
+# Kivy imports
 from kivy.event import EventDispatcher
 from kivy.clock import Clock
 from kivy.properties import StringProperty, ListProperty, BooleanProperty
 
+# Local imports
 from models.solvent import Solvent
 from models.material import Material
 from settings import SOLUTION_TYPES, MASS_UNITS
@@ -9,18 +11,21 @@ from utils import convert_mass
 
 class VolumeViewModel(EventDispatcher):
 
-    __events__ = (
-        ''
-    )
-
+    # Properties that are set when 'calculate' method called
     VOLUME = StringProperty()
-    SOLVENT_DENSITY = StringProperty('')
-    MOLECULAR_WEIGHT = StringProperty('')
     ERROR = BooleanProperty(False)
 
+    # Properties that are bound to changes in 
+    # solvent or material dropdown menu selection
+    SOLVENT_DENSITY = StringProperty('')
+    MOLECULAR_WEIGHT = StringProperty('')
+
+    # Properties that are set by querying the database for 
+    # all items in each table
     SOLVENT_LIST = ListProperty([])
     MATERIAL_LIST = ListProperty([])
 
+    # context for calculate method. Usually reflects user inputs
     context = {}
 
     def calculate(self, context):
@@ -157,7 +162,18 @@ class VolumeViewModel(EventDispatcher):
                 mol_weight = self.context['mol_weight']
             if mol_weight < 0:
                 return False
-            
+
+    def close_error(self):
+        """
+        need this so that future ERRORs invoke a change in the state of
+        the ERROR property. i.e, setting ERROR to True when its already True
+        won't trigger an event on the UI side (no error popup)
+        """
+        self.ERROR = False
+
+    # The rest of these methods are just helper functions 
+    # use the peewee model to query the database for specific
+    # pieces of information
     def get_solvents(self):
         self.SOLVENT_LIST = Solvent.get_all()
 
@@ -174,8 +190,5 @@ class VolumeViewModel(EventDispatcher):
         mol_weight = material[0].molecular_weight
         self.MOLECULAR_WEIGHT = f'{mol_weight}'
 
-    def close_error(self):
-        self.ERROR = False
 
-# TODO: add more solution_types and logic.
-# add conversion method for different solution types
+

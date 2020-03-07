@@ -1,3 +1,4 @@
+# KivyMD imports
 from kivymd.uix.menu import MDDropdownMenu
 from kivymd.uix.menu import MDMenuItem
 from kivymd.uix.button import MDRectangleFlatButton
@@ -5,6 +6,7 @@ from kivymd.uix.dialog import MDDialog
 from kivymd.app import MDApp
 from kivymd import factory_registers
 
+# Kivy imports
 from kivy.uix.screenmanager import Screen
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
@@ -15,6 +17,7 @@ from kivy.lang.builder import Builder
 from kivy.clock import Clock
 from kivy.metrics import dp
 
+# Local imports 
 from models.solvent import Solvent
 from settings import SOLUTION_TYPES, MASS_UNITS
 
@@ -24,14 +27,19 @@ class MDMenuItem(MDRectangleFlatButton):
         
 
 class VolumeScreen(Screen):
+
+    # Information pulled from database
     SOLVENT_NAMES = ListProperty([])
     MATERIAL_NAMES = ListProperty([])
 
+    # Information pulled from settings
     _MASS_UNITS = ListProperty([])
     _SOLUTION_TYPES = ListProperty([])
     _MASS_UNIT_DEFAULT = MASS_UNITS[0]
     _SOLUTION_TYPE_DEFAULT = SOLUTION_TYPES[0]
 
+    # Properties bound to dropdown selection. Upon change
+    # they trigger an even that hides/displays widgets as needed
     _MOL_WEIGHT_FIELDS = BooleanProperty(False)
     _SOLVENT_DENSITY_FIELDS = BooleanProperty(True)
 
@@ -40,6 +48,10 @@ class VolumeScreen(Screen):
         Clock.schedule_once(lambda x: self.prepare(), 0)
 
     def prepare(self):
+        """
+        Bindings to corresponding viewmodel properties 
+        and initialization of widget
+        """
         self.add_solution_types(SOLUTION_TYPES)
         app = MDApp.get_running_app()
         app.volume_view_model.bind(
@@ -52,19 +64,27 @@ class VolumeScreen(Screen):
             MATERIAL_LIST = lambda x, y: self.add_materials(y)
         )
         
-        # populate dropdowns from consts
+        # Populate dropdowns from constants
         self.add_solution_types(SOLUTION_TYPES)
         self.add_mass_units(MASS_UNITS)
 
-        # populate dropdowns from database through viewmodel
+        # Populate dropdowns from database through viewmodel
         app.volume_view_model.get_solvents()
         app.volume_view_model.get_materials()
 
     def on_solution_types(self, text):
+        """
+        Changes UI-bound properties as needed depending
+        on dropdown selection.
+        """
         self.ids.solution_types.text = text
+
+        # Solution Type is % w/w
         if text == SOLUTION_TYPES[0]:
             self._MOL_WEIGHT_FIELDS = False
             self._SOLVENT_DENSITY_FIELDS = True
+
+        # Solution Type is any of (mol, mmol, umol, nmol)
         if any([
                 text == SOLUTION_TYPES[3],
                 text == SOLUTION_TYPES[4],
@@ -73,7 +93,8 @@ class VolumeScreen(Screen):
               ]):
             self._MOL_WEIGHT_FIELDS = True
             self._SOLVENT_DENSITY_FIELDS = True
-            
+        
+        # Solution Type is any of (g/mL, mg/mL)
         elif any([
                 text == SOLUTION_TYPES[1],
                 text == SOLUTION_TYPES[2],
@@ -82,30 +103,40 @@ class VolumeScreen(Screen):
             self._SOLVENT_DENSITY_FIELDS = False
 
     def on_solvent(self, text):
+        """Bound to solvent dropdwn selection"""
         self.ids.solvent.text = text
         app = MDApp.get_running_app()
         app.volume_view_model.get_solvent_density(text)
 
     def on_material(self, text):
+        """Bound to material dropdown selection"""
         self.ids.material.text = text
         app = MDApp.get_running_app()
         app.volume_view_model.get_mol_weight(text)
 
     def on_mass_unit(self, text):
+        """Bound to mass unit dropdown selection"""
         self.ids.mass_units.text = text
 
     def change_density(self, density):
+        """Bound to solvent dropdown selection"""
         self.ids.solvent_density.text = f'{density}'
 
     def change_mol_weight(self, mol_weight):
+        """Bound to material dropdown selection"""
         self.ids.molecular_weight.text = f'{mol_weight}'
 
     def clear(self):
+        """clear input widgets on screen"""
         self.ids.mass.text = ''
         self.ids.concentration.text = ''
         self.ids.molecular_weight.text = ''
 
     def calculate_button_pressed(self):
+        """
+        Passes all input parameters from screen to viewmodel
+        calculate method. These inputs take the form of a dictionary
+        """
         app = MDApp.get_running_app()
         app.volume_view_model.calculate({
             'solution_type': self.ids.solution_types.text,
@@ -118,6 +149,7 @@ class VolumeScreen(Screen):
             'solvent_density': self.ids.solvent_density.text,})
 
     def add_mass_units(self, units):
+        """Helper for constructing 'mass units' dropdown"""
         self._MASS_UNITS = [{
             'viewclass': 'MDMenuItem',
             'text': unit,
@@ -125,6 +157,7 @@ class VolumeScreen(Screen):
         } for unit in units]
 
     def add_solution_types(self, types):
+        """Helper for constructing 'solution types' dropdown"""
         self._SOLUTION_TYPES = [{
             'viewclass': 'MDMenuItem',
             'text': type,
@@ -132,6 +165,10 @@ class VolumeScreen(Screen):
             } for type in types]
 
     def add_materials(self, materials):
+        """
+        Helper for constructing 'materials' dropdown.
+        Bound to 'MATERIAL_LIST' in volume_view_model
+        """
         self.MATERIAL_NAMES = [{
             'viewclass': 'MDMenuItem',
             'text': material['name'],
@@ -139,6 +176,10 @@ class VolumeScreen(Screen):
         } for material in materials]
 
     def add_solvents(self, solvents):
+        """
+        Helper for constructing 'solvents' dropdown
+        Bound to 'SOLVENT_LIST' in volume_view_model
+        """
         self.SOLVENT_NAMES = [{
             'viewclass': 'MDMenuItem',
             'text': solvent['name'],
@@ -146,13 +187,16 @@ class VolumeScreen(Screen):
         } for solvent in solvents]
 
     def show_error_message(self, error_message):
+        """Deprecated"""
         self.ids.volume_needed.text = error_message
 
     def show_volume_needed(self, volume_needed):
+        """Bound to 'VOLUME' property in volume_view_viewmodel"""
         self.ids.volume.text = (
         f"You'll need [b][color=#ff3300]{volume_needed}[/color][/b] of the solvent to make a solution at this concentration")
     
     def error_popup(self, is_error):
+        """Bound to 'ERROR' property in volume_view_model"""
         if is_error:
             self.dialog = MDDialog(
                 title = 'Oops! Something went wrong!',
@@ -163,5 +207,6 @@ class VolumeScreen(Screen):
             self.dialog.open()
 
     def close_error(self):
+        """closes error dialog"""
         app = MDApp.get_running_app()
         app.volume_view_model.close_error()
