@@ -186,10 +186,6 @@ class VolumeScreen(Screen):
             'callback': self.on_solvent
         } for solvent in solvents]
 
-    def show_error_message(self, error_message):
-        """Deprecated"""
-        self.ids.volume_needed.text = error_message
-
     def show_volume_needed(self, volume_needed):
         """Bound to 'VOLUME' property in volume_view_viewmodel"""
         self.ids.volume.text = (
