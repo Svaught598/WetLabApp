@@ -23,7 +23,8 @@ from views import (
 from viewmodels import (
     VolumeViewModel,
     UpdateViewModel,
-    FilmViewModel
+    FilmViewModel,
+    DilutionViewModel,
 )
 from settings import TEMPLATE_PATHS, MAIN_TEMPLATE_PATH
 
@@ -97,6 +98,7 @@ class SolutionApp(MDApp):
         self.volume_view_model = VolumeViewModel()
         self.update_view_model = UpdateViewModel()
         self.film_view_model = FilmViewModel()
+        self.dilution_view_model = DilutionViewModel()
 
     def add_nav_drawer(self):
         """
