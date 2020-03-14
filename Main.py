@@ -123,6 +123,11 @@ class SolutionApp(MDApp):
         self.root.ids.screens.transition.direction = 'right'
         self.root.ids.screens.current = 'menu'
 
+
+    # FIXME: screen duplication
+    # the following methods always construct a screen each time
+    # the button is pressed. need to separate construction from 
+    # screen change.
     def get_settings_screen(self):
         """constructs settings screen and changes to it"""
         self.root.ids.screens.add_widget(SettingsScreen(name = 'settings'))
