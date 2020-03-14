@@ -146,6 +146,24 @@ class SolutionApp(MDApp):
         self.root.ids.screens.current = 'developing'
         self.root.ids.nav_drawer.toggle_nav_drawer()
 
+    def solvent_refresh(self):
+        """
+        calls all 'get_solvents' methods from
+        each viewmodel to reflect changes in database
+        """
+        self.volume_view_model.get_solvents()
+        self.update_view_model.get_solvents()
+        self.film_view_model.get_solvents()
+
+    def material_refresh(self):
+        """
+        calls all 'get_materials' methods from
+        each viewmodel to reflect changes in database
+        """
+        self.volume_view_model.get_materials()
+        self.update_view_model.get_materials()
+        self.film_view_model.get_materials()
+
     def exit_app(self):
         """
         starts app. JK!

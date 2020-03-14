@@ -1,6 +1,9 @@
 # STandard Lib imports
 import string
 
+# kivyMD imports
+from kivymd.app import MDApp
+
 # kivy imports
 from kivy.event import EventDispatcher
 from kivy.clock import Clock
@@ -48,7 +51,10 @@ class UpdateViewModel(EventDispatcher):
                 polarity = float(context['polarity']))
             solvent.save()
             self.IS_ERROR = False 
-            self.get_solvents()
+
+            # refreshes all viewmodels solvent data
+            app = MDApp.get_running_app()
+            app.solvent_refresh()
 
         # Throw error if already exists in database
         except IntegrityError:
@@ -69,7 +75,11 @@ class UpdateViewModel(EventDispatcher):
                 density = context['density'])
             material.save()
             self.IS_ERROR = False
-            self.get_materials()
+
+            # refreshes all viewmodesl material data
+            app = MDApp.get_running_app()
+            app.material_refresh()
+
         except IntegrityError:
             self.ERROR_MSG = 'This Material is already in the system!'
             self.IS_ERROR = True
