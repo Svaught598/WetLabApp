@@ -52,7 +52,6 @@ class VolumeScreen(Screen):
         Bindings to corresponding viewmodel properties 
         and initialization of widget
         """
-        self.add_solution_types(SOLUTION_TYPES)
         app = MDApp.get_running_app()
         app.volume_view_model.bind(
             VOLUME = lambda x, y: self.show_volume_needed(y),
