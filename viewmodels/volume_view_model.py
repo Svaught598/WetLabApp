@@ -10,6 +10,16 @@ from settings import SOLUTION_TYPES, MASS_UNITS
 from utils import convert_mass
 
 class VolumeViewModel(EventDispatcher):
+    """
+    This class accepts inputs from the corresponding view class and
+    performs operations on those inputs unique to this class. 
+
+    The primary responsibilty here is to ensure user input is valid, 
+    and to calculate the VOLUME needed for a new solution. If the input is not 
+    valid, the viewmodel will attempt to rectify this by either pulling 
+    necesary data from the database or changing ERROR to True.
+    (...which then triggers a UI dialog popup)
+    """
 
     # Properties that are set when 'calculate' method called
     VOLUME = StringProperty()
@@ -29,6 +39,23 @@ class VolumeViewModel(EventDispatcher):
     context = {}
 
     def calculate(self, context):
+        """
+        calculates VOLUME based on user input
+        
+        context is a dictionary. The following keys are always submitted, 
+        but may be '' if no input:
+
+            - 'concentration':  string
+            - 'mass':           string
+            - 'solution_type':  string
+            - 'mass_unit':      string
+
+        The following keys may be present, and are set by the verify_fields 
+        method through database query if not present:
+
+            - 'mol_weight':   string
+            - 'solvent_density':    string
+        """
         self.context = context
         if self.verify_fields() == False:
             self.ERROR = True
