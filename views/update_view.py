@@ -96,6 +96,10 @@ class UpdateScreen(Screen):
 
 
 class NewSolventScreen(Screen):
+
+    # property bound to 'IS_ERROR' in viewmodel
+    is_error = BooleanProperty()
+
     def __init__(self, *args, **kwargs):
         super(NewSolventScreen, self).__init__(*args, **kwargs)
         Clock.schedule_once(lambda x: self.prepare(), 0)
@@ -104,18 +108,18 @@ class NewSolventScreen(Screen):
         """Bindings to corresponding viewmodel properties"""
         app = MDApp.get_running_app()
         app.update_view_model.bind(
-            IS_ERROR = lambda x, y: self.error_added(y)
+            IS_ERROR = lambda x, y: self.change_error(y)
         )
 
-    def error_added(self, is_error):
-        """
-        bound to viewmodel IS_ERROR property
+    def change_error(self, is_error):
+        """changes class 'is_error' to reflect viewmodel"""
+        self.is_error = is_error
 
-        if there is error, stays on same screen
-        if there is no error, navigates back to 
-        main update view screen
+    def check_error(self):
         """
-        if is_error == True:
+        checks is_error to determine whether to switch screens
+        """
+        if self.is_error == True:
             return
         else:
             self.back()
@@ -141,18 +145,30 @@ class NewSolventScreen(Screen):
             'density': self.ids.density.text,
             'formula': self.ids.formula.text,
             'polarity': self.ids.polarity.text,})
+        self.check_error()
 
     def error_popup(self, error):
         """Displays error message (if any)"""
-        self.dialog = MDDialog(
-            title = 'Error',
-            text = error,
-            size_hint = (0.8, None),
-            height = dp(200))
-        self.dialog.open()
+        if error == '':
+            return 
+        else:
+            self.dialog = MDDialog(
+                title = 'Error',
+                text = error,
+                size_hint = (0.8, None),
+                height = dp(200))
+            self.dialog.open()
+
+            # Change error message back to ""
+            app = MDApp.get_running_app()
+            app.update_view_model.ERROR_MSG = ''
 
 
 class NewMaterialScreen(Screen):
+
+    # Property bound to IS_ERROR in viewmodel
+    is_error = BooleanProperty()
+
     def __init__(self, *args, **kwargs):
         super(NewMaterialScreen, self).__init__(*args, **kwargs)
         Clock.schedule_once(lambda x: self.prepare(), 0)
@@ -161,17 +177,18 @@ class NewMaterialScreen(Screen):
         """Bindings to corresponding viewmodel properties"""
         app = MDApp.get_running_app()
         app.update_view_model.bind(
-            IS_ERROR = lambda x, y: self.error_added(y))
+            IS_ERROR = lambda x, y: self.change_error(y)
+        )
 
-    def error_added(self, error_bool):
-        """
-        bound to viewmodel IS_ERROR property
+    def change_error(self, is_error):
+        """changes class 'is_error' to reflect viewmodel"""
+        self.is_error = is_error
 
-        if there is error, stays on same screen
-        if there is no error, navigates back to 
-        main update view screen
+    def check_error(self):
         """
-        if error_bool == True:
+        checks is_error to determine whether to switch screens
+        """
+        if self.is_error == True:
             return
         else:
             self.back()
@@ -196,6 +213,7 @@ class NewMaterialScreen(Screen):
             'formula': self.ids.formula.text,
             'molecular_weight': self.ids.molecular_weight.text,
             'density': self.ids.density.text})
+        self.check_error()
 
     def error_popup(self, error):
         """Displays error message (if any)"""

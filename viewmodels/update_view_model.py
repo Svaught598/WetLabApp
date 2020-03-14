@@ -29,10 +29,17 @@ class UpdateViewModel(EventDispatcher):
 
     def add_solvent(self, context):
         """method that attempts to add a solvent to the database"""
+
+        # initialize error so changes are noticed 
+        self.IS_ERROR = False
+
+        # check if input is valid
         is_error = self.check_solvent(context)
         if is_error:
             self.IS_ERROR = True
             return
+
+        # Try to add solvent
         try:
             solvent = Solvent.create(
                 name = context['name'],
@@ -42,6 +49,8 @@ class UpdateViewModel(EventDispatcher):
             solvent.save()
             self.IS_ERROR = False 
             self.get_solvents()
+
+        # Throw error if already exists in database
         except IntegrityError:
             self.ERROR_MSG = 'This Solvent is already in the system!'
             self.IS_ERROR = True
