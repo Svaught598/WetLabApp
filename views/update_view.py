@@ -1,3 +1,4 @@
+# Kivy imports
 from kivy.uix.screenmanager import Screen
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.label import Label
@@ -5,23 +6,31 @@ from kivy.properties import StringProperty, ListProperty, BooleanProperty
 from kivy.clock import Clock
 from kivy.metrics import dp
 
+# KivyMD imports
 from kivymd.uix.button import MDTextButton, MDRectangleFlatButton
 from kivymd.uix.tab import MDTabs, MDTabsBase
 from kivymd.uix.dialog import MDDialog
 from kivymd.app import MDApp
 
+# Local imports
 from models.solvent import Solvent
 
 
 class UpdateScreen(Screen):
-    solvent_list = ListProperty([])
-    material_list = ListProperty([])
+
+    # INformation pulled from Database
+    SOLVENT_LIST = ListProperty([])
+    MATERIAL_LIST = ListProperty([])
 
     def __init__(self, *args, **kwargs):
         super(UpdateScreen, self).__init__(*args, **kwargs)
         Clock.schedule_once(lambda x: self.prepare(), 0)
     
     def prepare(self):
+        """
+        Bindings to corresponding viewmodel properties
+        and initialization of widget
+        """
         # Adding tabs to screen
         tab = SolventTab(text = 'Solvents')
         self.ids.update_tabs.add_widget(tab)
@@ -37,32 +46,46 @@ class UpdateScreen(Screen):
         # Binding view_model properties to view events
         app = MDApp.get_running_app()
         app.update_view_model.bind(
-            error = lambda x, y: self.error_popup(y),
+            ERROR_MSG = lambda x, y: self.error_popup(y),
 
-            solvent_list = lambda x, y: self.refresh_solvent_rv(y),
-            material_list = lambda x, y: self.refresh_material_rv(y)
+            SOLVENT_LIST = lambda x, y: self.refresh_solvent_rv(y),
+            MATERIAL_LIST = lambda x, y: self.refresh_material_rv(y)
         ) 
+
+        # Populate recycleview from database through viewmodel
         app.update_view_model.get_solvents()
         app.update_view_model.get_materials()
 
     def refresh_solvent_rv(self, solvent_list):
-        self.solvent_list = solvent_list
+        """helper method bound to viewmodel property"""
+        self.SOLVENT_LIST = solvent_list
 
     def refresh_material_rv(self, material_list):
-        self.material_list = material_list
+        """helper method bound to viewmodel property"""
+        self.MATERIAL_LIST = material_list
 
     def error_popup(self, error):
+        """
+        helper method bound to viewmodel property
+        passes error-message to pertinent screen
+        """
         screen = self.manager.current_screen
         screen.error_popup(error)
 
     def plus_button_pressed(self):
-        # Screen manager navigation to appropriate 'new item' screen
+        """
+        navigates to appropriate 'new item' screen by checking the state 
+        of each tabbed item in the view. 
+        
+        The screen associated with 
+        new solvent entry is called 'Solvent' and etc...
+        """
         for tab in self.ids.update_tabs.ids.scrollview.children[0].children:
             if tab.state == 'down':
                 self.manager.current = tab.text
 
     def exit(self):
-        # remove screens when leaving
+        """remove screens when leaving"""
         for screen in self.manager.children:
             if screen.name == 'Solvents':
                 self.manager.remove_widget(screen)
@@ -78,28 +101,40 @@ class NewSolventScreen(Screen):
         Clock.schedule_once(lambda x: self.prepare(), 0)
 
     def prepare(self):
+        """Bindings to corresponding viewmodel properties"""
         app = MDApp.get_running_app()
         app.update_view_model.bind(
-            error_added = lambda x, y: self.error_added(y))
+            IS_ERROR = lambda x, y: self.error_added(y)
+        )
 
-    def error_added(self, error_bool):
-        if error_bool == True:
+    def error_added(self, is_error):
+        """
+        bound to viewmodel IS_ERROR property
+
+        if there is error, stays on same screen
+        if there is no error, navigates back to 
+        main update view screen
+        """
+        if is_error == True:
             return
         else:
             self.back()
 
     def back(self):
+        """navigates back to main update view screen"""
         app = MDApp.get_running_app()
         app.root.ids.screens.transition.direction = 'right'
         app.root.ids.screens.current = 'update'
 
     def on_leave(self):
+        """clears inputs upon leaving screen"""
         self.ids.name.text = ''
         self.ids.density.text = ''
         self.ids.formula.text = ''
         self.ids.polarity.text = ''
 
     def submit(self):
+        """sends inputs to viewmodel method to add solvent to database"""
         app = MDApp.get_running_app()
         app.update_view_model.add_solvent({
             'name': self.ids.name.text,
@@ -108,6 +143,7 @@ class NewSolventScreen(Screen):
             'polarity': self.ids.polarity.text,})
 
     def error_popup(self, error):
+        """Displays error message (if any)"""
         self.dialog = MDDialog(
             title = 'Error',
             text = error,
@@ -122,27 +158,38 @@ class NewMaterialScreen(Screen):
         Clock.schedule_once(lambda x: self.prepare(), 0)
 
     def prepare(self):
+        """Bindings to corresponding viewmodel properties"""
         app = MDApp.get_running_app()
         app.update_view_model.bind(
-            error_added = lambda x, y: self.error_added(y))
+            IS_ERROR = lambda x, y: self.error_added(y))
 
     def error_added(self, error_bool):
+        """
+        bound to viewmodel IS_ERROR property
+
+        if there is error, stays on same screen
+        if there is no error, navigates back to 
+        main update view screen
+        """
         if error_bool == True:
             return
         else:
             self.back()
 
     def back(self):
+        """navigates back to main update view screen"""
         app = MDApp.get_running_app()
         app.root.ids.screens.transition.direction = 'right'
         app.root.ids.screens.current = 'update'
 
     def on_leave(self):
+        """clears all user input upon leaving screen"""
         self.ids.name.text = ''
         self.ids.formula.text = ''
         self.ids.molecular_weight.text = ''
 
     def submit(self):
+        """sends inputs to viewmodel method to add material to database"""
         app = MDApp.get_running_app()
         app.update_view_model.add_material({
             'name': self.ids.name.text,
@@ -151,6 +198,7 @@ class NewMaterialScreen(Screen):
             'density': self.ids.density.text})
 
     def error_popup(self, error):
+        """Displays error message (if any)"""
         self.dialog = MDDialog(
             title = 'Error',
             text = error,
@@ -165,14 +213,16 @@ class SolventTab(BoxLayout, MDTabsBase):
         Clock.schedule_once(lambda x: self.prepare(), 0)
 
     def prepare(self):
+        """bindings to corresponding viewmodel properties"""
         app = MDApp.get_running_app()
         update_screen = app.root.ids.screens.get_screen(name = 'update')
-        self.refresh_rv(update_screen.solvent_list)
+        self.refresh_rv(update_screen.SOLVENT_LIST)
         update_screen.bind(
-            solvent_list = lambda inst, data: self.refresh_rv(data)
+            SOLVENT_LIST = lambda inst, data: self.refresh_rv(data)
         )
         
     def refresh_rv(self, data):
+        """updates data in recycleview"""
         self.ids.solvent_rv.data = data
 
 
@@ -182,44 +232,56 @@ class MaterialTab(BoxLayout, MDTabsBase):
         Clock.schedule_once(lambda x: self.prepare(), 0)
 
     def prepare(self, *args, **kwargs):
+        """bindings to corresponding viewmodel properties"""
         app = MDApp.get_running_app()
         update_screen = app.root.ids.screens.get_screen(name = 'update')
-        self.refresh_rv(update_screen.material_list)
+        self.refresh_rv(update_screen.MATERIAL_LIST)
         update_screen.bind(
-            material_list = lambda inst, data: self.refresh_rv(data)
+            MATERIAL_LIST = lambda inst, data: self.refresh_rv(data)
         )
 
     def refresh_rv(self, data):
+        """updates data in recycleview"""
         self.ids.solvent_rv.data = data
 
 
 class ButtonViewClass(BoxLayout):
-    name = StringProperty('')
-    confirm = StringProperty('Yes')
-    cancel = StringProperty('Maybe not...')
+
+    # Class level constants
+    CONFIRM = StringProperty('Yes')
+    CANCEL = StringProperty('Maybe not...')
+
+    # Nonetype if material, else Solvent
     polarity = None
 
+    # Name of the solvent/material 
+    name = StringProperty('')
+
     def delete_solvent(self):
+        """calls viewmodel method to delete entry from database"""
         app = MDApp.get_running_app()
         app.update_view_model.delete_solvent(self.name)
 
     def delete_material(self):
+        """calls viewmodel method to delete entry from database"""
         app = MDApp.get_running_app()
         app.update_view_model.delete_material(self.name)
 
     def confirm_popup(self):
+        """popup to confirm deletion of solvent/material"""
         self.dialog = MDDialog(
             title = 'Are you sure?',
             text = 'You are about to permanently delete this item. Continue?',
-            text_button_ok = str(self.confirm),
-            text_button_cancel = str(self.cancel),
+            text_button_ok = str(self.CONFIRM),
+            text_button_cancel = str(self.CANCEL),
             size_hint = (0.8, None),
             height = dp(200))
         self.dialog.events_callback = lambda x, y: self.handle_dialog(x, y)
         self.dialog.open()
 
     def handle_dialog(self, choice, inst):
-        if choice == self.confirm:
+        """helper method to handle dialog choice"""
+        if choice == self.CONFIRM:
             self.delete_solvent() if self.polarity else self.delete_material()
-        elif choice == self.cancel:
+        elif choice == self.CANCEL:
             return 
