@@ -13,7 +13,7 @@ TEMPLATE_PATHS = [
     os.path.join(ROOT_DIR, 'templates\\film_view.kv'),
     os.path.join(ROOT_DIR, 'templates\\update_view.kv'),
     os.path.join(ROOT_DIR, 'templates\\volume_view.kv'),
-    os.path.join(ROOT_DIR, 'templates\\dilution_screen.kv'),
+    os.path.join(ROOT_DIR, 'templates\\dilution_view.kv'),
 
     os.path.join(ROOT_DIR, 'templates\\about_view.kv'),
     os.path.join(ROOT_DIR, 'templates\\settings_view.kv'),
