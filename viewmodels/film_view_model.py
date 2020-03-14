@@ -8,6 +8,16 @@ from models import Solvent, Material
 from settings import SOLUTION_TYPES
 
 class FilmViewModel(EventDispatcher):
+    """
+    This class accepts inputs from the corresponding view class and
+    performs operations on those inputs unique to this class. 
+
+    The primary responsibilty here is to ensure user input is valid, 
+    and to calculate the THICKNESS of a film if it is. If the input is not 
+    valid, the viewmodel will attempt to rectify this by either pulling 
+    necesary data from the database or changing ERROR to True.
+    (...which then triggers a UI dialog popup)
+    """
     
     # These Properties are set by the calculate method
     THICKNESS = StringProperty('')
@@ -29,6 +39,23 @@ class FilmViewModel(EventDispatcher):
     context = {}
 
     def calculate(self, context):
+        """
+        calculates THICKNESS based on user input
+        
+        context is a dictionary. The following keys are always submitted, 
+        but may be '' if no input:
+
+            - 'concentration':  string
+            - 'volume':         string
+            - 'solution_type':  string
+            - 'area':           string
+
+        The following keys may be present, and are set by the verify_fields 
+        method through database query if not present:
+
+            - 'material_density':   string
+            - 'solvent_density':    string
+        """
         self.context = context
         if self.verify_fields() == False:
             self.ERROR = True
@@ -221,6 +248,3 @@ class FilmViewModel(EventDispatcher):
 
     def get_materials(self):
         self.MATERIAL_LIST = Material.get_all()
-
-
-# TODO: add methods to calculate thickness from WT/wt solution
