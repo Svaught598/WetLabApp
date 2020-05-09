@@ -85,6 +85,10 @@ class SolutionApp(MDApp):
         self.screen4 = DilutionScreen(name = 'dilution')
         self.root.ids.screens.add_widget(self.screen4)
 
+        """adding nav drawer screens"""
+        self.root.ids.screens.add_widget(AboutScreen(name = 'about'))
+        self.root.ids.screens.add_widget(DevelopingScreen(name = 'developing'))
+
     def add_view_models(self):
         """
         addding viewmodels to app directly, so that 
@@ -119,25 +123,16 @@ class SolutionApp(MDApp):
         return 
 
     def get_main_screen(self):
-        """changes screen back to menu (main.kv)"""
         self.root.ids.screens.transition.direction = 'right'
         self.root.ids.screens.current = 'menu'
 
-
-    # FIXME: screen duplication
-    # the following methods always construct a screen each time
-    # the button is pressed. need to separate construction from 
-    # screen change.
-    
     def get_about_screen(self):
-        """constructs about screen and changes to it"""
-        self.root.ids.screens.add_widget(AboutScreen(name = 'about'))
+        self.root.ids.screens.transition.direction = 'left'
         self.root.ids.screens.current = 'about'
         self.root.ids.nav_drawer.toggle_nav_drawer()
 
     def get_developing_screen(self):
-        """constructs developing screen and changes to it"""
-        self.root.ids.screens.add_widget(DevelopingScreen(name = 'developing'))
+        self.root.ids.screens.transition.direction = 'left'
         self.root.ids.screens.current = 'developing'
         self.root.ids.nav_drawer.toggle_nav_drawer()
 
