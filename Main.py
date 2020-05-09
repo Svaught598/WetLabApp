@@ -16,7 +16,6 @@ from views import (
     UpdateScreen,
     FilmScreen,
     AboutScreen,
-    SettingsScreen,
     DevelopingScreen,
     DilutionScreen,
 )
@@ -107,7 +106,6 @@ class SolutionApp(MDApp):
         """
         context = [
             ['Home', 'home-circle-outline', lambda x: self.get_main_screen()],
-            ['Settings', 'settings-outline', lambda x:self.get_settings_screen()],
             ['About', 'lambda', lambda x: self.get_about_screen()],
             ['Developing', 'keyboard', lambda x: self.get_developing_screen()],
             ['Exit', 'exit-to-app', lambda x: self.exit_app()]
@@ -130,12 +128,7 @@ class SolutionApp(MDApp):
     # the following methods always construct a screen each time
     # the button is pressed. need to separate construction from 
     # screen change.
-    def get_settings_screen(self):
-        """constructs settings screen and changes to it"""
-        self.root.ids.screens.add_widget(SettingsScreen(name = 'settings'))
-        self.root.ids.screens.current = 'settings'
-        self.root.ids.nav_drawer.toggle_nav_drawer()
-
+    
     def get_about_screen(self):
         """constructs about screen and changes to it"""
         self.root.ids.screens.add_widget(AboutScreen(name = 'about'))
@@ -168,9 +161,9 @@ class SolutionApp(MDApp):
 
     def exit_app(self):
         """
-        starts app. JK!
-        This method is called by kivy when the app closes. I have 
+        called by kivy when the app closes. I have 
         it here in case I need that functionality at some point
+        since i'm sure I won't remember which method name to use
         """
         return 'exit'
 
