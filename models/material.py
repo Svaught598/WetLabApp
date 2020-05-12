@@ -29,7 +29,7 @@ class Material(BaseModel):
         one record in the list, so we use the primary index 0"""
         record = cls.select().where(cls.name == name)[0]
         material = {
-            'name': str(record.name),
+            'material_name': str(record.name),
             'formula': str(record.formula),
             'molecular_weight': str(record.molecular_weight),
             'density': str(record.density)}
@@ -39,3 +39,9 @@ class Material(BaseModel):
     def delete_material(cls, name):
         material = cls.get(Material.name == name)
         return material.delete_instance()
+
+    @classmethod
+    def update_material(cls, name, context):
+        query = cls.update(context).where(cls.name == name)
+        query.execute()
+

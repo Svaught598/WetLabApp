@@ -30,7 +30,7 @@ class Solvent(BaseModel):
         one record in the list, so we use the primary index 0"""
         record = cls.select().where(Solvent.name == name)[0]
         solvent = {
-            'name': str(record.name),
+            'solvent_name': str(record.name),
             'density': str(record.density),
             'formula': str(record.formula),
             'polarity': str(record.polarity)}
@@ -41,3 +41,8 @@ class Solvent(BaseModel):
     def delete_solvent(cls, name):
         solvent = cls.get(Solvent.name == name)
         return solvent.delete_instance()
+
+    @classmethod
+    def update_solvent(cls, name, context):
+        query = cls.update(context).where(cls.name == name)
+        query.execute()

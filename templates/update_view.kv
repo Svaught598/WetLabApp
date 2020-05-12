@@ -178,7 +178,6 @@
                         text: 'Add Material'
                         on_release: root.submit()
 
-
 <ButtonViewClass>:
     padding: dp(8)
     MDLabel:
@@ -187,7 +186,147 @@
     MDRectangleFlatButton:
         text: 'Edit'
         width: dp(200)
+        on_release: root.edit()
     MDRectangleFlatButton:
         text: 'Delete'
         width: dp(200)
         on_release: root.confirm_popup()
+
+<UpdateSolventScreen>:
+    BoxLayout:
+        anchor_x: 'center'
+        anchor_y: 'top'
+        orientation: 'vertical'
+        canvas.before:
+            Color:
+                rgba: 0.3, 0.3, 0.3, 1
+            Rectangle:
+                size: self.size
+                pos: self.pos
+
+        MDToolbar:
+            title: "New Solvent"
+            md_bg_color: app.theme_cls.primary_color
+            elevation: 10
+            left_action_items: [['arrow-left', lambda x: root.back()]]
+        ScrollView:
+            do_scroll_x: False
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint_y: None
+                height: dp(400)
+                BoxLayout:
+                    MDLabel:
+                        font_style: 'H6'
+                        halign: 'center'
+                        text: 'Solvent Name'
+                    MDLabel:
+                        padding: 10, 10
+                        id: name
+                        text: root.solvent_name
+                BoxLayout:
+                    MDLabel:
+                        font_style: 'H6'
+                        halign: 'center'
+                        text: 'Density (g/mL)'
+                    MDTextFieldRect:
+                        input_filter: 'float'
+                        padding: 10, 10
+                        id: density
+                        text: root.density
+                BoxLayout:
+                    MDLabel:
+                        font_style: 'H6'
+                        halign: 'center'
+                        text: 'Chemical Formula'
+                    MDTextFieldRect:
+                        padding: 10, 10
+                        id: formula
+                        text: root.formula
+                BoxLayout:
+                    MDLabel:
+                        font_style: 'H6'
+                        halign: 'center'
+                        text: 'Relative Polarity'
+                    MDTextFieldRect:
+                        input_filter: 'float'
+                        padding: 10, 10
+                        id: polarity
+                        text: root.polarity
+                BoxLayout:
+                    MDRaisedButton:
+                        padding: 10, 10
+                        font_style: 'H3'
+                        halign: 'center'
+                        text: 'Update Solvent'
+                        on_release: root.submit()
+
+<UpdateMaterialScreen>:
+    BoxLayout:
+        anchor_x: 'center'
+        anchor_y: 'top'
+        orientation: 'vertical'
+        canvas.before:
+            Color:
+                rgba: 0.3, 0.3, 0.3, 1
+            Rectangle:
+                size: self.size
+                pos: self.pos
+
+        MDToolbar:
+            title: "New Material"
+            md_bg_color: app.theme_cls.primary_color
+            elevation: 10
+            left_action_items: [['arrow-left', lambda x: root.back()]]
+
+        ScrollView:
+            do_scroll_x: False
+            BoxLayout:
+                orientation: 'vertical'
+                size_hint_y: None
+                height: dp(400)
+                BoxLayout:
+                    MDLabel:
+                        font_style: 'H6'
+                        halign: 'center'
+                        text: 'Material Name'
+                    MDLabel:
+                        font_style: 'H6'
+                        halign: 'center'
+                        text: root.material_name
+                        id: name
+                BoxLayout:
+                    MDLabel:
+                        font_style: 'H6'
+                        halign: 'center'
+                        text: 'Chemical Formula'
+                    MDTextFieldRect:
+                        padding: 10, 10
+                        id: formula
+                        text: root.formula
+                BoxLayout:
+                    MDLabel:
+                        font_style: 'H6'
+                        halign: 'center'
+                        text: 'Molecular Weight'
+                    MDTextFieldRect:
+                        padding: 10, 10
+                        id: molecular_weight
+                        text: root.molecular_weight
+                BoxLayout:
+                    MDLabel:
+                        font_style: 'H6'
+                        halign: 'center'
+                        text: 'Density (g/mL)'
+                    MDTextFieldRect:
+                        input_filter: 'float'
+                        padding: 10, 10
+                        id: density
+                        text: root.density
+                BoxLayout:
+                    MDRaisedButton:
+                        padding: 10, 10
+                        font_style: 'H3'
+                        halign: 'center'
+                        text: 'Update Material'
+                        on_release: root.submit()

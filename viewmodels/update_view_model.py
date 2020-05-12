@@ -149,3 +149,34 @@ class UpdateViewModel(EventDispatcher):
         """method that deletes selected material from database"""
         Material.delete_material(name)
         self.get_materials()
+
+    def update_solvent(self, context):
+        """method that attempts to update a solvent ot the database"""
+        is_error = self.check_solvent(context)
+        if is_error:
+            self.IS_ERROR = True
+            return 
+
+        # sends context to Solvent model for update
+        solvent_name = context.pop('name')
+        Solvent.update_solvent(solvent_name, context)
+
+        # refreshes all viewmodels solvent data
+        app = MDApp.get_running_app()
+        app.solvent_refresh()
+
+    def update_material(self, context):
+        """method that attempts to update a material to the database"""
+        is_error = self.check_material(context)
+        if is_error:
+            self.IS_ERROR = True
+            return
+
+        # sends context to Material model for update
+        material_name = context.pop('name')
+        Material.update_material(material_name, context)
+
+        # refreshes all viewmodesl material data
+        app = MDApp.get_running_app()
+        app.material_refresh()
+

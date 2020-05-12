@@ -14,6 +14,7 @@ from kivymd.app import MDApp
 
 # Local imports
 from models.solvent import Solvent
+from models.material import Material
 
 
 class UpdateScreen(Screen):
@@ -41,6 +42,10 @@ class UpdateScreen(Screen):
         screen = NewSolventScreen(name = 'Solvents')
         self.manager.add_widget(screen)
         screen = NewMaterialScreen(name = 'Materials')
+        self.manager.add_widget(screen)
+        screen = UpdateSolventScreen(name = 'update_Solvents')
+        self.manager.add_widget(screen)
+        screen = UpdateMaterialScreen(name = 'update_Materials')
         self.manager.add_widget(screen)
 
         # Binding view_model properties to view events
@@ -83,6 +88,15 @@ class UpdateScreen(Screen):
         for tab in self.ids.update_tabs.ids.scrollview.children[0].children:
             if tab.state == 'down':
                 self.manager.current = tab.text
+
+    def edit(self, context):
+        for tab in self.ids.update_tabs.ids.scrollview.children[0].children:
+            if tab.state == 'down':
+                screen_name = "update_" + tab.text
+                screen = self.manager.get_screen(screen_name)
+                for key in context:
+                    setattr(screen, key, context[key])
+                self.manager.current = screen_name
 
     def exit(self):
         """remove screens when leaving"""
@@ -168,6 +182,12 @@ class NewMaterialScreen(Screen):
 
     # Property bound to IS_ERROR in viewmodel
     is_error = BooleanProperty()
+
+    # Other properties for editting entries
+    material_name = StringProperty('')
+    formula = StringProperty('')
+    molecular_weight = StringProperty('')
+    density = StringProperty('')
 
     def __init__(self, *args, **kwargs):
         super(NewMaterialScreen, self).__init__(*args, **kwargs)
@@ -297,9 +317,152 @@ class ButtonViewClass(BoxLayout):
         self.dialog.events_callback = lambda x, y: self.handle_dialog(x, y)
         self.dialog.open()
 
+    def edit(self):
+        """Takes solvent/material & opens information to be editted"""
+        if self.polarity == None:
+            record = Material.get_material(self.name)
+        else: 
+            record = Solvent.get_solvent(self.name)
+        app = MDApp.get_running_app()
+        app.root.ids.screens.get_screen('update').edit(record)
+
     def handle_dialog(self, choice, inst):
         """helper method to handle dialog choice"""
         if choice == self.CONFIRM:
             self.delete_solvent() if self.polarity else self.delete_material()
         elif choice == self.CANCEL:
             return 
+
+
+class UpdateMaterialScreen(Screen):
+
+    # Property bound to IS_ERROR in viewmodel
+    is_error = BooleanProperty()
+
+    # Other properties for editting entries
+    material_name = StringProperty('')
+    formula = StringProperty('')
+    molecular_weight = StringProperty('')
+    density = StringProperty('')
+
+    def __init__(self, *args, **kwargs):
+        super(UpdateMaterialScreen, self).__init__(*args, **kwargs)
+        Clock.schedule_once(lambda x: self.prepare(), 0)
+
+    def prepare(self):
+        """Bindings to corresponding viewmodel properties"""
+        app = MDApp.get_running_app()
+        app.update_view_model.bind(
+            IS_ERROR = lambda x, y: self.change_error(y)
+        )
+
+    def change_error(self, is_error):
+        """changes class 'is_error' to reflect viewmodel"""
+        self.is_error = is_error
+
+    def check_error(self):
+        """
+        checks is_error to determine whether to switch screens
+        """
+        if self.is_error == True:
+            return
+        else:
+            self.back()
+
+    def back(self):
+        """navigates back to main update view screen"""
+        app = MDApp.get_running_app()
+        app.root.ids.screens.transition.direction = 'right'
+        app.root.ids.screens.current = 'update'
+
+    def on_leave(self):
+        """clears all user input upon leaving screen"""
+        self.ids.name.text = ''
+        self.ids.formula.text = ''
+        self.ids.molecular_weight.text = ''
+
+    def submit(self):
+        """sends inputs to viewmodel method to add material to database"""
+        app = MDApp.get_running_app()
+        app.update_view_model.update_material({
+            'name': self.ids.name.text,
+            'formula': self.ids.formula.text,
+            'molecular_weight': self.ids.molecular_weight.text,
+            'density': self.ids.density.text})
+        self.check_error()
+
+    def error_popup(self, error):
+        """Displays error message (if any)"""
+        self.dialog = MDDialog(
+            title = 'Error',
+            text = error,
+            size_hint = (0.8, None),
+            height = dp(200))
+        self.dialog.open()
+
+class UpdateSolventScreen(Screen):
+
+    # Property bound to IS_ERROR in viewmodel
+    is_error = BooleanProperty()
+
+    # Other properties for editting entries
+    solvent_name = StringProperty('')
+    formula = StringProperty('')
+    polarity = StringProperty('')
+    density = StringProperty('')
+
+    def __init__(self, *args, **kwargs):
+        super(UpdateSolventScreen, self).__init__(*args, **kwargs)
+        Clock.schedule_once(lambda x: self.prepare(), 0)
+
+    def prepare(self):
+        """Bindings to corresponding viewmodel properties"""
+        app = MDApp.get_running_app()
+        app.update_view_model.bind(
+            IS_ERROR = lambda x, y: self.change_error(y)
+        )
+
+    def change_error(self, is_error):
+        """changes class 'is_error' to reflect viewmodel"""
+        self.is_error = is_error
+
+    def check_error(self):
+        """
+        checks is_error to determine whether to switch screens
+        """
+        if self.is_error == True:
+            return
+        else:
+            self.back()
+
+    def back(self):
+        """navigates back to main update view screen"""
+        app = MDApp.get_running_app()
+        app.root.ids.screens.transition.direction = 'right'
+        app.root.ids.screens.current = 'update'
+
+    def submit(self):
+        """sends inputs to viewmodel method to add solvent to database"""
+        app = MDApp.get_running_app()
+        app.update_view_model.update_solvent({
+            'name': self.ids.name.text,
+            'density': self.ids.density.text,
+            'formula': self.ids.formula.text,
+            'polarity': self.ids.polarity.text,})
+        self.check_error()
+
+    def error_popup(self, error):
+        """Displays error message (if any)"""
+        if error == '':
+            return 
+        else:
+            self.dialog = MDDialog(
+                title = 'Error',
+                text = error,
+                size_hint = (0.8, None),
+                height = dp(200))
+            self.dialog.open()
+
+            # Change error message back to ""
+            app = MDApp.get_running_app()
+            app.update_view_model.ERROR_MSG = ''
