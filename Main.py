@@ -16,7 +16,6 @@ from views import (
     UpdateScreen,
     FilmScreen,
     AboutScreen,
-    DevelopingScreen,
     DilutionScreen,
 )
 from viewmodels import (
@@ -87,7 +86,6 @@ class SolutionApp(MDApp):
 
         """adding nav drawer screens"""
         self.root.ids.screens.add_widget(AboutScreen(name = 'about'))
-        self.root.ids.screens.add_widget(DevelopingScreen(name = 'developing'))
 
     def add_view_models(self):
         """
@@ -111,7 +109,6 @@ class SolutionApp(MDApp):
         context = [
             ['Home', 'home-circle-outline', lambda x: self.get_main_screen()],
             ['About', 'lambda', lambda x: self.get_about_screen()],
-            ['Developing', 'keyboard', lambda x: self.get_developing_screen()],
             ['Exit', 'exit-to-app', lambda x: self.exit_app()]
         ]
         for items in context:
@@ -131,10 +128,6 @@ class SolutionApp(MDApp):
         self.root.ids.screens.current = 'about'
         self.root.ids.nav_drawer.toggle_nav_drawer()
 
-    def get_developing_screen(self):
-        self.root.ids.screens.transition.direction = 'left'
-        self.root.ids.screens.current = 'developing'
-        self.root.ids.nav_drawer.toggle_nav_drawer()
 
     def solvent_refresh(self):
         """
