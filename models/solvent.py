@@ -16,14 +16,12 @@ class Solvent(BaseModel):
 
     @classmethod
     def get_all(cls):
-        solvent_list = []
-        for record in cls.select():
-            solvent = {
-                'name': str(record.name),
-                'density': str(record.density),
-                'formula': str(record.formula),
-                'polarity': str(record.polarity)}
-            solvent_list.append(solvent)
+        solvent_list = [{
+            'name': str(record.name),
+            'density': str(record.density),
+            'formula': str(record.formula),
+            'polarity': str(record.polarity)
+            } for record in cls.select()]
         return solvent_list
 
     @classmethod
