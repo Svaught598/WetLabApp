@@ -25,7 +25,15 @@ class Material(BaseModel):
 
     @classmethod
     def get_material(cls, name):
-        return cls.select().where(Material.name == name)
+        """Since name is a unique field, this query should only return
+        one record in the list, so we use the primary index 0"""
+        record = cls.select().where(cls.name == name)[0]
+        material = {
+            'name': str(record.name),
+            'formula': str(record.formula),
+            'molecular_weight': str(record.molecular_weight),
+            'density': str(record.density)}
+        return material
 
     @classmethod
     def delete_material(cls, name):

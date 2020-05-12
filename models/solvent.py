@@ -28,7 +28,16 @@ class Solvent(BaseModel):
 
     @classmethod
     def get_solvent(cls, name):
-        return cls.select().where(Solvent.name == name)
+        """Since name is a unique field, this query should only return
+        one record in the list, so we use the primary index 0"""
+        record = cls.select().where(Solvent.name == name)[0]
+        solvent = {
+            'name': str(record.name),
+            'density': str(record.density),
+            'formula': str(record.formula),
+            'polarity': str(record.polarity)}
+        return solvent
+        
 
     @classmethod
     def delete_solvent(cls, name):
