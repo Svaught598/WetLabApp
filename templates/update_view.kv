@@ -179,18 +179,21 @@
                         on_release: root.submit()
 
 <ButtonViewClass>:
-    padding: dp(8)
-    MDLabel:
+    OneLineAvatarIconListItem:
         text: root.name
-        halign: 'left'
-    MDRectangleFlatButton:
-        text: 'Edit'
-        width: dp(200)
-        on_release: root.edit()
-    MDRectangleFlatButton:
-        text: 'Delete'
-        width: dp(200)
-        on_release: root.confirm_popup()
+        on_size:
+            self.ids._right_container.width = container.width
+            self.ids._right_container.x = container.width
+        IconLeftWidget:
+            icon: "flask"
+        Container:
+            id: container
+            MDIconButton:
+                icon: "file-edit"
+                on_release: root.edit()
+            MDIconButton:
+                icon: "trash-can"
+                on_release: root.confirm_popup()
 
 <UpdateSolventScreen>:
     BoxLayout:

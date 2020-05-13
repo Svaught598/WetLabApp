@@ -11,10 +11,17 @@ from kivymd.uix.button import MDTextButton, MDRectangleFlatButton
 from kivymd.uix.tab import MDTabs, MDTabsBase
 from kivymd.uix.dialog import MDDialog
 from kivymd.app import MDApp
+from kivymd.uix.list import IRightBodyTouch
+from kivymd.uix.boxlayout import MDBoxLayout
 
 # Local imports
 from models.solvent import Solvent
 from models.material import Material
+
+
+
+class Container(IRightBodyTouch, MDBoxLayout):
+    adaptive_width = True
 
 
 class UpdateScreen(Screen):
