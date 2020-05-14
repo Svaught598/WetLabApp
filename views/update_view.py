@@ -7,11 +7,11 @@ from kivy.clock import Clock
 from kivy.metrics import dp
 
 # KivyMD imports
-from kivymd.uix.button import MDTextButton, MDRectangleFlatButton
+from kivymd.uix.button import MDTextButton, MDRectangleFlatButton, MDFlatButton
 from kivymd.uix.tab import MDTabs, MDTabsBase
 from kivymd.uix.dialog import MDDialog
 from kivymd.app import MDApp
-from kivymd.uix.list import IRightBodyTouch
+from kivymd.uix.list import IRightBodyTouch, OneLineAvatarIconListItem
 from kivymd.uix.boxlayout import MDBoxLayout
 
 # Local imports
@@ -292,7 +292,7 @@ class MaterialTab(BoxLayout, MDTabsBase):
         self.ids.solvent_rv.data = data
 
 
-class ButtonViewClass(BoxLayout):
+class ButtonViewClass(OneLineAvatarIconListItem):
 
     # Class level constants
     CONFIRM = StringProperty('Yes')
@@ -304,26 +304,43 @@ class ButtonViewClass(BoxLayout):
     # Name of the solvent/material 
     name = StringProperty('')
 
+    def __init__(self, **kwargs):
+        super().__init__(**kwargs)
+        self.ids._right_container.width = self.ids.container.width
+
     def delete_solvent(self):
         """calls viewmodel method to delete entry from database"""
         app = MDApp.get_running_app()
         app.update_view_model.delete_solvent(self.name)
+        app.update_view_model.get_solvents()
+        self.dialog.dismiss()
 
     def delete_material(self):
         """calls viewmodel method to delete entry from database"""
         app = MDApp.get_running_app()
         app.update_view_model.delete_material(self.name)
+        app.update_view_model.get_materials()
+        self.dialog.dismiss()
 
     def confirm_popup(self):
         """popup to confirm deletion of solvent/material"""
         self.dialog = MDDialog(
             title = 'Are you sure?',
             text = 'You are about to permanently delete this item. Continue?',
-            text_button_ok = str(self.CONFIRM),
-            text_button_cancel = str(self.CANCEL),
-            size_hint = (0.8, None),
-            height = dp(200))
-        self.dialog.events_callback = lambda x, y: self.handle_dialog(x, y)
+            type = 'confirmation',
+            buttons = [
+                MDFlatButton(
+                    text = self.CANCEL, 
+                    text_color = self.theme_cls.primary_color,
+                    on_release = lambda x: self.dialog.dismiss()
+                ),
+                MDRectangleFlatButton(
+                    text = self.CONFIRM,
+                    text_color = self.theme_cls.primary_color,
+                    on_release = lambda x: self.delete_solvent() if self.polarity else self.delete_material()
+                ),
+            ]
+        )
         self.dialog.open()
 
     def edit(self):

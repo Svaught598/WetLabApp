@@ -178,22 +178,18 @@
                         text: 'Add Material'
                         on_release: root.submit()
 
-<ButtonViewClass>:
-    OneLineAvatarIconListItem:
-        text: root.name
-        on_size:
-            self.ids._right_container.width = container.width
-            self.ids._right_container.x = container.width
-        IconLeftWidget:
-            icon: "flask"
-        Container:
-            id: container
-            MDIconButton:
-                icon: "file-edit"
-                on_release: root.edit()
-            MDIconButton:
-                icon: "trash-can"
-                on_release: root.confirm_popup()
+<ButtonViewClass>
+    text: root.name
+    IconLeftWidget:
+        icon: "flask"
+    Container:
+        id: container
+        MDIconButton:
+            icon: "file-edit"
+            on_release: root.edit()
+        MDIconButton:
+            icon: "trash-can"
+            on_release: root.confirm_popup()
 
 <UpdateSolventScreen>:
     BoxLayout:
