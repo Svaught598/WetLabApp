@@ -415,10 +415,9 @@ class UpdateMaterialScreen(Screen):
     def error_popup(self, error):
         """Displays error message (if any)"""
         self.dialog = MDDialog(
-            title = 'Error',
-            text = error,
-            size_hint = (0.8, None),
-            height = dp(200))
+            text = f"Error: {error}",
+        )
+        self.dialog.open()
         self.dialog.open()
 
 class UpdateSolventScreen(Screen):
@@ -481,7 +480,6 @@ class UpdateSolventScreen(Screen):
         else:
             self.dialog = MDDialog(
                 text = f"Error: {error}",
-                radius=[20, 7, 20, 7],
             )
             self.dialog.open()
 
