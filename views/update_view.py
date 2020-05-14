@@ -92,11 +92,13 @@ class UpdateScreen(Screen):
         The screen associated with 
         new solvent entry is called 'Solvent' and etc...
         """
+        self.manager.transition.direction = 'left'
         for tab in self.ids.update_tabs.ids.scrollview.children[0].children:
             if tab.state == 'down':
                 self.manager.current = tab.text
 
     def edit(self, context):
+        self.manager.transition.direction = 'left'
         for tab in self.ids.update_tabs.ids.scrollview.children[0].children:
             if tab.state == 'down':
                 screen_name = "update_" + tab.text
