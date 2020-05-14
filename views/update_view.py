@@ -325,8 +325,7 @@ class ButtonViewClass(OneLineAvatarIconListItem):
     def confirm_popup(self):
         """popup to confirm deletion of solvent/material"""
         self.dialog = MDDialog(
-            title = 'Are you sure?',
-            text = 'You are about to permanently delete this item. Continue?',
+            title = 'You are about to permanently delete this item.\nDo you wish to Continue?',
             type = 'confirmation',
             buttons = [
                 MDFlatButton(
@@ -390,7 +389,9 @@ class UpdateMaterialScreen(Screen):
         """
         checks is_error to determine whether to switch screens
         """
+        app = MDApp.get_running_app()
         if self.is_error == True:
+            app.update_view_model.IS_ERROR = False
             return
         else:
             self.back()
@@ -401,17 +402,11 @@ class UpdateMaterialScreen(Screen):
         app.root.ids.screens.transition.direction = 'right'
         app.root.ids.screens.current = 'update'
 
-    def on_leave(self):
-        """clears all user input upon leaving screen"""
-        self.ids.name.text = ''
-        self.ids.formula.text = ''
-        self.ids.molecular_weight.text = ''
-
     def submit(self):
         """sends inputs to viewmodel method to add material to database"""
         app = MDApp.get_running_app()
         app.update_view_model.update_material({
-            'name': self.ids.name.text,
+            'name': self.material_name,
             'formula': self.ids.formula.text,
             'molecular_weight': self.ids.molecular_weight.text,
             'density': self.ids.density.text})
@@ -456,7 +451,9 @@ class UpdateSolventScreen(Screen):
         """
         checks is_error to determine whether to switch screens
         """
+        app = MDApp.get_running_app()
         if self.is_error == True:
+            app.update_view_model.IS_ERROR = False
             return
         else:
             self.back()
@@ -471,7 +468,7 @@ class UpdateSolventScreen(Screen):
         """sends inputs to viewmodel method to add solvent to database"""
         app = MDApp.get_running_app()
         app.update_view_model.update_solvent({
-            'name': self.ids.name.text,
+            'name': self.solvent_name,
             'density': self.ids.density.text,
             'formula': self.ids.formula.text,
             'polarity': self.ids.polarity.text,})
@@ -483,10 +480,9 @@ class UpdateSolventScreen(Screen):
             return 
         else:
             self.dialog = MDDialog(
-                title = 'Error',
-                text = error,
-                size_hint = (0.8, None),
-                height = dp(200))
+                text = f"Error: {error}",
+                radius=[20, 7, 20, 7],
+            )
             self.dialog.open()
 
             # Change error message back to ""

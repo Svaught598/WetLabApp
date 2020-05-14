@@ -52,12 +52,6 @@
         anchor_x: 'center'
         anchor_y: 'top'
         orientation: 'vertical'
-        canvas.before:
-            Color:
-                rgba: 0.3, 0.3, 0.3, 1
-            Rectangle:
-                size: self.size
-                pos: self.pos
 
         MDToolbar:
             title: "New Solvent"
@@ -70,6 +64,8 @@
                 orientation: 'vertical'
                 size_hint_y: None
                 height: dp(400)
+                padding: dp(30)
+                spacing: dp(30)
                 BoxLayout:
                     MDLabel:
                         font_style: 'H6'
@@ -107,23 +103,18 @@
                 BoxLayout:
                     MDRaisedButton:
                         padding: 10, 10
-                        font_style: 'H3'
+                        font_style: 'H6'
                         halign: 'center'
                         text: 'Add Solvent'
                         on_release: root.submit()
-
+                        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                        size_hint: 0.8, 1
 
 <NewMaterialScreen>:
     BoxLayout:
         anchor_x: 'center'
         anchor_y: 'top'
         orientation: 'vertical'
-        canvas.before:
-            Color:
-                rgba: 0.3, 0.3, 0.3, 1
-            Rectangle:
-                size: self.size
-                pos: self.pos
 
         MDToolbar:
             title: "New Material"
@@ -137,6 +128,8 @@
                 orientation: 'vertical'
                 size_hint_y: None
                 height: dp(400)
+                padding: dp(30)
+                spacing: dp(30)
                 BoxLayout:
                     MDLabel:
                         font_style: 'H6'
@@ -173,10 +166,12 @@
                 BoxLayout:
                     MDRaisedButton:
                         padding: 10, 10
-                        font_style: 'H3'
+                        font_style: 'H6'
                         halign: 'center'
                         text: 'Add Material'
                         on_release: root.submit()
+                        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                        size_hint: 0.8, 1
 
 <ButtonViewClass>
     text: root.name
@@ -196,15 +191,9 @@
         anchor_x: 'center'
         anchor_y: 'top'
         orientation: 'vertical'
-        canvas.before:
-            Color:
-                rgba: 0.3, 0.3, 0.3, 1
-            Rectangle:
-                size: self.size
-                pos: self.pos
 
         MDToolbar:
-            title: "New Solvent"
+            title: "Update Solvent"
             md_bg_color: app.theme_cls.primary_color
             elevation: 10
             left_action_items: [['arrow-left', lambda x: root.back()]]
@@ -214,15 +203,13 @@
                 orientation: 'vertical'
                 size_hint_y: None
                 height: dp(400)
+                padding: dp(30)
+                spacing: dp(30)
                 BoxLayout:
                     MDLabel:
                         font_style: 'H6'
                         halign: 'center'
-                        text: 'Solvent Name'
-                    MDLabel:
-                        padding: 10, 10
-                        id: name
-                        text: root.solvent_name
+                        text: 'Solvent Name:    ' + root.solvent_name
                 BoxLayout:
                     MDLabel:
                         font_style: 'H6'
@@ -255,25 +242,21 @@
                 BoxLayout:
                     MDRaisedButton:
                         padding: 10, 10
-                        font_style: 'H3'
+                        font_style: 'H6'
                         halign: 'center'
                         text: 'Update Solvent'
                         on_release: root.submit()
+                        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                        size_hint: 0.8, 1
 
 <UpdateMaterialScreen>:
     BoxLayout:
         anchor_x: 'center'
         anchor_y: 'top'
         orientation: 'vertical'
-        canvas.before:
-            Color:
-                rgba: 0.3, 0.3, 0.3, 1
-            Rectangle:
-                size: self.size
-                pos: self.pos
 
         MDToolbar:
-            title: "New Material"
+            title: "Update Material"
             md_bg_color: app.theme_cls.primary_color
             elevation: 10
             left_action_items: [['arrow-left', lambda x: root.back()]]
@@ -284,16 +267,13 @@
                 orientation: 'vertical'
                 size_hint_y: None
                 height: dp(400)
+                padding: dp(30)
+                spacing: dp(30)
                 BoxLayout:
                     MDLabel:
                         font_style: 'H6'
                         halign: 'center'
-                        text: 'Material Name'
-                    MDLabel:
-                        font_style: 'H6'
-                        halign: 'center'
-                        text: root.material_name
-                        id: name
+                        text: 'Material Name:   ' + root.material_name
                 BoxLayout:
                     MDLabel:
                         font_style: 'H6'
@@ -325,7 +305,9 @@
                 BoxLayout:
                     MDRaisedButton:
                         padding: 10, 10
-                        font_style: 'H3'
+                        font_style: 'H6'
                         halign: 'center'
                         text: 'Update Material'
                         on_release: root.submit()
+                        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+                        size_hint: 0.8, 1
