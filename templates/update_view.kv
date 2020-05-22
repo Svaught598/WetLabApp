@@ -175,8 +175,10 @@
 
 <ButtonViewClass>
     text: root.name
+    on_release: root.info_popup()
     IconLeftWidget:
         icon: "flask"
+        on_release: root.info_popup()
     Container:
         id: container
         MDIconButton:
@@ -311,3 +313,55 @@
                         on_release: root.submit()
                         pos_hint: {'center_x': 0.5, 'center_y': 0.5}
                         size_hint: 0.8, 1
+
+<MaterialInfo>
+    orientation: "vertical"
+    spacing: "12dp"
+    size_hint_y: None
+    height: "240dp"
+    BoxLayout:
+        OneLineListItem:
+            text: "Material Name:"
+        OneLineListItem:
+            text: root.material_name
+    BoxLayout:
+        OneLineListItem:
+            text: "Material Formula"
+        OneLineListItem:
+            text: root.formula
+    BoxLayout:
+        OneLineListItem:
+            text: "Molecular Weight"
+        OneLineListItem:
+            text: root.molecular_weight
+    BoxLayout:
+        OneLineListItem:
+            text: "Material Density"
+        OneLineListItem:
+            text: root.density
+
+<SolventInfo>
+    orientation: "vertical"
+    spacing: "12dp"
+    size_hint_y: None
+    height: "240dp"
+    BoxLayout:
+        OneLineListItem:
+            text: "Solvent Name:"
+        OneLineListItem: 
+            text: root.solvent_name
+    BoxLayout:
+        OneLineListItem:
+            text: "Solvent Density:"
+        OneLineListItem:
+            text: root.density
+    BoxLayout:
+        OneLineListItem:
+            text: "Chemical Formula:"
+        OneLineListItem:
+            text: root.formula
+    BoxLayout:
+        OneLineListItem:
+            text: "Relative Polarity:"
+        OneLineListItem:
+            text: root.polarity

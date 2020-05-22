@@ -11,12 +11,13 @@ from kivymd.uix.button import MDTextButton, MDRectangleFlatButton, MDFlatButton
 from kivymd.uix.tab import MDTabs, MDTabsBase
 from kivymd.uix.dialog import MDDialog
 from kivymd.app import MDApp
-from kivymd.uix.list import IRightBodyTouch, OneLineAvatarIconListItem
+from kivymd.uix.list import IRightBodyTouch, OneLineAvatarIconListItem, OneLineListItem
 from kivymd.uix.boxlayout import MDBoxLayout
 
 # Local imports
 from models.solvent import Solvent
 from models.material import Material
+from pprint import pprint
 
 
 
@@ -342,6 +343,38 @@ class ButtonViewClass(OneLineAvatarIconListItem):
         )
         self.dialog.open()
 
+    def info_popup(self):
+        """popup to display more information about selection"""
+        if self.polarity == None:
+            record = Material.get_material(self.name)
+            self.dialog = MDDialog(
+                title = record['material_name'],
+                type = 'custom',
+                content_cls = MaterialInfo(),
+                buttons = [
+                    MDRectangleFlatButton(
+                        text = "Okay",
+                        on_release = lambda x: self.dialog.dismiss()
+                    )
+                ]
+            )
+        else: 
+            record = Solvent.get_solvent(self.name)
+            self.dialog = MDDialog(
+                title = record['solvent_name'],
+                type = 'custom',
+                content_cls = SolventInfo(),
+                buttons = [
+                    MDRectangleFlatButton(
+                        text = "Okay", 
+                        on_release = lambda x: self.dialog.dismiss()
+                    )
+                ]
+            )
+        for key in record:
+            setattr(self.dialog.content_cls, key, record[key])
+        self.dialog.open()
+
     def edit(self):
         """Takes solvent/material & opens information to be editted"""
         if self.polarity == None:
@@ -486,3 +519,17 @@ class UpdateSolventScreen(Screen):
             # Change error message back to ""
             app = MDApp.get_running_app()
             app.update_view_model.ERROR_MSG = ''
+
+
+class MaterialInfo(BoxLayout):
+    material_name = StringProperty('')
+    formula = StringProperty('')
+    molecular_weight = StringProperty('')
+    density = StringProperty('')
+
+
+class SolventInfo(BoxLayout):
+    solvent_name = StringProperty('')
+    density = StringProperty('')
+    formula = StringProperty('')
+    polarity = StringProperty('')
