@@ -16,7 +16,6 @@ TEMPLATE_PATHS = [
     os.path.join(ROOT_DIR, 'templates/dilution_view.kv'),
 
     os.path.join(ROOT_DIR, 'templates/about_view.kv'),
-    os.path.join(ROOT_DIR, 'templates/developing_view.kv')
 ]
 
 # Main template built with by app.build() method
