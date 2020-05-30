@@ -16,11 +16,13 @@ TEMPLATE_PATHS = [
     os.path.join(ROOT_DIR, 'templates/dilution_view.kv'),
 
     os.path.join(ROOT_DIR, 'templates/about_view.kv'),
-    os.path.join(ROOT_DIR, 'templates/developing_view.kv')
 ]
 
 # Main template built with by app.build() method
 MAIN_TEMPLATE_PATH = os.path.join(ROOT_DIR, 'templates/main.kv')
+
+# Path to license to be displayed in a popup
+LICENSE_PATH = os.path.join(ROOT_DIR, 'LICENSE')
 
 # Database Settings
 DATABASE = 'db.sqlite3'
