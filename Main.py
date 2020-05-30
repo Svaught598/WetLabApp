@@ -2,12 +2,15 @@
 from kivymd.app import MDApp
 from kivymd.uix.button import MDFlatButton
 from kivymd.uix.list import OneLineAvatarListItem
+from kivymd.theming import ThemableBehavior
 
 # Kivy imports
 from kivy.uix.screenmanager import Screen, ScreenManager
 from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.modalview import ModalView
 from kivy.properties import StringProperty
 from kivy.lang.builder import Builder
+from kivy.utils import get_hex_from_color
 
 # Local imports
 from models import init_db
@@ -24,7 +27,7 @@ from viewmodels import (
     FilmViewModel,
     DilutionViewModel,
 )
-from settings import TEMPLATE_PATHS, MAIN_TEMPLATE_PATH
+from settings import TEMPLATE_PATHS, MAIN_TEMPLATE_PATH, LICENSE_PATH
 
 
 class ContentNavigationDrawer(BoxLayout):
@@ -109,6 +112,7 @@ class SolutionApp(MDApp):
         context = [
             ['Home', 'home-circle-outline', lambda x: self.get_main_screen()],
             ['About', 'lambda', lambda x: self.get_about_screen()],
+            ['License', 'license', lambda s: self.get_license_dialog()],
             ['Exit', 'exit-to-app', lambda x: self.exit_app()]
         ]
         for items in context:
@@ -123,10 +127,16 @@ class SolutionApp(MDApp):
         self.root.ids.screens.transition.direction = 'right'
         self.root.ids.screens.current = 'menu'
 
+
     def get_about_screen(self):
         self.root.ids.screens.transition.direction = 'left'
         self.root.ids.screens.current = 'about'
         self.root.ids.nav_drawer.toggle_nav_drawer()
+
+
+    def get_license_dialog(self):
+        dialog = LicenseDialog()
+        dialog.open()
 
 
     def solvent_refresh(self):
@@ -154,6 +164,17 @@ class SolutionApp(MDApp):
         since i'm sure I won't remember which method name to use
         """
         return 'exit'
+
+
+class LicenseDialog(ThemableBehavior, ModalView):
+    def on_open(self):
+        with open(
+            LICENSE_PATH,
+            encoding="utf-8",
+        ) as license:
+            self.ids.text_label.text = license.read().format(
+                COLOR=get_hex_from_color(self.theme_cls.primary_color)
+            )
 
 """Starting the application but first initializing the database"""
 if __name__ == '__main__':
