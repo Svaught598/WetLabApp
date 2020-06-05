@@ -7,8 +7,18 @@
             elevation: 10
             left_action_items: [['arrow-left', lambda x: app.get_main_screen()]]
         BoxLayout:
+            orientation: 'vertical'
             MDLabel:
-                text: 'About this app here...'
+                text: root.about_text
                 halign: 'center'
-                valign: 'center'
+                markup: True
+                font_style: 'H6'
+            MDLabel:
+                text: root.github_text
+                halign: 'center'
+                markup: True
+            MDLabel:
+                text: root.email_text
+                halign: 'center'
+                markup: True
         Widget:

@@ -18,7 +18,6 @@ from views import (
     VolumeScreen,
     UpdateScreen,
     FilmScreen,
-    AboutScreen,
     DilutionScreen,
 )
 from viewmodels import (
@@ -27,7 +26,12 @@ from viewmodels import (
     FilmViewModel,
     DilutionViewModel,
 )
-from settings import TEMPLATE_PATHS, MAIN_TEMPLATE_PATH, LICENSE_PATH
+from settings import (
+    TEMPLATE_PATHS, 
+    MAIN_TEMPLATE_PATH, 
+    LICENSE_PATH, 
+    ABOUT_PATH,
+)
 
 
 class ContentNavigationDrawer(BoxLayout):
@@ -87,9 +91,6 @@ class SolutionApp(MDApp):
         self.screen4 = DilutionScreen(name = 'dilution')
         self.root.ids.screens.add_widget(self.screen4)
 
-        """adding nav drawer screens"""
-        self.root.ids.screens.add_widget(AboutScreen(name = 'about'))
-
     def add_view_models(self):
         """
         addding viewmodels to app directly, so that 
@@ -111,7 +112,7 @@ class SolutionApp(MDApp):
         """
         context = [
             ['Home', 'home-circle-outline', lambda x: self.get_main_screen()],
-            ['About', 'lambda', lambda x: self.get_about_screen()],
+            ['About', 'lambda', lambda x: self.get_about_dialog()],
             ['License', 'license', lambda s: self.get_license_dialog()],
             ['Exit', 'exit-to-app', lambda x: self.exit_app()]
         ]
@@ -127,17 +128,13 @@ class SolutionApp(MDApp):
         self.root.ids.screens.transition.direction = 'right'
         self.root.ids.screens.current = 'menu'
 
-
-    def get_about_screen(self):
-        self.root.ids.screens.transition.direction = 'left'
-        self.root.ids.screens.current = 'about'
-        self.root.ids.nav_drawer.toggle_nav_drawer()
-
-
     def get_license_dialog(self):
         dialog = LicenseDialog()
         dialog.open()
 
+    def get_about_dialog(self):
+        dialog = AboutDialog()
+        dialog.open()
 
     def solvent_refresh(self):
         """
@@ -175,6 +172,19 @@ class LicenseDialog(ThemableBehavior, ModalView):
             self.ids.text_label.text = license.read().format(
                 COLOR=get_hex_from_color(self.theme_cls.primary_color)
             )
+
+
+class AboutDialog(ThemableBehavior, ModalView):
+    def on_open(self):
+        with open(
+            ABOUT_PATH,
+            encoding="utf-8",
+        ) as about:
+            self.ids.text_label.text = about.read().format(
+                COLOR=get_hex_from_color(self.theme_cls.primary_color)
+            )
+        self.ids.text_label.markup = True
+
 
 """Starting the application but first initializing the database"""
 if __name__ == '__main__':
