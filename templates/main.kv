@@ -103,3 +103,49 @@ Screen:
                     markup: True
                     size_hint_y: None
                     height: self.texture_size[1]
+
+<AboutDialog>
+    size_hint: None, None
+    height: Window.height * 90 / 100
+    width: Window.width * 90 / 100
+
+    BoxLayout:
+        orientation: "vertical"
+        spacing: "10dp"
+        padding: "10dp"
+        canvas.before:
+            Color:
+                rgba: 1, 1, 1, 1
+            Rectangle:
+                pos: self.pos
+                size: self.size
+
+        MDLabel:
+            text: "About"
+            halign: "center"
+            theme_text_color: "Custom"
+            text_color: self.theme_cls.primary_color
+            font_style: "H5"
+            bold: True
+            size_hint_y: None
+            height: self.texture_size[1]
+
+        MDSeparator:
+
+        ScrollView:
+            bar_width: 0
+
+            BoxLayout:
+                cols: 1
+                size_hint_y: None
+                orientation: 'vertical'
+                height: self.minimum_height
+                padding: "10dp"
+
+                MDLabel:
+                    id: text_label
+                    markup: False
+                    halign: 'center'
+                    valign: 'center'
+                    size_hint_y: None
+                    height: self.texture_size[1]
