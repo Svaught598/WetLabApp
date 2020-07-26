@@ -24,6 +24,10 @@ Coming soon!
 - calculation of film thickness (approximation assuming uniform thickness, only accurate for dropcast films)
 - CRUD capabilities with solvents and materials
 
+## Installation
+
+Coming soon!
+
 ## Old Project
 
 I included this to folder serve as a reminder of what this project started as:
