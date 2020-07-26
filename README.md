@@ -1,47 +1,37 @@
-## MaterialSolution
+# WetLabApp
 
-Open source cross-platform application to assist in research & lab work!
+Application to assist in research & lab work!
 Created with Python using the Kivy framework with Peewee ORM.
 
-Research in Materials Science require performing tedious approximations/calculations for:
-- solution concentration
-- film thickness
-- inter-particle spacing
-- etc. 
-The purpose of this app is to speed-up the tedious tasks associated with experimental work.
+## Motivation
 
-Some applications exist that offer similar functionality, but differ in key ways:
+Solution calculators exist, but they typically require being able to control the mass of the solute. Since we weren't able to control that parameter, I created a GUI application that could give the volume needed for a solution knowing the desired concentration and mass of the solute. I realized I really liked programming quickly after, and started adding other features just to extend the project in my free time.
 
-1. Applications to assist with creating new solutions calculate the amount of compound needed for a solution. With nothing more than digital scales, it is VERY difficult to obtain a precise amount of material. Instead, this application uses an arbitrary amount of compound and calculates the amount of solvent needed for a given concentration.
+## Screenshots
 
-2. In materials science, it is often necesary to make simple order of magnitude estimations based on physical models. These can be error-prone and usually take a decent amount of time to calculate. No other application makes these estimates.
+Coming soon!
 
-3. Some types of solutions require knowledge of certain properties held by the solvent/material being used. Other applications use a text entry to incorporate these parameters. Using text-entry can sometimes lead to an incorrect assumption of units being used, and requires that the user have knowledge of these properties (knowledge they might not have). Since most solutions use common solvents/materials within a department, this application offers CRUD of materials and solvents - along with their properties - to a local SQLite database. This ensures that research groups can make quick and effective calculations while preserving any confidential data related to materials used.\
+## Technology Used
 
-At the time of writing (02/25/20), the project is a work in progress.
+- Python
+- Kivy framework
+- Peewee ORM
+- SQLite
 
-## Project Goal
+## Features
 
-The 'Completed' version of this project should include several features (bold means complete):
-- **tool to calculate volume needed for making new solutions**
-- **tool to calculate film thickness with at least one theoretical model**
-- tool to calculate intermolecular distance of particles in a thin film
-- tool to calculate dilutions
-- **CR**U**D** with solvents/materials/compounds
-
-Some features that may be useful/interesting to complete:
-- automatic calculation of molecular weight based on chemical formula in CRUD display
-- history of last 5 - 10 calculations for each screen
-- incorporating PubChem API
+- calculation of volume needed for making solutions of a certain concentration
+- calculation of film thickness (approximation assuming uniform thickness, only accurate for dropcast films)
+- CRUD capabilities with solvents and materials
 
 ## Old Project
 
-I included this to serve as a reminder of what this project almost remained. Some points:
+I included this to folder serve as a reminder of what this project started as:
 
 1. The project had a lot of unnecesary customized widgets, leading to overcomplication.
 
 2. The logic was deeply tied to UI code, so technical changes were difficult to implement.
 
-3. CRUD for solvent data was utterly broken. Deleting a selected entry would actually delete two.
+3. CRUD for solvent data was utterly broken. Lots of edge cases weren't considered.
 
-All code is bad, but that means it can be better.
+I fixed these points by incorporating an ORM and object models for data, and refactoring the codebase into the MVVM architecture. 
