@@ -3,7 +3,7 @@
 Application to assist in research & lab work!
 Created with Python using the Kivy framework with Peewee ORM.
 
-[example](./media/example.png)
+![example](./media/example.png)
 
 ## Motivation
 
