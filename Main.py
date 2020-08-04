@@ -52,7 +52,7 @@ class NavigationItem(OneLineAvatarListItem):
     icon = StringProperty()
 
 
-class SolutionApp(MDApp):
+class WetLabApplicationApp(MDApp):
     """
     When app the run() method is called, the following 
     methods are called in this order:
@@ -189,4 +189,4 @@ class AboutDialog(ThemableBehavior, ModalView):
 """Starting the application but first initializing the database"""
 if __name__ == '__main__':
     init_db()
-    SolutionApp().run()
+    WetLabApplicationApp().run()
