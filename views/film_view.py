@@ -60,7 +60,31 @@ class FilmScreen(Screen):
         # that triggers bound method in view 'add_solvents' or 'add_materials'
         app.film_view_model.get_solvents()
         app.film_view_model.get_materials()
-        
+        self.create_dropdowns()
+
+    def create_dropdowns(self):
+        self.solvent_menu = MDDropdownMenu(
+            caller=self.ids.solvent,
+            items=self.SOLVENT_NAMES,
+            position="bottom",
+            callback=self.on_solvent,
+            width_mult=4,
+        )
+        self.material_menu = MDDropdownMenu(
+            caller=self.ids.material,
+            items=self.MATERIAL_NAMES,
+            position="bottom",
+            callback=self.on_material,
+            width_mult=4,
+        )
+        self.types_menu = MDDropdownMenu(
+            caller=self.ids.solution_types,
+            items=self._SOLUTION_TYPES,
+            position="bottom",
+            callback=self.on_solution_types,
+            width_mult=4,
+        )
+
 
     def add_solution_types(self, types):
         """Helper for constructing 'solution types' dropdown"""
@@ -86,17 +110,20 @@ class FilmScreen(Screen):
             'callback': self.on_solvent
         } for solvent in solvents]
 
-    def on_solvent(self, text):
+    def on_solvent(self, item):
         """boudn to solvent dropdown selection"""
-        self.ids.solvent.text = text
+        self.ids.solvent.text = item.text
+        self.solvent_menu.dismiss()
 
-    def on_material(self, text):
+    def on_material(self, item):
         """Boudn to material dropdown selection"""
-        self.ids.material.text = text
+        self.ids.material.text = item.text
+        self.material_menu.dismiss()
 
-    def on_solution_types(self, text):
+    def on_solution_types(self, item):
         """Bound to solution type dropdown selection"""
-        self.ids.solution_types.text = text
+        self.ids.solution_types.text = item.text
+        self.types_menu.dismiss()
 
     def on_mass(self, text):
         """

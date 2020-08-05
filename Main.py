@@ -18,13 +18,11 @@ from views import (
     VolumeScreen,
     UpdateScreen,
     FilmScreen,
-    DilutionScreen,
 )
 from viewmodels import (
     VolumeViewModel,
     UpdateViewModel,
     FilmViewModel,
-    DilutionViewModel,
 )
 from settings import (
     TEMPLATE_PATHS, 
@@ -52,7 +50,7 @@ class NavigationItem(OneLineAvatarListItem):
     icon = StringProperty()
 
 
-class SolutionApp(MDApp):
+class WetLabApplicationApp(MDApp):
     """
     When app the run() method is called, the following 
     methods are called in this order:
@@ -88,8 +86,6 @@ class SolutionApp(MDApp):
         self.root.ids.screens.add_widget(self.screen2)
         self.screen3 = FilmScreen(name = 'thickness')
         self.root.ids.screens.add_widget(self.screen3)
-        self.screen4 = DilutionScreen(name = 'dilution')
-        self.root.ids.screens.add_widget(self.screen4)
 
     def add_view_models(self):
         """
@@ -103,7 +99,6 @@ class SolutionApp(MDApp):
         self.volume_view_model = VolumeViewModel()
         self.update_view_model = UpdateViewModel()
         self.film_view_model = FilmViewModel()
-        self.dilution_view_model = DilutionViewModel()
 
     def add_nav_drawer(self):
         """
@@ -189,4 +184,4 @@ class AboutDialog(ThemableBehavior, ModalView):
 """Starting the application but first initializing the database"""
 if __name__ == '__main__':
     init_db()
-    SolutionApp().run()
+    WetLabApplicationApp().run()

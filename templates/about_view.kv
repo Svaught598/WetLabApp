@@ -1,0 +1,24 @@
+<AboutScreen>:
+    BoxLayout:
+        orientation: 'vertical'
+        MDToolbar:
+            title: "About"
+            md_bg_color: app.theme_cls.primary_color
+            elevation: 10
+            left_action_items: [['arrow-left', lambda x: app.get_main_screen()]]
+        BoxLayout:
+            orientation: 'vertical'
+            MDLabel:
+                text: root.about_text
+                halign: 'center'
+                markup: True
+                font_style: 'H6'
+            MDLabel:
+                text: root.github_text
+                halign: 'center'
+                markup: True
+            MDLabel:
+                text: root.email_text
+                halign: 'center'
+                markup: True
+        Widget:
