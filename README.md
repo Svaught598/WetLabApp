@@ -21,10 +21,10 @@ Solution calculators exist, but they typically require being able to control the
 ![create and read .gif](./media/create_read.gif)
 
 #### Update
-![update .gif](.media/update.gif)
+![update .gif](./media/update.gif)
 
 #### Delete
-![delete .gif](.media/delete.gif)
+![delete .gif](./media/delete.gif)
 
 ## Technology Used
 
