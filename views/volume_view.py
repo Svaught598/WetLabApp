@@ -70,12 +70,44 @@ class VolumeScreen(Screen):
         # Populate dropdowns from database through viewmodel
         app.volume_view_model.get_solvents()
         app.volume_view_model.get_materials()
+        self.create_dropdowns()
 
-    def on_solution_types(self, text):
+    def create_dropdowns(self):
+        self.solvent_menu = MDDropdownMenu(
+            caller=self.ids.solvent,
+            items=self.SOLVENT_NAMES,
+            position="bottom",
+            callback=self.on_solvent, 
+            width_mult=4,
+        )
+        self.material_menu = MDDropdownMenu(
+            caller=self.ids.material,
+            items=self.MATERIAL_NAMES,
+            position="bottom",
+            callback=self.on_material,
+            width_mult=4,
+        )
+        self.types_menu = MDDropdownMenu(
+            caller=self.ids.solution_types,
+            items=self._SOLUTION_TYPES,
+            position="bottom",
+            callback=self.on_solution_types,
+            width_mult=4,
+        )
+        self.mass_menu = MDDropdownMenu(
+            caller = self.ids.mass_units,
+            items=self._MASS_UNITS,
+            position="bottom",
+            callback=self.on_mass_unit,
+            width_mult=4,
+        )
+
+    def on_solution_types(self, item):
         """
         Changes UI-bound properties as needed depending
         on dropdown selection.
         """
+        text = item.text
         self.ids.solution_types.text = text
 
         # Solution Type is % w/w
@@ -101,21 +133,27 @@ class VolumeScreen(Screen):
             self._MOL_WEIGHT_FIELDS = False
             self._SOLVENT_DENSITY_FIELDS = False
 
-    def on_solvent(self, text):
+        self.types_menu.dismiss()
+
+    def on_solvent(self, item):
         """Bound to solvent dropdwn selection"""
-        self.ids.solvent.text = text
+        self.ids.solvent.text = item.text
         app = MDApp.get_running_app()
-        app.volume_view_model.get_solvent_density(text)
+        app.volume_view_model.get_solvent_density(item.text)
+        self.solvent_menu.dismiss()
 
-    def on_material(self, text):
+
+    def on_material(self, item):
         """Bound to material dropdown selection"""
-        self.ids.material.text = text
+        self.ids.material.text = item.text
         app = MDApp.get_running_app()
-        app.volume_view_model.get_mol_weight(text)
+        app.volume_view_model.get_mol_weight(item.text)
+        self.material_menu.dismiss()
 
-    def on_mass_unit(self, text):
+    def on_mass_unit(self, item):
         """Bound to mass unit dropdown selection"""
-        self.ids.mass_units.text = text
+        self.ids.mass_units.text = item.text
+        self.mass_menu.dismiss()
 
     def change_density(self, density):
         """Bound to solvent dropdown selection"""
@@ -169,9 +207,7 @@ class VolumeScreen(Screen):
         Bound to 'MATERIAL_LIST' in volume_view_model
         """
         self.MATERIAL_NAMES = [{
-            'viewclass': 'MDMenuItem',
             'text': material['name'],
-            'callback': self.on_material
         } for material in materials]
 
     def add_solvents(self, solvents):
@@ -180,9 +216,7 @@ class VolumeScreen(Screen):
         Bound to 'SOLVENT_LIST' in volume_view_model
         """
         self.SOLVENT_NAMES = [{
-            'viewclass': 'MDMenuItem',
-            'text': solvent['name'],
-            'callback': self.on_solvent
+            'text': solvent['name']
         } for solvent in solvents]
 
     def show_volume_needed(self, volume_needed):
