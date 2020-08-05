@@ -18,13 +18,11 @@ from views import (
     VolumeScreen,
     UpdateScreen,
     FilmScreen,
-    DilutionScreen,
 )
 from viewmodels import (
     VolumeViewModel,
     UpdateViewModel,
     FilmViewModel,
-    DilutionViewModel,
 )
 from settings import (
     TEMPLATE_PATHS, 
@@ -88,8 +86,6 @@ class WetLabApplicationApp(MDApp):
         self.root.ids.screens.add_widget(self.screen2)
         self.screen3 = FilmScreen(name = 'thickness')
         self.root.ids.screens.add_widget(self.screen3)
-        self.screen4 = DilutionScreen(name = 'dilution')
-        self.root.ids.screens.add_widget(self.screen4)
 
     def add_view_models(self):
         """
@@ -103,7 +99,6 @@ class WetLabApplicationApp(MDApp):
         self.volume_view_model = VolumeViewModel()
         self.update_view_model = UpdateViewModel()
         self.film_view_model = FilmViewModel()
-        self.dilution_view_model = DilutionViewModel()
 
     def add_nav_drawer(self):
         """

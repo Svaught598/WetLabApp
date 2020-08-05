@@ -13,7 +13,6 @@ TEMPLATE_PATHS = [
     os.path.join(ROOT_DIR, 'templates/film_view.kv'),
     os.path.join(ROOT_DIR, 'templates/update_view.kv'),
     os.path.join(ROOT_DIR, 'templates/volume_view.kv'),
-    os.path.join(ROOT_DIR, 'templates/dilution_view.kv'),
 ]
 
 # Main template built with by app.build() method
