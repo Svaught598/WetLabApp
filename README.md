@@ -41,5 +41,30 @@ Solution calculators exist, but they typically require being able to control the
 
 ## Installation
 
-Coming soon!
+#### Ubuntu
 
+clone the repo and cd into it
+
+`$ clone https://github.com/Svaught598/WetLabApp wetlabapp && cd ./wetlabapp`
+
+in a terminal:
+
+```
+$ sudo add-apt-repository ppa:kivy-team/kivy
+$ sudo apt-get update
+$ sudo apt-get install python3-kivy
+
+# This one is a dependency, but isn't installed by apt-get for some reason
+$ sudo apt-get install xclip xsel
+```
+
+activate the env, and install requirements
+
+```
+$ source ./env/bin/activate
+$ sudo python3 ./env/bin/pip3 install -r requirements.txt
+```
+
+then just run the Main.py file!
+
+`python3 Main.py`
