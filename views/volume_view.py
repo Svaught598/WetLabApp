@@ -1,4 +1,6 @@
 # KivyMD imports
+from kivymd.uix.menu import MDDropdownMenu
+from kivymd.uix.menu import MDMenuItem
 from kivymd.uix.button import MDRectangleFlatButton
 from kivymd.uix.dialog import MDDialog
 from kivymd.app import MDApp
@@ -18,7 +20,6 @@ from kivy.metrics import dp
 # Local imports 
 from models.solvent import Solvent
 from settings import SOLUTION_TYPES, MASS_UNITS
-from widgets import DropdownMenu, Menu, MenuItem
 
 
 class MDMenuItem(MDRectangleFlatButton):
