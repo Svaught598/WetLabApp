@@ -207,14 +207,14 @@ class VolumeViewModel(EventDispatcher):
     def get_materials(self):
         self.MATERIAL_LIST = Material.get_all()
 
-    def get_solvent_density(self, solvent):
-        solvent = Solvent.get_solvent(solvent)
-        density = solvent[0].density
+    def get_solvent_density(self, solvent_name):
+        solvent = Solvent.get_solvent(solvent_name)
+        density = solvent["density"]
         self.SOLVENT_DENSITY = f'{density}'
 
-    def get_mol_weight(self, material):
-        material = Material.get_material(material)
-        mol_weight = material[0].molecular_weight
+    def get_mol_weight(self, material_name):
+        material = Material.get_material(material_name)
+        mol_weight = material["molecular_weight"]
         self.MOLECULAR_WEIGHT = f'{mol_weight}'
 
 

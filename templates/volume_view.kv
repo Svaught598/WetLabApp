@@ -21,13 +21,14 @@
                 icon: "arrow-down-drop-circle"
                 id: solvent
                 text: 'Solvent'
-                on_release: DropdownMenu(items=root.SOLVENT_NAMES, width_mult=4).open(self)
+                on_release: root.solvent_menu.open()
+
             MDRectangleFlatIconButton:
                 size_hint: (1,1)
                 icon: "arrow-down-drop-circle"
                 id: material
                 text: 'Material'
-                on_release: DropdownMenu(items=root.MATERIAL_NAMES, width_mult=4).open(self)
+                on_release: root.material_menu.open()
         BoxLayout:
             orientation: 'horizontal'
             size_hint_y: None
@@ -49,7 +50,7 @@
                 text: root._SOLUTION_TYPE_DEFAULT
                 size_hint_x: None
                 width: dp(100)
-                on_release: MDDropdownMenu(items=root._SOLUTION_TYPES, width_mult=4).open(self)
+                on_release: root.types_menu.open()
         BoxLayout:
             orientation: 'horizontal'
             size_hint_y: None
@@ -72,7 +73,7 @@
                 icon: "arrow-down-drop-circle"
                 id: mass_units
                 text: root._MASS_UNIT_DEFAULT
-                on_release: MDDropdownMenu(items=root._MASS_UNITS, width_mult=4).open(self)
+                on_release: root.mass_menu.open()
         BoxLayout:
             orientation: 'horizontal'
             size_hint_y: None
